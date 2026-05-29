@@ -10,6 +10,7 @@ import {
   AI_THINK_DELAY, BOARD_SIZE,
 } from '../config.js';
 import { getTurnHint, UI_COPY } from '../ui/visuals.js';
+import { playCaptureEffect, playCheckAlert, playPromotionEffect } from '../ui/effects.js';
 
 const State = {
   WAITING: 'WAITING',
@@ -339,15 +340,8 @@ export class GameScene extends Phaser.Scene {
     const toY = LAYOUT.BOARD_OFFSET_Y + tr * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
     const piece = this.board.getPiece(fr, fc);
 
-    if (isCapture) {
-      const cx = LAYOUT.BOARD_OFFSET_X + tc * LAYOUT.CELL_SIZE;
-      const cy = LAYOUT.BOARD_OFFSET_Y + tr * LAYOUT.CELL_SIZE;
-      const flash = this.add.graphics();
-      flash.fillStyle(COLORS.THREAT, 0.82);
-      flash.fillRoundedRect(cx + 4, cy + 4, LAYOUT.CELL_SIZE - 8, LAYOUT.CELL_SIZE - 8, 6);
-      flash.setDepth(6);
-      this.tweens.add({ targets: flash, alpha: 0, duration: 300, onComplete: () => flash.destroy() });
-    }
+    if (isCapture)
+      playCaptureEffect(this, toX, toY, { owner: this.board.getPiece(tr, tc)?.owner });
 
     if (!piece) { callback(); return; }
     const origObj = this.pieceObjects[`${fr},${fc}`];
@@ -389,12 +383,21 @@ export class GameScene extends Phaser.Scene {
     if (this.checkRing) { this.checkRing.destroy(); this.checkRing = null; }
     const x = LAYOUT.BOARD_OFFSET_X + kingPos.col * LAYOUT.CELL_SIZE;
     const y = LAYOUT.BOARD_OFFSET_Y + kingPos.row * LAYOUT.CELL_SIZE;
+    const cx = x + LAYOUT.CELL_SIZE / 2;
+    const cy = y + LAYOUT.CELL_SIZE / 2;
+    playCheckAlert(this, cx, cy);
     const ring = this.add.graphics();
     ring.lineStyle(4, COLORS.THREAT, 1);
     ring.strokeRoundedRect(x + 3, y + 3, LAYOUT.CELL_SIZE - 6, LAYOUT.CELL_SIZE - 6, 6);
     ring.setDepth(5);
     this.checkRing = ring;
     this.tweens.add({ targets: ring, alpha: 0.25, duration: 300, yoyo: true, repeat: 3 });
+  }
+
+  _animatePromotion(r, c, owner) {
+    const x = LAYOUT.BOARD_OFFSET_X + c * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    const y = LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    playPromotionEffect(this, x, y, { owner });
   }
 
   _clearCheckRing() {
@@ -557,13 +560,9 @@ export class GameScene extends Phaser.Scene {
         });
         return;
       } else if (isCapture && visible.has(`${moveAction.to.row},${moveAction.to.col}`)) {
-        const cx = LAYOUT.BOARD_OFFSET_X + moveAction.to.col * LAYOUT.CELL_SIZE;
-        const cy = LAYOUT.BOARD_OFFSET_Y + moveAction.to.row * LAYOUT.CELL_SIZE;
-        const flash = this.add.graphics();
-        flash.fillStyle(COLORS.THREAT, 0.86);
-        flash.fillRoundedRect(cx + 4, cy + 4, LAYOUT.CELL_SIZE - 8, LAYOUT.CELL_SIZE - 8, 6);
-        flash.setDepth(6);
-        this.tweens.add({ targets: flash, alpha: 0, duration: 300, onComplete: () => flash.destroy() });
+        const cx = LAYOUT.BOARD_OFFSET_X + moveAction.to.col * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+        const cy = LAYOUT.BOARD_OFFSET_Y + moveAction.to.row * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+        playCaptureEffect(this, cx, cy, { owner: this.board.getPiece(moveAction.to.row, moveAction.to.col)?.owner });
       }
       this.board.movePiece(moveAction.from.row, moveAction.from.col, moveAction.to.row, moveAction.to.col);
     }
@@ -636,11 +635,15 @@ export class GameScene extends Phaser.Scene {
   _checkPromotion() {
     for (let c = 0; c < BOARD_SIZE; c++) {
       const pp = this.board.getPiece(0, c);
-      if (pp?.type === PieceType.PAWN && pp.owner === Owner.PLAYER)
+      if (pp?.type === PieceType.PAWN && pp.owner === Owner.PLAYER) {
         this.board.setPiece(0, c, new Piece(PieceType.QUEEN, Owner.PLAYER));
+        this._animatePromotion?.(0, c, Owner.PLAYER);
+      }
       const ap = this.board.getPiece(4, c);
-      if (ap?.type === PieceType.PAWN && ap.owner === Owner.AI)
+      if (ap?.type === PieceType.PAWN && ap.owner === Owner.AI) {
         this.board.setPiece(4, c, new Piece(PieceType.QUEEN, Owner.AI));
+        this._animatePromotion?.(4, c, Owner.AI);
+      }
     }
   }
 

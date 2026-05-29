@@ -1,8 +1,8 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.17  
+**버전:** 0.1.18  
 **작성일:** 2026-05-12  
-**최종 수정:** 2026-05-18  
+**최종 수정:** 2026-05-29  
 **장르:** 디지털 전략 / 체스 변형
 
 ---
@@ -67,6 +67,15 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.18 UI 리소스 목록 및 전투 연출 강화
+
+- `docs/ChessSummon_UI_리소스_목록.md`에 버튼, 프레임, 체크, 처치, 승급에 필요한 UI/이펙트 리소스 목록을 정리했다.
+- `public/assets/ui/`에 버튼/패널/체크/처치/승급 SVG 리소스를 생성했다.
+- `src/ui/effects.js`를 추가해 체크, 처치, 승급 이펙트를 전담하도록 분리했다.
+- 체크는 화면 붉은 플래시, 왕 주변 링, `CHECK` 라벨, 카메라 흔들림으로 인지가 잘 되게 했다.
+- 말을 처치할 때는 충격 링, 교차 베기, 파편, `CAPTURE` 라벨을 표시한다.
+- 폰이 승급할 때는 빛기둥, 왕관형 버스트, `PROMOTION` 라벨을 표시한다.
 
 ### v0.1.17 난이도 선택 클릭 영역 개선
 
@@ -208,9 +217,9 @@ npm run online:server
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.17.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.17_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.17_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.18.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.18_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.18_portable.exe` |
 
 ---
 
