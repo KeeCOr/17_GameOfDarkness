@@ -4,9 +4,17 @@ import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
 
 const KING_ROW = 4, KING_COL = 2;
 const PAWN_COUNT = 4;
+const PIECE_TYPES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
 
 export class PlacementScene extends Phaser.Scene {
   constructor() { super('Placement'); }
+
+  preload() {
+    for (const type of PIECE_TYPES) {
+      this.load.image(`${type}_w`, `assets/pieces/${type}_w.png`);
+      this.load.image(`${type}_d`, `assets/pieces/${type}_d.png`);
+    }
+  }
 
   init(data) {
     this.difficulty = data.difficulty;
@@ -69,7 +77,7 @@ export class PlacementScene extends Phaser.Scene {
         cell.setStrokeStyle(1, 0x2c1b12, 0.38);
 
         if (r === KING_ROW && c === KING_COL) {
-          this.add.text(x, y, '왕', { fontSize: '22px', color: TEXT_COLORS.SUCCESS, fontStyle: 'bold' }).setOrigin(0.5);
+          this._addPlacementPiece(x, y, PieceType.KING, Owner.PLAYER);
           continue;
         }
 
@@ -84,6 +92,24 @@ export class PlacementScene extends Phaser.Scene {
     }
   }
 
+  _addPlacementPiece(x, y, type, owner = Owner.PLAYER) {
+    const key = `${type.toLowerCase()}_${owner === Owner.PLAYER ? 'w' : 'd'}`;
+    const shadow = this.add.ellipse(
+      x + 2,
+      y + LAYOUT.CELL_SIZE * 0.34,
+      LAYOUT.PIECE_SHADOW_WIDTH,
+      LAYOUT.PIECE_SHADOW_HEIGHT,
+      0x000000,
+      0.34,
+    ).setDepth(3);
+    const image = this.add.image(x, y, key)
+      .setDisplaySize(LAYOUT.PIECE_SIZE, LAYOUT.PIECE_SIZE)
+      .setDepth(4);
+    return {
+      destroy: () => { shadow.destroy(); image.destroy(); },
+    };
+  }
+
   _togglePawn(r, c, x, y, cell, isLight) {
     const key = `${r},${c}`;
     if (this.placed[key]) {
@@ -96,9 +122,7 @@ export class PlacementScene extends Phaser.Scene {
       if (this.pawnCount >= PAWN_COUNT) return;
       this.placed[key] = true;
       this.pawnCount++;
-      this.cellGraphics[key].text = this.add.text(x, y, '병', {
-        fontSize: '22px', color: '#ffffff', fontStyle: 'bold',
-      }).setOrigin(0.5);
+      this.cellGraphics[key].text = this._addPlacementPiece(x, y, PieceType.PAWN, Owner.PLAYER);
       cell.setFillStyle(COLORS.EMERALD);
     }
     this._updateReadyButton();

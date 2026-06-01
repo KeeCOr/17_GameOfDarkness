@@ -3,6 +3,7 @@ import { LAYOUT, PieceType, SUMMON_CARD_META, SummonRequirement } from '../src/c
 import {
   getPieceName, UI_COPY, getButtonColors, getTurnHint,
   getSummonGradeStars, getSummonRequirementLabel,
+  UI_ASSETS, getButtonAssetKey, getPanelAssetKey,
 } from '../src/ui/visuals.js';
 
 describe('visual theme helpers', () => {
@@ -61,6 +62,102 @@ describe('visual theme helpers', () => {
     expect(enabled.fill).not.toBe(disabled.fill);
     expect(disabled.alpha).toBeLessThan(enabled.alpha);
     expect(active.text).toBe(0x1a1208);
+  });
+
+  it('maps reusable SVG assets to shared UI controls', () => {
+    expect(UI_ASSETS.buttonPrimary).toEqual({
+      key: 'ui_button_primary',
+      path: 'assets/ui/button-primary.svg',
+    });
+    expect(UI_ASSETS.buttonDanger).toEqual({
+      key: 'ui_button_danger',
+      path: 'assets/ui/button-danger.svg',
+    });
+    expect(UI_ASSETS.frameHudPanel).toEqual({
+      key: 'ui_frame_hud_panel',
+      path: 'assets/ui/frame-hud-panel.svg',
+    });
+    expect(getButtonAssetKey()).toBe(UI_ASSETS.buttonPrimary.key);
+    expect(getButtonAssetKey({ danger: true })).toBe(UI_ASSETS.buttonDanger.key);
+    expect(getPanelAssetKey()).toBe(UI_ASSETS.frameHudPanel.key);
+  });
+
+  it('preloads reusable UI art before the menu scene starts', async () => {
+    globalThis.Phaser = { Scene: class {} };
+    const { BootScene } = await import('../src/scenes/BootScene.js');
+    const scene = Object.create(BootScene.prototype);
+    const loaded = [];
+    scene.load = { svg: (key, path) => loaded.push({ key, path }) };
+
+    scene.preload();
+
+    expect(loaded).toContainEqual(UI_ASSETS.buttonPrimary);
+    expect(loaded).toContainEqual(UI_ASSETS.buttonDanger);
+    expect(loaded).toContainEqual(UI_ASSETS.frameHudPanel);
+  });
+
+  it('uses preloaded button and frame artwork when Phaser textures are available', async () => {
+    const images = [];
+    const rectangles = [];
+    const graphics = [];
+    const makeImage = key => ({
+      key,
+      setDisplaySize() { return this; },
+      setAlpha() { return this; },
+      setDepth() { return this; },
+      setTint() { return this; },
+      clearTint() { return this; },
+    });
+    const makeRectangle = () => ({
+      setInteractive() { return this; },
+      setAlpha() { return this; },
+      setDepth() { return this; },
+      setStrokeStyle() { return this; },
+      setFillStyle() { return this; },
+      setData(key, value) { this[key] = value; return this; },
+      getData(key) { return this[key]; },
+      on() { return this; },
+    });
+    const scene = {
+      textures: { exists: () => true },
+      add: {
+        image: (_x, _y, key) => {
+          const image = makeImage(key);
+          images.push(image);
+          return image;
+        },
+        rectangle: () => {
+          const rectangle = makeRectangle();
+          rectangles.push(rectangle);
+          return rectangle;
+        },
+        text: () => ({
+          setOrigin() { return this; },
+          setDepth() { return this; },
+          setColor() { return this; },
+          setAlpha() { return this; },
+        }),
+        graphics: () => {
+          const graphic = { setDepth() { return this; } };
+          graphics.push(graphic);
+          return graphic;
+        },
+      },
+      tweens: { add: () => {} },
+    };
+
+    const { addPanel, addTextButton } = await import('../src/ui/visuals.js');
+    const panel = addPanel(scene, 0, 0, 120, 80);
+    const button = addTextButton(scene, 50, 50, 160, 44, 'Start');
+
+    expect(panel.key).toBe(UI_ASSETS.frameHudPanel.key);
+    expect(button.bg.key).toBe(UI_ASSETS.buttonPrimary.key);
+    expect(images.map(image => image.key)).toEqual([
+      UI_ASSETS.frameHudPanel.key,
+      UI_ASSETS.buttonPrimary.key,
+    ]);
+    expect(rectangles).toHaveLength(1);
+    expect(graphics).toHaveLength(0);
   });
 
   it('keeps rendered board pieces inside a single cell', () => {

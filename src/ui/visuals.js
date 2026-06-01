@@ -1,5 +1,11 @@
 import { COLORS, LAYOUT, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
 
+export const UI_ASSETS = Object.freeze({
+  buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/button-primary.svg' }),
+  buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/button-danger.svg' }),
+  frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/frame-hud-panel.svg' }),
+});
+
 export const UI_COPY = Object.freeze({
   menu: {
     title: 'Chess Summon',
@@ -53,7 +59,7 @@ export const UI_COPY = Object.freeze({
     check: '체크!',
     confirmSurrender: '정말 기권하시겠습니까?',
     idleWarningTitle: '입력이 없습니다',
-    idleWarningBody: '30초 동안 입력이 없습니다. 빨리 입력하세요.',
+    idleWarningBody: '30초 동안 입력이 없습니다. 10초 안에 선택하지 않으면 패배합니다.',
     keepThinking: '조금 더 생각한다',
     loseNow: '패배',
     cancel: '취소',
@@ -159,6 +165,18 @@ export function getButtonColors({ enabled = true, active = false, danger = false
   return { fill: COLORS.BUTTON_BG, stroke: 0x526092, text: 0xffffff, alpha: 1 };
 }
 
+export function getButtonAssetKey({ danger = false } = {}) {
+  return danger ? UI_ASSETS.buttonDanger.key : UI_ASSETS.buttonPrimary.key;
+}
+
+export function getPanelAssetKey() {
+  return UI_ASSETS.frameHudPanel.key;
+}
+
+function hasTexture(scene, key) {
+  return Boolean(scene?.textures?.exists?.(key));
+}
+
 export function addStageBackground(scene, title = '') {
   const { GAME_WIDTH: w, GAME_HEIGHT: h } = LAYOUT;
   scene.add.rectangle(w / 2, h / 2, w, h, COLORS.BACKDROP);
@@ -193,6 +211,13 @@ export function addStageBackground(scene, title = '') {
 export function addPanel(scene, x, y, width, height, options = {}) {
   const depth = options.depth ?? 0;
   const alpha = options.alpha ?? 0.96;
+  const assetKey = getPanelAssetKey();
+  if (hasTexture(scene, assetKey)) {
+    return scene.add.image(x + width / 2, y + height / 2, assetKey)
+      .setDisplaySize(width, height)
+      .setAlpha(alpha)
+      .setDepth(depth);
+  }
   const g = scene.add.graphics().setDepth(depth);
   g.fillStyle(options.fill ?? COLORS.PANEL_DEEP, alpha);
   g.fillRoundedRect(x, y, width, height, options.radius ?? 8);
@@ -218,10 +243,18 @@ export function addDivider(scene, x, y, width, depth = 0) {
 
 export function addTextButton(scene, x, y, width, height, label, options = {}) {
   const state = getButtonColors(options);
+  const depth = options.depth ?? 0;
+  const assetKey = getButtonAssetKey(options);
+  const bg = hasTexture(scene, assetKey)
+    ? scene.add.image(x, y, assetKey)
+      .setDisplaySize(width, height)
+      .setAlpha(state.alpha)
+      .setDepth(depth)
+    : null;
   const rect = scene.add.rectangle(x, y, width, height, state.fill)
     .setInteractive({ useHandCursor: true })
-    .setAlpha(state.alpha)
-    .setDepth(options.depth ?? 0);
+    .setAlpha(bg ? 0.001 : state.alpha)
+    .setDepth(bg ? depth + 0.2 : depth);
   rect.setStrokeStyle(1, state.stroke, 0.85);
 
   const text = scene.add.text(x, y, label, {
@@ -229,23 +262,42 @@ export function addTextButton(scene, x, y, width, height, label, options = {}) {
     color: `#${state.text.toString(16).padStart(6, '0')}`,
     fontStyle: 'bold',
     align: 'center',
-  }).setOrigin(0.5).setDepth((options.depth ?? 0) + 1);
+  }).setOrigin(0.5).setDepth(depth + 1);
+
+  const applyArtState = ({ hover = false } = {}) => {
+    if (!bg) return false;
+    const enabled = rect.getData('enabled') !== false;
+    bg.setAlpha(enabled ? state.alpha : 0.42);
+    if (!enabled) {
+      bg.setTint?.(0x666a78);
+    } else if (hover) {
+      bg.setTint?.(options.danger ? 0xffc4bb : 0xffedb2);
+    } else if (options.active) {
+      bg.setTint?.(0xffdf7a);
+    } else {
+      bg.clearTint?.();
+    }
+    return true;
+  };
 
   rect.on('pointerover', () => {
     if (rect.getData('enabled') === false) return;
+    if (applyArtState({ hover: true })) return;
     rect.setFillStyle(options.active ? COLORS.GOLD : (options.danger ? 0xb4453d : COLORS.BUTTON_HOVER));
   });
   rect.on('pointerout', () => {
     if (rect.getData('enabled') === false) return;
+    if (applyArtState({ hover: false })) return;
     rect.setFillStyle(options.active ? COLORS.GOLD : (options.danger ? COLORS.CRIMSON : COLORS.BUTTON_BG));
   });
   rect.on('pointerdown', () => {
     if (rect.getData('enabled') === false) return;
-    scene.tweens.add({ targets: [rect, text], scaleX: 0.97, scaleY: 0.97, duration: 60, yoyo: true });
+    scene.tweens.add({ targets: bg ? [bg, text] : [rect, text], scaleX: 0.97, scaleY: 0.97, duration: 60, yoyo: true });
   });
 
   rect.setData('enabled', options.enabled !== false);
-  return { rect, text };
+  applyArtState();
+  return { rect, text, bg };
 }
 
 export function setButtonState(button, options = {}) {
@@ -253,7 +305,17 @@ export function setButtonState(button, options = {}) {
   button.rect.setData('enabled', options.enabled !== false);
   button.rect.setFillStyle(state.fill);
   button.rect.setStrokeStyle(1, state.stroke, 0.85);
-  button.rect.setAlpha(state.alpha);
+  button.rect.setAlpha(button.bg ? 0.001 : state.alpha);
+  if (button.bg) {
+    button.bg.setAlpha(state.alpha);
+    if (options.enabled === false) {
+      button.bg.setTint?.(0x666a78);
+    } else if (options.active) {
+      button.bg.setTint?.(0xffdf7a);
+    } else {
+      button.bg.clearTint?.();
+    }
+  }
   button.text.setColor(`#${state.text.toString(16).padStart(6, '0')}`);
   button.text.setAlpha(state.alpha < 1 ? 0.65 : 1);
 }

@@ -59,6 +59,7 @@ export class GameScene extends Phaser.Scene {
     this.pendingSummonType = null;
     this.turnTimer = null;
     this.idleWarningTimer = null;
+    this.idleWarningLossTimer = null;
     this.idleSeconds = 0;
     this.idleWarningShown = false;
     this.hasMoved = false;
@@ -521,6 +522,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
     if (this.idleWarningTimer) { this.idleWarningTimer.remove(); this.idleWarningTimer = null; }
+    this._clearIdleWarningLossTimer();
     this._showTurnBanner(owner);
     this.events.emit('turn-start', {
       turn: owner,
@@ -590,6 +592,7 @@ export class GameScene extends Phaser.Scene {
     this.idleSeconds = (this.idleSeconds || 0) + 1;
     if (this.idleSeconds >= 30) {
       this.idleWarningShown = true;
+      this._startIdleWarningLossTimer();
       this.events.emit('idle-warning', { seconds: 30 });
     }
   }
@@ -602,12 +605,29 @@ export class GameScene extends Phaser.Scene {
 
   resolveIdleWarning(keepThinking) {
     if (this.state === State.GAME_OVER) return;
+    this._clearIdleWarningLossTimer();
     if (keepThinking) {
       this.idleSeconds = 0;
       this.idleWarningShown = false;
       return;
     }
     this._gameOver(Owner.AI);
+  }
+
+  _startIdleWarningLossTimer() {
+    this._clearIdleWarningLossTimer();
+    if (!this.time?.delayedCall) return;
+    this.idleWarningLossTimer = this.time.delayedCall(10000, () => {
+      if (this.state === State.GAME_OVER) return;
+      this.resolveIdleWarning(false);
+    });
+  }
+
+  _clearIdleWarningLossTimer() {
+    if (this.idleWarningLossTimer) {
+      this.idleWarningLossTimer.remove();
+      this.idleWarningLossTimer = null;
+    }
   }
 
   _getAIThinkDelay() {
@@ -617,6 +637,7 @@ export class GameScene extends Phaser.Scene {
   _endTurn() {
     if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
     if (this.idleWarningTimer) { this.idleWarningTimer.remove(); this.idleWarningTimer = null; }
+    this._clearIdleWarningLossTimer();
     this._clearHighlights();
     this.selectedCell = null;
     this.pendingSummonType = null;
@@ -685,6 +706,7 @@ export class GameScene extends Phaser.Scene {
     this.input.off('pointerdown', this._onPointerDown, this);
     if (this.turnTimer) this.turnTimer.remove();
     if (this.idleWarningTimer) this.idleWarningTimer.remove();
+    this._clearIdleWarningLossTimer();
     this.time.delayedCall(800, () => {
       this.scene.stop('UI');
       if (this.tutorialMode) this.scene.stop('Tutorial');

@@ -128,6 +128,7 @@ describe('GameScene manual turn ending', () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
     const emitted = [];
+    const delayedCalls = [];
 
     scene.board = { currentTurn: Owner.PLAYER };
     scene.state = 'WAITING';
@@ -135,11 +136,42 @@ describe('GameScene manual turn ending', () => {
     scene.idleWarningShown = false;
     scene.idleSeconds = 29;
     scene.events = { emit: (event, payload) => emitted.push({ event, payload }) };
+    scene.time = { delayedCall: (delay, callback) => {
+      const call = { delay, callback, removed: false, remove() { this.removed = true; } };
+      delayedCalls.push(call);
+      return call;
+    } };
 
     scene._tickIdleWarning();
 
     expect(scene.idleWarningShown).toBe(true);
+    expect(scene.idleWarningLossTimer).toBe(delayedCalls[0]);
+    expect(delayedCalls[0].delay).toBe(10000);
     expect(emitted).toContainEqual({ event: 'idle-warning', payload: { seconds: 30 } });
+  });
+
+  it('loses if the idle warning is unanswered for 10 seconds', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    let winner = null;
+    let delayedCallback = null;
+
+    scene.board = { currentTurn: Owner.PLAYER };
+    scene.state = 'WAITING';
+    scene.tutorialMode = false;
+    scene.idleWarningShown = false;
+    scene.idleSeconds = 29;
+    scene.events = { emit: () => {} };
+    scene.time = { delayedCall: (delay, callback) => {
+      delayedCallback = callback;
+      return { delay, remove() {} };
+    } };
+    scene._gameOver = value => { winner = value; };
+
+    scene._tickIdleWarning();
+    delayedCallback();
+
+    expect(winner).toBe(Owner.AI);
   });
 
   it('does not warn for AI idle time', async () => {
@@ -176,15 +208,19 @@ describe('GameScene manual turn ending', () => {
   it('resets idle tracking when the player asks for more thinking time', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
+    let removed = false;
 
     scene.state = 'WAITING';
     scene.idleSeconds = 30;
     scene.idleWarningShown = true;
+    scene.idleWarningLossTimer = { remove: () => { removed = true; } };
 
     scene.resolveIdleWarning(true);
 
     expect(scene.idleSeconds).toBe(0);
     expect(scene.idleWarningShown).toBe(false);
+    expect(scene.idleWarningLossTimer).toBe(null);
+    expect(removed).toBe(true);
   });
 
   it('reveals the whole board on easy difficulty', async () => {

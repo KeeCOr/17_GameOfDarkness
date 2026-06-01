@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { Difficulty } from '../src/config.js';
+import { Difficulty, LAYOUT } from '../src/config.js';
 import { UI_COPY } from '../src/ui/visuals.js';
 
 beforeAll(() => {
@@ -187,5 +187,40 @@ describe('tutorial and replay flow', () => {
     scene._startGame();
 
     expect(starts).toEqual([]);
+  });
+
+  it('renders placed pawns with the same image key and size as in-game pieces', async () => {
+    const { PlacementScene } = await import('../src/scenes/PlacementScene.js');
+    const scene = Object.create(PlacementScene.prototype);
+    const images = [];
+
+    scene.placed = {};
+    scene.pawnCount = 0;
+    scene.cellGraphics = { '3,0': { text: null } };
+    scene.add = {
+      image: (x, y, key) => {
+        const image = {
+          x, y, key, width: null, height: null,
+          setDisplaySize(width, height) { this.width = width; this.height = height; return this; },
+          setDepth() { return this; },
+          destroy() {},
+        };
+        images.push(image);
+        return image;
+      },
+      ellipse: () => ({ setDepth() { return this; }, destroy() {} }),
+      text: () => ({ setOrigin() { return this; }, destroy() {} }),
+    };
+    scene._updateReadyButton = () => {};
+    const cell = { setFillStyle() {} };
+
+    scene._togglePawn(3, 0, 120, 220, cell, true);
+
+    expect(images).toHaveLength(1);
+    expect(images[0]).toMatchObject({
+      key: 'pawn_w',
+      width: LAYOUT.PIECE_SIZE,
+      height: LAYOUT.PIECE_SIZE,
+    });
   });
 });
