@@ -1,6 +1,6 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.29  
+**버전:** 0.1.31  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-01  
 **장르:** 디지털 전략 / 체스 변형
@@ -70,6 +70,17 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 
 ## 4. UI / UX 변경 이력
 
+### v0.1.31 Steam Cloud 저장 위치 정리
+
+- `server/savePaths.cjs`를 추가해 Steam Auto-Cloud와 맞출 수 있는 사용자 저장 폴더를 정의했다.
+- Windows 기본 저장 위치를 `%APPDATA%\ChessSummon\SaveData\rank-points.json`으로 옮겨 설치 폴더 쓰기 문제를 피한다.
+- `CHESSSUMMON_SAVE_DIR`, `RANK_FILE` 환경 변수로 QA 저장 위치를 덮어쓸 수 있게 했다.
+- `docs/Steam_Cloud_저장소_설계.md`에 Steamworks Auto-Cloud 설정값을 정리했다.
+### v0.1.30 Steam 제출용 패키지 메타데이터 정리
+
+- `package.json`에 `description`, `author`, `license`, `private` 값을 추가해 Electron/Steam 후보 빌드의 기본 신원 정보를 정리했다.
+- Windows 빌드 저작권 표기를 `Copyright © 2026 Jinwoo Oh`로 정리해 electron-builder 경고를 줄였다.
+- 패키지 메타데이터가 누락되지 않도록 `tests/PackageMetadata.test.js`를 추가했다.
 ### v0.1.29 Steam 출시 후보 빌드 표시
 
 - `src/releaseInfo.js`를 추가해 빌드 버전과 릴리즈 채널을 한 곳에서 관리한다.
@@ -303,9 +314,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.29.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.29_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.29_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.31.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.31_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.31_portable.exe` |
 
 ---
 

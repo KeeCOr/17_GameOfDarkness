@@ -214,6 +214,8 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.1.31: Steam Cloud Auto-Cloud에 맞춘 저장 경로를 %APPDATA%\ChessSummon\SaveData로 정의하고, 랭크 저장 파일의 기본 위치를 이 폴더로 옮겼다.
+- v0.1.30: `package.json`에 description, author, license, private, copyright 메타데이터를 추가해 Electron/Steam 후보 빌드의 신원 정보와 빌드 경고를 정리했다.
 - v0.1.29: 릴리즈 채널/버전 표시 계층을 추가했다. 기본 Desktop, 단일 HTML, Steam 빌드가 서로 다른 채널 라벨을 메뉴 하단에 표시해 QA와 검수 중 실행 빌드를 구분할 수 있다.
 - v0.1.29: `build:steam`, `dist:steam` 스크립트를 추가해 Steam 후보 빌드에서 `VITE_RELEASE_CHANNEL=steam`이 적용되도록 했다.
 ### Phase 2: Steam 랭킹 연동

@@ -1,10 +1,10 @@
 const crypto = require('crypto');
 const http = require('http');
-const path = require('path');
 const { getAccount } = require('./rankStore.cjs');
+const { getRankFilePath } = require('./savePaths.cjs');
 
 const PORT = Number(process.env.PORT || 8787);
-const RANK_FILE = process.env.RANK_FILE || path.join(__dirname, '..', 'data', 'rank-points.json');
+const RANK_FILE = getRankFilePath();
 
 const clients = new Set();
 let waiting = null;
