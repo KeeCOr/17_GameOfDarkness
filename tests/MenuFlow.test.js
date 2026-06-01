@@ -7,6 +7,7 @@ beforeAll(() => {
 
 function makeMenuScene() {
   const rectangles = [];
+  const texts = [];
   const starts = [];
 
   const makeRect = () => {
@@ -29,6 +30,23 @@ function makeMenuScene() {
     return rect;
   };
 
+  const makeText = (_x, _y, value, style = {}) => {
+    const text = {
+      value,
+      style,
+      x: _x,
+      y: _y,
+      origin: null,
+      depth: 0,
+      setOrigin(x, y = x) { this.origin = { x, y }; return this; },
+      setDepth(value) { this.depth = value; return this; },
+      setColor(value) { this.color = value; return this; },
+      setAlpha(value) { this.alpha = value; return this; },
+      destroy() {},
+    };
+    texts.push(text);
+    return text;
+  };
   const text = {
     setOrigin() { return this; },
     setDepth() { return this; },
@@ -50,11 +68,12 @@ function makeMenuScene() {
 
   return {
     rectangles,
+    texts,
     starts,
     scene: {
       add: {
         rectangle: makeRect,
-        text: () => text,
+        text: makeText,
         graphics: () => graphics,
       },
       children: { removeAll() {} },
@@ -78,5 +97,16 @@ describe('menu flow', () => {
     expect(starts).toEqual([
       { key: 'Placement', data: { difficulty: Difficulty.HARD } },
     ]);
+  });
+
+  it('shows release channel and version on menu screens', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { RELEASE_INFO } = await import('../src/releaseInfo.js');
+    const { scene, texts } = makeMenuScene();
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+
+    scene._showModeSelect();
+
+    expect(texts.some(text => text.value === RELEASE_INFO.displayLabel)).toBe(true);
   });
 });

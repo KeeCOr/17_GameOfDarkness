@@ -1,6 +1,6 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.28  
+**버전:** 0.1.29  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-01  
 **장르:** 디지털 전략 / 체스 변형
@@ -69,6 +69,12 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.29 Steam 출시 후보 빌드 표시
+
+- `src/releaseInfo.js`를 추가해 빌드 버전과 릴리즈 채널을 한 곳에서 관리한다.
+- 메뉴 화면 하단에 `Desktop v0.1.29`, `HTML v0.1.29`, `Steam v0.1.29`처럼 실행 중인 빌드 채널과 버전을 표시한다.
+- `build:steam`, `dist:steam` 스크립트를 추가해 Steam 후보 빌드에서 `VITE_RELEASE_CHANNEL=steam`을 적용한다.
 
 ### v0.1.28 UI 버튼/프레임 리소스 게임 적용
 
@@ -297,9 +303,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.28.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.28_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.28_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.29.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.29_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.29_portable.exe` |
 
 ---
 

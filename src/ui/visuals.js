@@ -241,6 +241,14 @@ export function addDivider(scene, x, y, width, depth = 0) {
   return g;
 }
 
+export function addReleaseBadge(scene, label, depth = 0) {
+  return scene.add.text(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT - 28, label, {
+    fontSize: '11px',
+    color: TEXT_COLORS.MUTED,
+    fontStyle: 'bold',
+  }).setOrigin(0.5).setDepth(depth);
+}
+
 export function addTextButton(scene, x, y, width, height, label, options = {}) {
   const state = getButtonColors(options);
   const depth = options.depth ?? 0;

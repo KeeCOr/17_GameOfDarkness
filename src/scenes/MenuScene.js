@@ -1,6 +1,12 @@
 // src/scenes/MenuScene.js
 import { LAYOUT, Difficulty, TEXT_COLORS } from '../config.js';
-import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
+import { RELEASE_INFO } from '../releaseInfo.js';
+import {
+  addReleaseBadge,
+  addStageBackground,
+  addTextButton,
+  UI_COPY,
+} from '../ui/visuals.js';
 
 export class MenuScene extends Phaser.Scene {
   constructor() { super('Menu'); }
@@ -31,6 +37,7 @@ export class MenuScene extends Phaser.Scene {
       color: TEXT_COLORS.GOLD,
       fontStyle: 'bold',
     }).setOrigin(0.5);
+    addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
     const single = addTextButton(this, cx, 315, 240, 56, UI_COPY.menu.single, { fontSize: '21px', active: true });
     single.rect.on('pointerdown', () => this._showDifficultySelect());
@@ -54,6 +61,7 @@ export class MenuScene extends Phaser.Scene {
       color: TEXT_COLORS.GOLD,
       fontStyle: 'bold',
     }).setOrigin(0.5);
+    addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
     const difficulties = [
       { value: Difficulty.EASY, y: 300 },
