@@ -150,6 +150,7 @@ export class TutorialScene extends Phaser.Scene {
     this._clearOverlay();
     this.gameScene.tutorialMode = false;
     this.gameScene.tutorialLocked = false;
+    this.gameScene.events.emit('tutorial-complete');
     this.scene.stop();
   }
 

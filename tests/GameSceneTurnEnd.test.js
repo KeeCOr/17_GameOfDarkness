@@ -239,4 +239,44 @@ describe('GameScene manual turn ending', () => {
     expect(visible.has('0,0')).toBe(true);
     expect(visible.has('4,4')).toBe(true);
   });
+
+  it('reports game results to achievement progress before leaving the game scene', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    let recorded = null;
+
+    scene.difficulty = Difficulty.HARD;
+    scene.timeLeft = 72;
+    scene.input = { off() {} };
+    scene.turnTimer = null;
+    scene.idleWarningTimer = null;
+    scene._clearIdleWarningLossTimer = () => {};
+    scene.time = { delayedCall: (delay, callback) => callback() };
+    scene.scene = { stop() {}, start() {} };
+    scene.achievements = { recordGameOver: payload => { recorded = payload; } };
+
+    scene._gameOver(Owner.PLAYER);
+
+    expect(recorded).toEqual({
+      winner: Owner.PLAYER,
+      difficulty: Difficulty.HARD,
+      timeRemaining: 72,
+    });
+  });
+
+  it('records only player promotions for achievements', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const promotedOwners = [];
+
+    scene.board = new Board();
+    scene.board.setPiece(0, 0, new Piece(PieceType.PAWN, Owner.PLAYER));
+    scene.board.setPiece(4, 4, new Piece(PieceType.PAWN, Owner.AI));
+    scene.achievements = { recordPromotion: owner => promotedOwners.push(owner) };
+    scene._animatePromotion = () => {};
+
+    scene._checkPromotion();
+
+    expect(promotedOwners).toEqual([Owner.PLAYER]);
+  });
 });

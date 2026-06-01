@@ -1,6 +1,6 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.32  
+**버전:** 0.1.33  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-01  
 **장르:** 디지털 전략 / 체스 변형
@@ -69,6 +69,12 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.33 Steam 업적 진행도 로컬 연동
+
+- `src/game/achievementProgress.js`를 추가해 Steamworks SDK 연동 전에도 업적 해금과 스탯 누적을 로컬 저장소에서 검증할 수 있게 했다.
+- 게임 중 튜토리얼 완료, 소환, 처치, 체크, 승급, 승패 결과가 업적 진행도에 기록되도록 `GameScene`과 `TutorialScene`을 연결했다.
+- `tests/AchievementProgress.test.js`와 `GameSceneTurnEnd.test.js`로 업적 진행도 저장, 승리/난이도/연승, 게임 이벤트 연결을 검증한다.
 
 ### v0.1.32 Steam 업적 1차 카탈로그 설계
 

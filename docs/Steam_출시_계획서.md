@@ -214,6 +214,7 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.1.33: Steamworks SDK 연동 전 단계로 로컬 업적 진행도 저장소를 추가하고, 튜토리얼 완료/소환/처치/체크/승급/승패 이벤트가 업적 스탯에 기록되도록 연결했다.
 - v0.1.32: Steam 업적 12개와 스탯 9개를 1차 출시용 카탈로그로 정의하고, Steamworks App Admin 입력 문서를 추가했다.
 - v0.1.31: Steam Cloud Auto-Cloud에 맞춘 저장 경로를 %APPDATA%\ChessSummon\SaveData로 정의하고, 랭크 저장 파일의 기본 위치를 이 폴더로 옮겼다.
 - v0.1.30: `package.json`에 description, author, license, private, copyright 메타데이터를 추가해 Electron/Steam 후보 빌드의 신원 정보와 빌드 경고를 정리했다.

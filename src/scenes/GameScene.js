@@ -7,6 +7,7 @@ import { SummonSystem } from '../game/SummonSystem.js';
 import { AIController } from '../game/AIController.js';
 import { getAIThinkDelay } from '../game/aiTiming.js';
 import { formatBotLabel } from '../game/botProfiles.js';
+import { createAchievementProgress } from '../game/achievementProgress.js';
 import {
   PieceType, Owner, COLORS, LAYOUT, MANA_PER_TURN, TURN_TIME_LIMIT,
   BOARD_SIZE, Difficulty,
@@ -47,6 +48,8 @@ export class GameScene extends Phaser.Scene {
     this.detector = new CheckDetector();
     this.summonSys = new SummonSystem();
     this.ai = new AIController(this.difficulty);
+    this.achievements = createAchievementProgress();
+    this.achievements.startMatch();
     this.state = State.WAITING;
     this.selectedCell = null;
     this.highlightGraphics = [];
@@ -84,6 +87,7 @@ export class GameScene extends Phaser.Scene {
     this.tutorialLocked = false;
     this._refreshBoard();
     this.scene.launch('UI');
+    this.events.on('tutorial-complete', () => this.achievements.recordTutorialComplete());
     this.input.on('pointerdown', this._onPointerDown, this);
     this._startTurn(Owner.PLAYER);
     if (this.tutorialMode) this.scene.launch('Tutorial');
@@ -272,6 +276,7 @@ export class GameScene extends Phaser.Scene {
       const squares = this.summonSys.getSummonableSquares(this.board, Owner.PLAYER);
       if (squares.some(s => s.row === r && s.col === c)) {
         this.summonSys.summon(this.board, Owner.PLAYER, this.pendingSummonType, r, c);
+        this.achievements.recordSummon(this.pendingSummonType);
         this.hasSummoned = true;
         this.summonedCells.add(`${r},${c}`);
         this._clearHighlights();
@@ -279,6 +284,7 @@ export class GameScene extends Phaser.Scene {
         this.pendingSummonType = null;
         this._refreshBoard();
         this._animateSummon(r, c);
+        this._recordPlayerCheckIfNeeded();
         if (this.tutorialMode) this.events.emit('tutorial-summoned');
         this._checkGameOver();
         if (this.state === State.GAME_OVER) return;
@@ -317,10 +323,12 @@ export class GameScene extends Phaser.Scene {
         this._animateMove(fr, fc, r, c, isCapture, () => {
           this.animating = false;
           this.board.movePiece(fr, fc, r, c);
+          if (isCapture) this.achievements.recordCapture();
           this.hasMoved = true;
           if (this.tutorialMode) this.events.emit('tutorial-piece-moved');
           this._checkPromotion();
           this._refreshBoard();
+          this._recordPlayerCheckIfNeeded();
           this._checkGameOver();
           if (this.state === State.GAME_OVER) return;
           if (this.hasSummoned || this.timeLeft <= 0) {
@@ -480,6 +488,12 @@ export class GameScene extends Phaser.Scene {
     } else {
       this._clearCheckRing();
       this.events.emit('check', false);
+    }
+  }
+
+  _recordPlayerCheckIfNeeded() {
+    if (this.detector.isInCheck(this.board, Owner.AI)) {
+      this.achievements.recordCheck();
     }
   }
 
@@ -703,6 +717,11 @@ export class GameScene extends Phaser.Scene {
 
   _gameOver(winner) {
     this.state = State.GAME_OVER;
+    this.achievements?.recordGameOver?.({
+      winner,
+      difficulty: this.difficulty,
+      timeRemaining: this.timeLeft || 0,
+    });
     this.input.off('pointerdown', this._onPointerDown, this);
     if (this.turnTimer) this.turnTimer.remove();
     if (this.idleWarningTimer) this.idleWarningTimer.remove();
@@ -744,6 +763,7 @@ export class GameScene extends Phaser.Scene {
       const pp = this.board.getPiece(0, c);
       if (pp?.type === PieceType.PAWN && pp.owner === Owner.PLAYER) {
         this.board.setPiece(0, c, new Piece(PieceType.QUEEN, Owner.PLAYER));
+        this.achievements?.recordPromotion?.(Owner.PLAYER);
         this._animatePromotion?.(0, c, Owner.PLAYER);
       }
       const ap = this.board.getPiece(4, c);
