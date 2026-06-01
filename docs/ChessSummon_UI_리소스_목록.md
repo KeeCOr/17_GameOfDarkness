@@ -18,6 +18,14 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
 | `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
 | `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
+| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Full logo for title, store, and promotional layouts |
+| `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.svg` | Compact crown/summon mark for app icons and capsules |
+| `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.svg` | Bronze MMR tier badge |
+| `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.svg` | Silver MMR tier badge |
+| `mmr-gold` | Rank icon | `public/assets/rank/mmr-gold.svg` | Gold MMR tier badge |
+| `mmr-platinum` | Rank icon | `public/assets/rank/mmr-platinum.svg` | Platinum MMR tier badge |
+| `mmr-diamond` | Rank icon | `public/assets/rank/mmr-diamond.svg` | Diamond MMR tier badge |
+| `mmr-master` | Rank icon | `public/assets/rank/mmr-master.svg` | Master MMR tier badge |
 
 ## Implementation Notes
 
@@ -25,6 +33,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - SVG files are saved as reusable visual references and future asset hooks.
 - `src/ui/effects.js` owns the resource catalog and combat feedback helpers.
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
+- `src/game/rankTiers.js` maps MMR values to the rank icon set.
+- `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
 
 ## Follow-Up Candidates
 

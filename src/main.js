@@ -13,6 +13,10 @@ new Phaser.Game({
   type: Phaser.AUTO,
   width: LAYOUT.GAME_WIDTH,
   height: LAYOUT.GAME_HEIGHT,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   backgroundColor: '#1a1a2e',
   scene: [BootScene, MenuScene, PlacementScene, GameScene, UIScene, ResultScene, TutorialScene, MultiplayerLobbyScene],
 });

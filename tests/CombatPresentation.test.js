@@ -17,6 +17,8 @@ describe('combat presentation resources', () => {
     expect(ids).toContain('state-check-alert');
     expect(ids).toContain('fx-capture-impact');
     expect(ids).toContain('fx-promotion-burst');
+    expect(ids).toContain('brand-logo');
+    expect(ids).toContain('mmr-tier-icons');
   });
 
   it('emits a promotion effect for every pawn that becomes a queen', async () => {

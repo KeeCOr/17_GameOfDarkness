@@ -55,9 +55,11 @@ export class AIController {
         return { type: 'move', ...pool[Math.floor(Math.random() * pool.length)] };
       }
       case Difficulty.HARD: {
+        const safeMoves = allMoves.filter(m => this._safeMove(board, m));
+        const candidates = safeMoves.length > 0 ? safeMoves : allMoves;
         let bestScore = -Infinity;
-        let bestMove = allMoves[0];
-        for (const move of allMoves) {
+        let bestMove = candidates[0];
+        for (const move of candidates) {
           const clone = board.clone();
           clone.movePiece(move.from.row, move.from.col, move.to.row, move.to.col);
           const score = this._minimax(clone, MINIMAX_DEPTH - 1, -Infinity, Infinity, false);
@@ -76,10 +78,12 @@ export class AIController {
       case Difficulty.EASY:
         return { type: 'summon', ...options[Math.floor(Math.random() * options.length)] };
       case Difficulty.MEDIUM:
-      case Difficulty.HARD: {
+        {
         const sorted = [...options].sort((a, b) => PIECE_VALUES[b.pieceType] - PIECE_VALUES[a.pieceType]);
         return { type: 'summon', ...sorted[0] };
       }
+      case Difficulty.HARD:
+        return { type: 'summon', ...this._bestSummonOption(board, options, Owner.AI) };
       default: return null;
     }
   }
@@ -179,11 +183,17 @@ export class AIController {
 
   _generateActions(board, owner) {
     const actions = [];
-    const moves = this._getAllMoves(board, owner);
+    const moves = this._getAllMoves(board, owner).filter(move => this._safeMoveForOwner(board, move, owner));
     actions.push(...moves.map(m => ({ type: 'move', ...m })));
     const summons = this._getSummonOptions(board, owner);
     actions.push(...summons.map(s => ({ type: 'summon', ...s })));
     return actions;
+  }
+
+  _safeMoveForOwner(board, move, owner) {
+    const clone = board.clone();
+    clone.movePiece(move.from.row, move.from.col, move.to.row, move.to.col);
+    return !this.detector.isInCheck(clone, owner);
   }
 
   _getAllMoves(board, owner) {
@@ -205,6 +215,29 @@ export class AIController {
       }
     }
     return options;
+  }
+
+  _bestSummonOption(board, options, owner) {
+    const inCheck = this.detector.isInCheck(board, owner);
+    let best = options[0];
+    let bestScore = -Infinity;
+
+    for (const option of options) {
+      const clone = board.clone();
+      this.summon.summon(clone, owner, option.pieceType, option.to.row, option.to.col);
+      const resolvesCheck = !this.detector.isInCheck(clone, owner);
+      if (inCheck && !resolvesCheck) continue;
+      const opponent = owner === Owner.AI ? Owner.PLAYER : Owner.AI;
+      const score = this._evaluate(clone)
+        + (inCheck && resolvesCheck ? 50 : 0)
+        + (this.detector.isInCheck(clone, opponent) ? 4 : 0);
+      if (score > bestScore) {
+        bestScore = score;
+        best = option;
+      }
+    }
+
+    return best;
   }
 
   _applyAction(board, action, owner) {

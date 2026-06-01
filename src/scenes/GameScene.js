@@ -5,9 +5,11 @@ import { MoveCalculator } from '../game/MoveCalculator.js';
 import { CheckDetector } from '../game/CheckDetector.js';
 import { SummonSystem } from '../game/SummonSystem.js';
 import { AIController } from '../game/AIController.js';
+import { getAIThinkDelay } from '../game/aiTiming.js';
+import { formatBotLabel } from '../game/botProfiles.js';
 import {
   PieceType, Owner, COLORS, LAYOUT, MANA_PER_TURN, TURN_TIME_LIMIT,
-  AI_THINK_DELAY, BOARD_SIZE,
+  BOARD_SIZE, Difficulty,
 } from '../config.js';
 import { getTurnHint, UI_COPY } from '../ui/visuals.js';
 import { playCaptureEffect, playCheckAlert, playPromotionEffect } from '../ui/effects.js';
@@ -36,6 +38,7 @@ export class GameScene extends Phaser.Scene {
     this.difficulty = data.difficulty;
     this.playerPlacements = data.playerPlacements;
     this.tutorialMode = data.tutorialMode || false;
+    this.aiProfile = data.aiProfile || null;
   }
 
   create() {
@@ -48,9 +51,16 @@ export class GameScene extends Phaser.Scene {
     this.selectedCell = null;
     this.highlightGraphics = [];
     this.pieceObjects = {};
-    this.timeLeft = TURN_TIME_LIMIT;
+    this.clockTimes = {
+      [Owner.PLAYER]: TURN_TIME_LIMIT,
+      [Owner.AI]: TURN_TIME_LIMIT,
+    };
+    this.timeLeft = this.clockTimes[Owner.PLAYER];
     this.pendingSummonType = null;
     this.turnTimer = null;
+    this.idleWarningTimer = null;
+    this.idleSeconds = 0;
+    this.idleWarningShown = false;
     this.hasMoved = false;
     this.hasSummoned = false;
     this.fogGraphics = [];
@@ -147,6 +157,12 @@ export class GameScene extends Phaser.Scene {
 
   _getVisibleCells() {
     const visible = new Set();
+    if (this.difficulty === Difficulty.EASY) {
+      for (let r = 0; r < BOARD_SIZE; r++)
+        for (let c = 0; c < BOARD_SIZE; c++)
+          visible.add(`${r},${c}`);
+      return visible;
+    }
     for (let r = 0; r < BOARD_SIZE; r++)
       for (let c = 0; c < BOARD_SIZE; c++) {
         const piece = this.board.getPiece(r, c);
@@ -232,6 +248,7 @@ export class GameScene extends Phaser.Scene {
     if (!pointer?.rightButtonDown?.()) return;
     if (this.state !== State.SELECTED) return;
     if (this.animating || this.tutorialLocked) return;
+    this._recordPlayerInput();
     this._cancelSelectedMove();
   }
 
@@ -248,6 +265,7 @@ export class GameScene extends Phaser.Scene {
     if (this.state === State.AI_TURN || this.state === State.GAME_OVER) return;
     if (this.animating) return;
     if (this.tutorialLocked) return;
+    this._recordPlayerInput();
 
     if (this.state === State.SUMMON_MODE) {
       const squares = this.summonSys.getSummonableSquares(this.board, Owner.PLAYER);
@@ -408,7 +426,7 @@ export class GameScene extends Phaser.Scene {
     const cx = LAYOUT.BOARD_OFFSET_X + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
     const cy = LAYOUT.BOARD_OFFSET_Y + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
     const isPlayer = owner === Owner.PLAYER;
-    const label = isPlayer ? UI_COPY.game.playerTurn : UI_COPY.game.aiTurn;
+    const label = isPlayer ? UI_COPY.game.playerTurn : formatBotLabel(this.aiProfile) || UI_COPY.game.aiTurn;
     const accentColor = isPlayer ? COLORS.EMERALD : 0xff6b35;
     const bgColor = isPlayer ? 0x071a0f : 0x1a0707;
     const textColor = isPlayer ? '#2ecc71' : '#ff6b35';
@@ -489,34 +507,51 @@ export class GameScene extends Phaser.Scene {
   _startTurn(owner) {
     this.board.addMana(owner, MANA_PER_TURN);
     this.board.currentTurn = owner;
-    this.timeLeft = TURN_TIME_LIMIT;
+    if (!this.clockTimes) {
+      this.clockTimes = {
+        [Owner.PLAYER]: TURN_TIME_LIMIT,
+        [Owner.AI]: TURN_TIME_LIMIT,
+      };
+    }
+    this.timeLeft = this.clockTimes[owner];
     this.hasMoved = false;
     this.hasSummoned = false;
     this.summonedCells = new Set();
     this.pendingSummonType = null;
 
     if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
+    if (this.idleWarningTimer) { this.idleWarningTimer.remove(); this.idleWarningTimer = null; }
     this._showTurnBanner(owner);
     this.events.emit('turn-start', {
       turn: owner,
       mana: this.board.mana,
       timeLeft: this.timeLeft,
+      clockTimes: { ...this.clockTimes },
       summonCounts: this.board.summonCounts[Owner.PLAYER],
+    });
+
+    this.turnTimer = this.time.addEvent({
+      delay: 1000,
+      callback: this._tickTimer,
+      callbackScope: this,
+      loop: true,
     });
 
     if (owner === Owner.AI) {
       this.state = State.AI_TURN;
       this.aiOverlay.setAlpha(0.25);
       this._updateHint('ai');
-      this.time.delayedCall(AI_THINK_DELAY, this._doAITurn, [], this);
+      this.time.delayedCall(this._getAIThinkDelay(), this._doAITurn, [], this);
     } else {
-      this.aiOverlay.setAlpha(0);
-      this.turnTimer = this.time.addEvent({
+      this.idleSeconds = 0;
+      this.idleWarningShown = false;
+      this.idleWarningTimer = this.time.addEvent({
         delay: 1000,
-        callback: this._tickTimer,
+        callback: this._tickIdleWarning,
         callbackScope: this,
         loop: true,
       });
+      this.aiOverlay.setAlpha(0);
       this.state = State.WAITING;
       this._showMovablePieces();
       this._showThreatsIfInCheck();
@@ -525,17 +560,63 @@ export class GameScene extends Phaser.Scene {
   }
 
   _tickTimer() {
-    this.timeLeft--;
-    this.events.emit('timer-tick', this.timeLeft);
+    const owner = this.board.currentTurn;
+    if (!this.clockTimes) {
+      this.clockTimes = {
+        [Owner.PLAYER]: owner === Owner.PLAYER ? this.timeLeft : TURN_TIME_LIMIT,
+        [Owner.AI]: owner === Owner.AI ? this.timeLeft : TURN_TIME_LIMIT,
+      };
+    }
+    this.clockTimes[owner] = Math.max(0, this.clockTimes[owner] - 1);
+    this.timeLeft = this.clockTimes[owner];
+    this.events.emit('timer-tick', {
+      turn: owner,
+      timeLeft: this.timeLeft,
+      clockTimes: { ...this.clockTimes },
+    });
     if (this.timeLeft <= 0) {
       if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
       if (this.tutorialMode) return;
-      if (this.board.currentTurn === Owner.PLAYER && !this.animating) this._endTurn();
+      this._gameOver(owner === Owner.PLAYER ? Owner.AI : Owner.PLAYER);
     }
+  }
+
+  _tickIdleWarning() {
+    if (this.tutorialMode) return;
+    if (this.state === State.GAME_OVER || this.state === State.AI_TURN) return;
+    if (this.board.currentTurn !== Owner.PLAYER) return;
+    if (this.idleWarningShown) return;
+
+    this.idleSeconds = (this.idleSeconds || 0) + 1;
+    if (this.idleSeconds >= 30) {
+      this.idleWarningShown = true;
+      this.events.emit('idle-warning', { seconds: 30 });
+    }
+  }
+
+  _recordPlayerInput() {
+    if (this.board?.currentTurn !== Owner.PLAYER) return;
+    if (this.state === State.GAME_OVER || this.state === State.AI_TURN) return;
+    this.idleSeconds = 0;
+  }
+
+  resolveIdleWarning(keepThinking) {
+    if (this.state === State.GAME_OVER) return;
+    if (keepThinking) {
+      this.idleSeconds = 0;
+      this.idleWarningShown = false;
+      return;
+    }
+    this._gameOver(Owner.AI);
+  }
+
+  _getAIThinkDelay() {
+    return getAIThinkDelay(this.difficulty);
   }
 
   _endTurn() {
     if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
+    if (this.idleWarningTimer) { this.idleWarningTimer.remove(); this.idleWarningTimer = null; }
     this._clearHighlights();
     this.selectedCell = null;
     this.pendingSummonType = null;
@@ -546,6 +627,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   _doAITurn() {
+    if (this.state === State.GAME_OVER) return;
     const moveAction = this.ai.getMove(this.board);
     if (moveAction) {
       const isCapture = !!this.board.getPiece(moveAction.to.row, moveAction.to.col);
@@ -570,6 +652,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   _doAIPostMove() {
+    if (this.state === State.GAME_OVER) return;
     const summonAction = this.ai.getSummon(this.board);
     if (summonAction) {
       this.summonSys.summon(this.board, Owner.AI, summonAction.pieceType, summonAction.to.row, summonAction.to.col);
@@ -601,6 +684,7 @@ export class GameScene extends Phaser.Scene {
     this.state = State.GAME_OVER;
     this.input.off('pointerdown', this._onPointerDown, this);
     if (this.turnTimer) this.turnTimer.remove();
+    if (this.idleWarningTimer) this.idleWarningTimer.remove();
     this.time.delayedCall(800, () => {
       this.scene.stop('UI');
       if (this.tutorialMode) this.scene.stop('Tutorial');
@@ -611,6 +695,7 @@ export class GameScene extends Phaser.Scene {
   startSummonMode(pieceType) {
     if (this.tutorialLocked) return;
     if (this.hasSummoned) return;
+    this._recordPlayerInput();
     if (this.state === State.SUMMON_MODE && this.pendingSummonType === pieceType) {
       this._clearHighlights();
       this.pendingSummonType = null;
@@ -650,6 +735,7 @@ export class GameScene extends Phaser.Scene {
   endTurnManually() {
     const canEnd = [State.WAITING, State.SELECTED, State.SUMMON_MODE].includes(this.state);
     if (canEnd && this.board.currentTurn === Owner.PLAYER && !this.animating) {
+      this._recordPlayerInput();
       if (this.tutorialMode) this.events.emit('tutorial-turn-ended');
       this._endTurn();
     }

@@ -1,4 +1,6 @@
 import { LAYOUT, TEXT_COLORS } from '../config.js';
+import { formatBotLabel, getBotProfileForMatch } from '../game/botProfiles.js';
+import { AI_MATCH_TIMEOUT_MS, getAIMatchDifficulty } from '../game/matchmaking.js';
 import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
 
 export class MultiplayerLobbyScene extends Phaser.Scene {
@@ -10,6 +12,8 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.statusText = null;
     this.accountText = null;
     this.rankText = null;
+    this.matchStarted = false;
+    this.aiFallbackTimer = null;
 
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.multiplayer.title);
@@ -58,6 +62,8 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     } else if (message.type === 'queued') {
       this.statusText.setText(UI_COPY.multiplayer.queued);
     } else if (message.type === 'matched') {
+      this._clearAIFallbackTimer();
+      this.matchStarted = true;
       this.statusText.setText(`${UI_COPY.multiplayer.matched}: ${message.opponent.name}`);
     }
   }
@@ -69,14 +75,47 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     }
     this.socket.send(JSON.stringify({ type: 'joinQueue' }));
     this.statusText.setText(UI_COPY.multiplayer.queued);
+    this._startAIFallbackTimer();
+  }
+
+  _startAIFallbackTimer() {
+    this._clearAIFallbackTimer();
+    this.aiFallbackTimer = this.time.delayedCall(AI_MATCH_TIMEOUT_MS, () => this._startAIMatch());
+  }
+
+  _clearAIFallbackTimer() {
+    if (this.aiFallbackTimer) {
+      this.aiFallbackTimer.remove();
+      this.aiFallbackTimer = null;
+    }
+  }
+
+  _startAIMatch() {
+    if (this.matchStarted) return;
+    this.matchStarted = true;
+    this._clearAIFallbackTimer();
+    if (this.socket) this.socket.close();
+    const difficulty = getAIMatchDifficulty(this.account?.rankPoints);
+    const botProfile = getBotProfileForMatch(this.account?.name, this.account?.rankPoints);
+    this.statusText.setText(`${UI_COPY.multiplayer.aiMatched}: ${formatBotLabel(botProfile)} / ${UI_COPY.menu.difficulties[difficulty]}`);
+    this.time.delayedCall(550, () => {
+      this.scene.start('Placement', {
+        difficulty,
+        skipTutorialPrompt: true,
+        matchedAI: true,
+        aiProfile: botProfile,
+      });
+    });
   }
 
   _backToMenu() {
+    this._clearAIFallbackTimer();
     if (this.socket) this.socket.close();
     this.scene.start('Menu');
   }
 
   shutdown() {
+    this._clearAIFallbackTimer();
     if (this.socket) this.socket.close();
   }
 }

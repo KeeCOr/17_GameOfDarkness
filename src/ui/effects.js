@@ -37,6 +37,24 @@ export const UI_RESOURCE_LIST = Object.freeze([
     purpose: 'Promotion feedback: vertical beam, crown burst, and floating promotion label.',
     file: 'public/assets/ui/fx-promotion-burst.svg',
   },
+  {
+    id: 'brand-logo',
+    type: 'brand',
+    purpose: 'Full Chess Summon logo for title, store, and promotional use.',
+    file: 'public/assets/brand/chesssummon-logo.svg',
+  },
+  {
+    id: 'brand-mark',
+    type: 'brand',
+    purpose: 'Compact crown and summoning circle mark for icons and capsules.',
+    file: 'public/assets/brand/chesssummon-mark.svg',
+  },
+  {
+    id: 'mmr-tier-icons',
+    type: 'rank',
+    purpose: 'MMR tier shield icons from bronze through master.',
+    file: 'public/assets/rank/mmr-*.svg',
+  },
 ]);
 
 export function playCaptureEffect(scene, x, y, { owner = Owner.AI } = {}) {

@@ -10,8 +10,8 @@ const PANEL_X = LAYOUT.PANEL_X;
 
 const HIGHLIGHT_RECTS = {
   board: { x: BOARD_X - 10, y: BOARD_Y - 10, w: BOARD_W + 20, h: BOARD_H + 20 },
-  summonUI: { x: PANEL_X - 10, y: 278, w: 218, h: 216 },
-  endBtn: { x: PANEL_X - 8, y: 524, w: 198, h: 42 },
+  summonUI: { x: LAYOUT.HUD_PANEL_X + 12, y: LAYOUT.HUD_SUMMON_LABEL_Y - 14, w: LAYOUT.HUD_PANEL_WIDTH - 24, h: 168 },
+  endBtn: { x: PANEL_X - 8, y: LAYOUT.HUD_FOOTER_Y - 22, w: LAYOUT.PANEL_WIDTH + 16, h: 44 },
 };
 
 export const TUTORIAL_STEPS = [
@@ -104,14 +104,15 @@ export class TutorialScene extends Phaser.Scene {
       ? Math.min(HIGHLIGHT_RECTS[step.highlight].y + HIGHLIGHT_RECTS[step.highlight].h + 58, H - 86)
       : H / 2;
     const boxX = (step.highlight === 'summonUI' || step.highlight === 'endBtn')
-      ? PANEL_X + 95
+      ? LAYOUT.GAME_WIDTH / 2
       : W / 2;
 
     const lines = step.text.split('\n').length;
     const boxH = 48 + lines * 25;
-    const panel = addPanel(this, boxX - 152, boxY - boxH / 2, 304, boxH, { depth: 21 });
+    const panel = addPanel(this, boxX - 182, boxY - boxH / 2, 364, boxH, { depth: 21 });
     const txt = this.add.text(boxX, boxY - 4, step.text, {
       fontSize: '16px', color: TEXT_COLORS.PRIMARY, align: 'center', lineSpacing: 7,
+      wordWrap: { width: 330 },
     }).setOrigin(0.5).setDepth(23);
     this._overlayObjs.push(panel, txt);
 

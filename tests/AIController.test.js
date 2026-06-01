@@ -49,4 +49,38 @@ describe('AIController', () => {
     expect(action.type).toBe('move');
     expect(action.to).toEqual({ row: 3, col: 2 });
   });
+
+  it('hard does not take a valuable capture that exposes its own king', () => {
+    const b = new Board();
+    b.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
+    b.setPiece(1, 2, new Piece(PieceType.ROOK, Owner.AI));
+    b.setPiece(4, 0, new Piece(PieceType.KING, Owner.PLAYER));
+    b.setPiece(4, 2, new Piece(PieceType.ROOK, Owner.PLAYER));
+    b.setPiece(1, 4, new Piece(PieceType.QUEEN, Owner.PLAYER));
+    b.mana[Owner.AI] = 0;
+
+    const ai = new AIController(Difficulty.HARD);
+    const action = ai.getMove(b);
+
+    expect(action).not.toMatchObject({
+      from: { row: 1, col: 2 },
+      to: { row: 1, col: 4 },
+    });
+  });
+
+  it('hard summons on the checking line instead of blindly choosing the most valuable square', () => {
+    const b = new Board();
+    b.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
+    b.setPiece(4, 0, new Piece(PieceType.KING, Owner.PLAYER));
+    b.setPiece(4, 2, new Piece(PieceType.ROOK, Owner.PLAYER));
+    b.mana[Owner.AI] = 8;
+
+    const ai = new AIController(Difficulty.HARD);
+    const action = ai.getSummon(b);
+
+    expect(action).toMatchObject({
+      type: 'summon',
+      to: { row: 1, col: 2 },
+    });
+  });
 });

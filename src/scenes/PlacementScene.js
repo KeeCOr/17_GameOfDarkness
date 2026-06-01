@@ -10,6 +10,7 @@ export class PlacementScene extends Phaser.Scene {
 
   init(data) {
     this.difficulty = data.difficulty;
+    this.aiProfile = data.aiProfile || null;
     this.skipTutorialPrompt = data.skipTutorialPrompt || false;
     this.placed = {};
     this.pawnCount = 0;
@@ -30,7 +31,7 @@ export class PlacementScene extends Phaser.Scene {
       color: TEXT_COLORS.MUTED,
     }).setOrigin(0.5);
 
-    this.countText = this.add.text(cx, 164, `${UI_COPY.placement.count}: 0 / ${PAWN_COUNT}`, {
+    this.countText = this.add.text(cx, 166, `${UI_COPY.placement.count}: 0 / ${PAWN_COUNT}`, {
       fontSize: '16px',
       color: TEXT_COLORS.GOLD,
       fontStyle: 'bold',
@@ -38,7 +39,7 @@ export class PlacementScene extends Phaser.Scene {
 
     this._drawBoard();
 
-    this.readyButton = addTextButton(this, cx, 545, 190, 48, UI_COPY.placement.ready, { enabled: false });
+    this.readyButton = addTextButton(this, cx, 618, 190, 48, UI_COPY.placement.ready, { enabled: false });
     this.readyButton.rect.on('pointerdown', () => {
       if (this.pawnCount < PAWN_COUNT) return;
       this._startGame();
@@ -49,9 +50,9 @@ export class PlacementScene extends Phaser.Scene {
 
   _drawBoard() {
     this.cellGraphics = {};
-    const boardX = LAYOUT.BOARD_OFFSET_X + 120;
-    const boardY = 185;
-    const cellSize = 64;
+    const cellSize = LAYOUT.CELL_SIZE;
+    const boardX = (LAYOUT.GAME_WIDTH - cellSize * 5) / 2;
+    const boardY = 220;
     const frame = this.add.graphics();
     frame.fillStyle(COLORS.BOARD_FRAME, 1);
     frame.fillRoundedRect(boardX - 12, boardY - 12, cellSize * 5 + 24, cellSize * 5 + 24, 8);
@@ -118,7 +119,7 @@ export class PlacementScene extends Phaser.Scene {
       this._showTutorialPrompt(placements);
     } else {
       this.time.delayedCall(50, () => {
-        this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements });
+        this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements, aiProfile: this.aiProfile });
       });
     }
   }
@@ -138,9 +139,9 @@ export class PlacementScene extends Phaser.Scene {
     const no = addTextButton(this, cx + 78, cy + 42, 130, 46, UI_COPY.tutorialPrompt.no);
 
     yes.rect.on('pointerdown', () =>
-      this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements, tutorialMode: true }));
+      this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements, tutorialMode: true, aiProfile: this.aiProfile }));
     no.rect.on('pointerdown', () =>
-      this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements }));
+      this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements, aiProfile: this.aiProfile }));
   }
 
   _startGame() {
@@ -150,7 +151,7 @@ export class PlacementScene extends Phaser.Scene {
       const [r, c] = key.split(',').map(Number);
       return { row: r, col: c };
     }).sort((a, b) => (a.row - b.row) || (a.col - b.col));
-    this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements });
+    this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements, aiProfile: this.aiProfile });
   }
 
   _randomizePawns() {

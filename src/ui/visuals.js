@@ -52,6 +52,10 @@ export const UI_COPY = Object.freeze({
     help: '?',
     check: '체크!',
     confirmSurrender: '정말 기권하시겠습니까?',
+    idleWarningTitle: '입력이 없습니다',
+    idleWarningBody: '30초 동안 입력이 없습니다. 빨리 입력하세요.',
+    keepThinking: '조금 더 생각한다',
+    loseNow: '패배',
     cancel: '취소',
     cost: '',
     notEnoughMana: '마나 부족',
@@ -107,6 +111,7 @@ export const UI_COPY = Object.freeze({
     queue: '빠른 매칭',
     queued: '상대를 찾는 중...',
     matched: '매칭 완료',
+    aiMatched: 'AI 상대 매칭',
     server: 'ws://localhost:8787',
   },
 });
