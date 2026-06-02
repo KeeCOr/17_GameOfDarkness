@@ -1,7 +1,7 @@
 # ChessSummon SteamService 연동 설계
 
 작성일: 2026-06-02
-대상 버전: v0.1.34
+대상 버전: v0.1.36
 
 ## 목표
 
@@ -12,6 +12,9 @@ Steamworks SDK를 설치하기 전에도 게임 로직이 Steam 업적, 스탯, 
 - `src/services/SteamService.js`: 게임 씬이 호출하는 단일 서비스 계층
 - `src/game/achievementProgress.js`: 로컬 업적 해금과 스탯 저장
 - `src/game/achievements.js`: Steamworks App Admin에 등록할 업적/스탯 카탈로그
+- `electron/steamPreload.cjs`: renderer에 `window.chessSummonSteam` 브릿지 노출
+- `electron/steamIpc.cjs`: Steam IPC 채널과 fallback 응답 처리
+- `electron/steamClient.cjs`: `STEAM_APP_ID` 기반 optional Steamworks SDK 클라이언트 로딩
 
 ## 현재 지원하는 호출
 
@@ -27,7 +30,7 @@ Steamworks SDK를 설치하기 전에도 게임 로직이 Steam 업적, 스탯, 
 
 ## Steam 클라이언트 어댑터 계약
 
-실제 SDK 연동 시 다음 메서드를 가진 객체를 `createSteamService({ steamClient })`에 전달한다.
+실제 SDK 연동 시 다음 메서드를 가진 객체를 `createSteamService({ steamClient })`에 전달한다. Electron 빌드에서는 preload가 노출한 `window.chessSummonSteam`을 `SteamService`가 자동 감지한다.
 
 ```js
 {
@@ -49,7 +52,6 @@ Steamworks SDK를 설치하기 전에도 게임 로직이 Steam 업적, 스탯, 
 
 ## 다음 작업
 
-1. Electron main/preload에서 Steamworks SDK 래퍼를 만든다.
-2. Renderer에서 안전하게 호출할 `window.chessSummonSteam` 브릿지를 만든다.
-3. `createSteamService({ steamClient: window.chessSummonSteam })` 주입 경로를 추가한다.
-4. Steam 테스트 계정으로 업적 해금, 스탯 저장, `RANK_POINTS` 리더보드 업로드를 검증한다.
+1. Steamworks SDK 패키지와 실제 App ID를 확정한다.
+2. `electron/steamClient.cjs`의 `normalizeSteamworksClient()`를 선택한 SDK의 실제 API 형태에 맞춰 조정한다.
+3. Steam 테스트 계정으로 업적 해금, 스탯 저장, `RANK_POINTS` 리더보드 업로드를 검증한다.

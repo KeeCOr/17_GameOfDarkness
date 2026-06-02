@@ -1,9 +1,6 @@
 import { STEAM_ACHIEVEMENTS, ACHIEVEMENT_STATS } from '../game/achievements.js';
 import { AchievementProgress } from '../game/achievementProgress.js';
-
-export const STEAM_LEADERBOARDS = Object.freeze({
-  RANK_POINTS: 'RANK_POINTS',
-});
+import { getLeaderboardById } from '../game/leaderboards.js';
 
 export class SteamService {
   constructor({ storage, steamClient = null, progress = null } = {}) {
@@ -63,7 +60,7 @@ export class SteamService {
     if (!this.isSteamAvailable() || typeof this.steamClient.uploadLeaderboardScore !== 'function') {
       return { ok: false, reason: 'steam-unavailable' };
     }
-    return this.steamClient.uploadLeaderboardScore(STEAM_LEADERBOARDS.RANK_POINTS, score);
+    return this.steamClient.uploadLeaderboardScore(getLeaderboardById('rank_points').apiName, score);
   }
 
   _syncSteam() {

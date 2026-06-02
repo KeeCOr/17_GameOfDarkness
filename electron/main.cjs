@@ -1,8 +1,9 @@
 const { app, BrowserWindow, shell, ipcMain } = require('electron');
 const path = require('path');
+const { createSteamClient } = require('./steamClient.cjs');
 const { registerSteamIpcHandlers } = require('./steamIpc.cjs');
 
-registerSteamIpcHandlers(ipcMain);
+registerSteamIpcHandlers(ipcMain, { steamClient: createSteamClient() });
 
 function createWindow() {
   const win = new BrowserWindow({

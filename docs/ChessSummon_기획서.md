@@ -1,6 +1,6 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.35  
+**버전:** 0.1.37  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-02  
 **장르:** 디지털 전략 / 체스 변형
@@ -69,6 +69,18 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.37 Steam 리더보드 1차 카탈로그 추가
+
+- `src/game/leaderboards.js`를 추가해 1차 Steam 출시에서 사용할 `RANK_POINTS` 리더보드 정의를 고정했다.
+- `SteamService.uploadRankPoints()`가 하드코딩 문자열 대신 리더보드 카탈로그의 API Name을 사용한다.
+- `docs/Steam_Leaderboards_설계.md`에 Steamworks App Admin 입력 기준과 남은 SDK 연동 작업을 정리했다.
+
+### v0.1.36 Optional Steamworks 클라이언트 래퍼 추가
+
+- `electron/steamClient.cjs`를 추가해 `STEAM_APP_ID`가 있을 때만 Steamworks SDK 로딩을 시도하고, SDK가 없으면 안전하게 unavailable 클라이언트로 동작하게 했다.
+- `electron/main.cjs`는 `createSteamClient()` 결과를 Steam IPC 핸들러에 주입한다.
+- 실제 SDK 설치 전에도 Electron 빌드와 HTML 빌드가 깨지지 않도록 optional dependency 형태로 유지한다.
 
 ### v0.1.35 Electron Steam 브릿지 자리 추가
 
