@@ -1,5 +1,8 @@
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, shell, ipcMain } = require('electron');
 const path = require('path');
+const { registerSteamIpcHandlers } = require('./steamIpc.cjs');
+
+registerSteamIpcHandlers(ipcMain);
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -12,6 +15,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
+      preload: path.join(__dirname, 'steamPreload.cjs'),
     },
   });
 

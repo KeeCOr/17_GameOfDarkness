@@ -1,6 +1,6 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.34  
+**버전:** 0.1.35  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-02  
 **장르:** 디지털 전략 / 체스 변형
@@ -69,6 +69,12 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.35 Electron Steam 브릿지 자리 추가
+
+- `electron/steamPreload.cjs`를 추가해 renderer에서 `window.chessSummonSteam`으로 Steam 호출을 보낼 수 있게 했다.
+- `electron/steamIpc.cjs`를 추가해 Steam SDK가 아직 없는 환경에서도 IPC 호출이 안전하게 `steam-unavailable`로 응답한다.
+- Electron `BrowserWindow`에 preload를 연결했고, `SteamService`는 기본적으로 preload 브릿지를 자동 감지한다.
 
 ### v0.1.34 SteamService 어댑터 계층 추가
 

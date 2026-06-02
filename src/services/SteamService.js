@@ -7,7 +7,7 @@ export const STEAM_LEADERBOARDS = Object.freeze({
 
 export class SteamService {
   constructor({ storage, steamClient = null, progress = null } = {}) {
-    this.steamClient = steamClient;
+    this.steamClient = steamClient || getDefaultSteamClient();
     this.progress = progress || new AchievementProgress({ storage });
   }
 
@@ -82,4 +82,8 @@ export class SteamService {
 
 export function createSteamService(options) {
   return new SteamService(options);
+}
+
+function getDefaultSteamClient() {
+  return globalThis.window?.chessSummonSteam || null;
 }

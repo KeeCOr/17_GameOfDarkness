@@ -11,6 +11,30 @@ function createMemoryStorage() {
 }
 
 describe('SteamService', () => {
+  it('discovers the Electron preload Steam bridge by default', () => {
+    const originalWindow = globalThis.window;
+    const calls = [];
+    globalThis.window = {
+      chessSummonSteam: {
+        isReady: () => true,
+        setAchievement: apiName => calls.push(['achievement', apiName]),
+        setStat: (apiName, value) => calls.push(['stat', apiName, value]),
+        storeStats: () => calls.push(['store']),
+      },
+    };
+
+    try {
+      const service = createSteamService({ storage: createMemoryStorage() });
+      service.recordSummon(PieceType.PAWN);
+
+      expect(service.isSteamAvailable()).toBe(true);
+      expect(calls).toContainEqual(['achievement', 'ACH_FIRST_SUMMON']);
+      expect(calls).toContainEqual(['stat', 'STAT_SUMMONS_TOTAL', 1]);
+    } finally {
+      globalThis.window = originalWindow;
+    }
+  });
+
   it('falls back to local achievement progress when Steam is unavailable', () => {
     const service = createSteamService({ storage: createMemoryStorage() });
 
