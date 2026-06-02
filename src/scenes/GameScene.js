@@ -7,7 +7,7 @@ import { SummonSystem } from '../game/SummonSystem.js';
 import { AIController } from '../game/AIController.js';
 import { getAIThinkDelay } from '../game/aiTiming.js';
 import { formatBotLabel } from '../game/botProfiles.js';
-import { createAchievementProgress } from '../game/achievementProgress.js';
+import { createSteamService } from '../services/SteamService.js';
 import {
   PieceType, Owner, COLORS, LAYOUT, MANA_PER_TURN, TURN_TIME_LIMIT,
   BOARD_SIZE, Difficulty,
@@ -48,7 +48,7 @@ export class GameScene extends Phaser.Scene {
     this.detector = new CheckDetector();
     this.summonSys = new SummonSystem();
     this.ai = new AIController(this.difficulty);
-    this.achievements = createAchievementProgress();
+    this.achievements = createSteamService();
     this.achievements.startMatch();
     this.state = State.WAITING;
     this.selectedCell = null;
