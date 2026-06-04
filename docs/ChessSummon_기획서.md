@@ -376,4 +376,35 @@ AI 턴 생각 시간:
 
 ---
 
+<!-- APPLIED_RESOURCES_START -->
+## 적용 리소스
 
+> 자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.
+
+- 이미지/스프라이트: `public/assets/brand/chesssummon-logo.svg`, `public/assets/brand/chesssummon-mark.svg`, `public/assets/pieces/bishop_d.png`, `public/assets/pieces/bishop_w.png`, `public/assets/pieces/king_d.png`, `public/assets/pieces/king_w.png`, `public/assets/pieces/knight_d.png`, `public/assets/pieces/knight_w.png`, `public/assets/pieces/pawn_d.png`, `public/assets/pieces/pawn_w.png`, `public/assets/pieces/queen_d.png`, `public/assets/pieces/queen_w.png` 외 14개
+<!-- APPLIED_RESOURCES_END -->
+
+<!-- RESOURCE_PREVIEWS_START -->
+## 공유용 이미지 미리보기
+
+> 자동 갱신: 2026-06-04. 공유 시 문서와 함께 아래 이미지 경로가 포함되어야 합니다.
+
+![17_DC chesssummon-logo](../public/assets/brand/chesssummon-logo.svg)
+- `public/assets/brand/chesssummon-logo.svg`
+
+![17_DC chesssummon-mark](../public/assets/brand/chesssummon-mark.svg)
+- `public/assets/brand/chesssummon-mark.svg`
+
+![17_DC bishop_d](../public/assets/pieces/bishop_d.png)
+- `public/assets/pieces/bishop_d.png`
+
+![17_DC bishop_w](../public/assets/pieces/bishop_w.png)
+- `public/assets/pieces/bishop_w.png`
+
+![17_DC king_d](../public/assets/pieces/king_d.png)
+- `public/assets/pieces/king_d.png`
+
+![17_DC king_w](../public/assets/pieces/king_w.png)
+- `public/assets/pieces/king_w.png`
+
+<!-- RESOURCE_PREVIEWS_END -->
