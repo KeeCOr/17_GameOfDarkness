@@ -1,6 +1,7 @@
 import { LAYOUT, TEXT_COLORS } from '../config.js';
 import { formatBotLabel, getBotProfileForMatch } from '../game/botProfiles.js';
 import { AI_MATCH_TIMEOUT_MS, getAIMatchDifficulty } from '../game/matchmaking.js';
+import { createSteamService } from '../services/SteamService.js';
 import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
 
 export class MultiplayerLobbyScene extends Phaser.Scene {
@@ -14,6 +15,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.rankText = null;
     this.matchStarted = false;
     this.aiFallbackTimer = null;
+    this.steamService = createSteamService();
 
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.multiplayer.title);
@@ -59,6 +61,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
       this.account = message.account;
       this.accountText.setText(`${UI_COPY.multiplayer.account}: ${message.account.name}`);
       this.rankText.setText(`${UI_COPY.multiplayer.rank}: ${message.account.rankPoints}`);
+      this.steamService.uploadRankPoints(message.account.rankPoints);
     } else if (message.type === 'queued') {
       this.statusText.setText(UI_COPY.multiplayer.queued);
     } else if (message.type === 'matched') {

@@ -1,8 +1,8 @@
 # Chess Summon 기획서
 
-**버전:** 0.1.37  
+**버전:** 0.1.38  
 **작성일:** 2026-05-12  
-**최종 수정:** 2026-06-02  
+**최종 수정:** 2026-06-05  
 **장르:** 디지털 전략 / 체스 변형
 
 ---
@@ -69,6 +69,12 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.38 랭크 포인트 리더보드 업로드 연결
+
+- `MultiplayerLobbyScene`이 서버에서 `account.rankPoints`를 받으면 `SteamService.uploadRankPoints()`를 호출한다.
+- Steam SDK가 없는 환경에서는 기존 fallback 경로로 안전하게 무시되고, Steam 브릿지가 준비된 환경에서는 `RANK_POINTS` 리더보드 업로드로 전달된다.
+- `tests/MultiplayerLobbyLeaderboard.test.js`를 추가해 계정 페이로드 수신 시 업로드 호출을 검증한다.
 
 ### v0.1.37 Steam 리더보드 1차 카탈로그 추가
 

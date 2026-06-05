@@ -214,6 +214,7 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.1.38: 멀티플레이 로비가 서버 계정 페이로드의 `account.rankPoints`를 받는 시점에 `SteamService.uploadRankPoints()`를 호출하도록 연결해 `RANK_POINTS` 리더보드 업로드 경로를 실제 UI 흐름에 붙였다.
 - v0.1.37: Steam 리더보드 1차 카탈로그를 추가해 `RANK_POINTS`의 정렬 방향, 표시 타입, 업로드 정책, 점수 출처를 고정하고 Steamworks App Admin 입력 문서를 작성했다.
 - v0.1.36: `electron/steamClient.cjs`를 추가해 `STEAM_APP_ID` 기반 optional Steamworks SDK 로딩 구조를 만들고, SDK 미설치 상태에서도 Electron 빌드가 fallback 클라이언트로 안전하게 동작하게 했다.
 - v0.1.35: Electron preload와 IPC 브릿지를 추가해 renderer의 `SteamService`가 `window.chessSummonSteam`을 통해 Steam 호출을 보낼 수 있게 했고, SDK 미설치 환경에서는 안전한 fallback 응답을 반환한다.

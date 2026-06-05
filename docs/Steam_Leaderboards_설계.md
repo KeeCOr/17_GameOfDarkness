@@ -1,7 +1,7 @@
 # ChessSummon Steam 리더보드 설계
 
 작성일: 2026-06-02
-대상 버전: v0.1.37
+대상 버전: v0.1.38
 
 ## 목표
 
@@ -30,11 +30,12 @@
 
 - 리더보드 카탈로그: `src/game/leaderboards.js`
 - Steam 업로드 호출: `src/services/SteamService.js`
+- 업로드 호출 시점: `src/scenes/MultiplayerLobbyScene.js`의 `account` 메시지 수신
 - Electron IPC 브릿지: `electron/steamIpc.cjs`
 - 검증 테스트: `tests/LeaderboardsCatalog.test.js`, `tests/SteamService.test.js`
 
 ## 남은 작업
 
 1. 실제 Steamworks SDK에서 `RANK_POINTS` 핸들을 찾거나 생성하는 구현을 확정한다.
-2. 계정 랭크 포인트 갱신 시점에 `SteamService.uploadRankPoints(account.rankPoints)`를 호출한다.
+2. 실제 대국 결과로 서버가 갱신된 `account.rankPoints`를 다시 보내는 흐름을 추가한다.
 3. Steam 테스트 계정에서 업로드 후 Steam 클라이언트/커뮤니티 표시에 반영되는지 확인한다.
