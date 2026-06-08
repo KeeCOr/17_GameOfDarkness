@@ -22,14 +22,39 @@ export class UIScene extends Phaser.Scene {
     addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
 
     this.turnText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 14, UI_COPY.game.playerTurn, {
-      fontSize: '18px', color: TEXT_COLORS.SUCCESS, fontStyle: 'bold',
+      fontSize: '14px', color: TEXT_COLORS.SUCCESS, fontStyle: 'bold',
+      fixedWidth: 72,
     });
-    this.timerText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 40, formatClock(TURN_TIME_LIMIT), {
-      fontSize: '24px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
-    });
+    this.playerClockBg = this.add.rectangle(PANEL_X + 126, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
+      .setAlpha(0.82)
+      .setStrokeStyle(1, COLORS.EMERALD, 0.58);
+    this.aiClockBg = this.add.rectangle(PANEL_X + 224, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
+      .setAlpha(0.82)
+      .setStrokeStyle(1, COLORS.CRIMSON, 0.46);
+    this.playerClockText = this.add.text(PANEL_X + 126, LAYOUT.HUD_TOP_Y + 24, `나 ${formatClock(TURN_TIME_LIMIT)}`, {
+      fontSize: '14px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
+      fixedWidth: 82,
+      align: 'center',
+    }).setOrigin(0.5);
+    this.aiClockText = this.add.text(PANEL_X + 224, LAYOUT.HUD_TOP_Y + 24, `상대 ${formatClock(TURN_TIME_LIMIT)}`, {
+      fontSize: '14px', color: TEXT_COLORS.MUTED, fontStyle: 'bold',
+      fixedWidth: 82,
+      align: 'center',
+    }).setOrigin(0.5);
+    this.playerClockText.setStroke?.('#050812', 3);
+    this.aiClockText.setStroke?.('#050812', 3);
 
-    const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 28, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
+    const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 22, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
     help.rect.on('pointerdown', () => this._showHelp());
+
+    this.hintText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 52, compactHint(UI_COPY.hints.default), {
+      fontSize: '12px',
+      color: '#ffffff',
+      fontStyle: 'bold',
+      align: 'left',
+      fixedWidth: CONTENT_W - 82,
+      maxLines: 1,
+    }).setOrigin(0, 0).setDepth(2);
 
     addSectionLabel(this, PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y, UI_COPY.game.summon);
     this.summonHint = this.add.text(PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y + 16, UI_COPY.game.summonHint, {
@@ -72,9 +97,9 @@ export class UIScene extends Phaser.Scene {
     this.manaText.setStroke?.('#050812', 4);
     this.manaText.setShadow?.(0, 1, '#000000', 3, true, true);
 
-    this.checkText = this.add.text(PANEL_X + CONTENT_W - 84, LAYOUT.HUD_TOP_Y + 64, UI_COPY.game.check, {
-      fontSize: '16px', color: TEXT_COLORS.DANGER, fontStyle: 'bold',
-      wordWrap: { width: 76 },
+    this.checkText = this.add.text(PANEL_X + CONTENT_W - 60, LAYOUT.HUD_TOP_Y + 68, UI_COPY.game.check, {
+      fontSize: '14px', color: TEXT_COLORS.DANGER, fontStyle: 'bold',
+      wordWrap: { width: 58 },
       align: 'center',
     }).setOrigin(0.5).setVisible(false);
 
@@ -93,6 +118,7 @@ export class UIScene extends Phaser.Scene {
     this.gameScene.events.on('summon-cancel', this._onSummonCancel, this);
     this.gameScene.events.on('summon-mode', this._onSummonMode, this);
     this.gameScene.events.on('idle-warning', this._showIdleWarning, this);
+    this.gameScene.events.on('hint-change', this._onHintChange, this);
   }
 
   _addManaIcon(x, y, scale = 1, depth = 2) {
@@ -115,18 +141,18 @@ export class UIScene extends Phaser.Scene {
   _showHelp() {
     const cx = LAYOUT.GAME_WIDTH / 2, cy = LAYOUT.GAME_HEIGHT / 2;
     const overlay = this.add.rectangle(cx, cy, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, 0x000000, 0.66).setDepth(60).setInteractive();
-    const panel = addPanel(this, cx - 200, cy - 150, 400, 300, { depth: 61, stroke: COLORS.GOLD });
-    const title = this.add.text(cx, cy - 118, UI_COPY.help.title, {
+    const panel = addPanel(this, cx - 200, cy - 195, 400, 390, { depth: 61, stroke: COLORS.GOLD });
+    const title = this.add.text(cx, cy - 160, UI_COPY.help.title, {
       fontSize: '24px', color: TEXT_COLORS.GOLD, fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(62);
 
     const lines = UI_COPY.help.lines.map(line => `- ${line}`).join('\n');
-    const body = this.add.text(cx - 172, cy - 76, lines, {
+    const body = this.add.text(cx - 172, cy - 118, lines, {
       fontSize: '15px', color: '#ffffff', lineSpacing: 9,
       wordWrap: { width: 344 },
     }).setDepth(62);
 
-    const ok = addTextButton(this, cx, cy + 112, 120, 38, UI_COPY.help.close, { active: true, depth: 62 });
+    const ok = addTextButton(this, cx, cy + 160, 120, 38, UI_COPY.help.close, { active: true, depth: 62 });
     const objs = [overlay, panel, title, body, ok.bg, ok.rect, ok.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());
     ok.rect.on('pointerdown', close);
@@ -176,12 +202,11 @@ export class UIScene extends Phaser.Scene {
     overlay.on('pointerdown', () => resolve(false));
   }
 
-  _onTurnStart({ turn, mana, timeLeft, summonCounts }) {
+  _onTurnStart({ turn, mana, timeLeft, clockTimes, summonCounts }) {
     const playerTurn = turn === Owner.PLAYER;
     this.turnText.setText(playerTurn ? UI_COPY.game.playerTurn : UI_COPY.game.aiTurn);
     this.turnText.setColor(playerTurn ? TEXT_COLORS.SUCCESS : TEXT_COLORS.DANGER);
-    this.timerText.setText(formatClock(timeLeft));
-    this.timerText.setColor(TEXT_COLORS.TIMER);
+    this._setClockTexts(clockTimes, turn, timeLeft);
     this._setMana(mana[Owner.PLAYER]);
     this.checkText.setVisible(false);
     this._refreshSummonButtons(playerTurn ? mana[Owner.PLAYER] : -1, false, summonCounts || {});
@@ -214,8 +239,28 @@ export class UIScene extends Phaser.Scene {
 
   _onTimerTick(payload) {
     const timeLeft = typeof payload === 'number' ? payload : payload.timeLeft;
-    this.timerText.setText(formatClock(timeLeft));
-    this.timerText.setColor(timeLeft <= 10 ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.TIMER);
+    const clockTimes = typeof payload === 'number' ? undefined : payload.clockTimes;
+    const turn = typeof payload === 'number' ? Owner.PLAYER : payload.turn;
+    this._setClockTexts(clockTimes, turn, timeLeft);
+  }
+
+  _onHintChange({ hint, color }) {
+    this.hintText.setText(compactHint(hint));
+    this.hintText.setColor(color || '#ffffff');
+  }
+
+  _setClockTexts(clockTimes = {}, activeTurn = Owner.PLAYER, fallbackTime = TURN_TIME_LIMIT) {
+    const playerTime = clockTimes[Owner.PLAYER] ?? (activeTurn === Owner.PLAYER ? fallbackTime : TURN_TIME_LIMIT);
+    const aiTime = clockTimes[Owner.AI] ?? (activeTurn === Owner.AI ? fallbackTime : TURN_TIME_LIMIT);
+    const playerActive = activeTurn === Owner.PLAYER;
+    const aiActive = activeTurn === Owner.AI;
+
+    this.playerClockText.setText(`나 ${formatClock(playerTime)}`);
+    this.aiClockText.setText(`상대 ${formatClock(aiTime)}`);
+    this.playerClockText.setColor(playerTime <= 10 ? TEXT_COLORS.TIMER_LOW : (playerActive ? TEXT_COLORS.TIMER : TEXT_COLORS.MUTED));
+    this.aiClockText.setColor(aiTime <= 10 ? TEXT_COLORS.TIMER_LOW : (aiActive ? TEXT_COLORS.TIMER : TEXT_COLORS.MUTED));
+    this.playerClockBg.setStrokeStyle(1, playerActive ? COLORS.GOLD : COLORS.EMERALD, playerActive ? 0.78 : 0.42);
+    this.aiClockBg.setStrokeStyle(1, aiActive ? COLORS.GOLD : COLORS.CRIMSON, aiActive ? 0.78 : 0.38);
   }
 
   _setMana(value) {
@@ -266,6 +311,7 @@ export class UIScene extends Phaser.Scene {
       this.gameScene.events.off('summon-cancel', this._onSummonCancel, this);
       this.gameScene.events.off('summon-mode', this._onSummonMode, this);
       this.gameScene.events.off('idle-warning', this._showIdleWarning, this);
+      this.gameScene.events.off('hint-change', this._onHintChange, this);
     }
   }
 }
@@ -275,4 +321,9 @@ function formatClock(seconds) {
   const mins = Math.floor(value / 60);
   const secs = value % 60;
   return `${mins}:${String(secs).padStart(2, '0')}`;
+}
+
+function compactHint(hint) {
+  const text = String(hint || '');
+  return text.length > 26 ? `${text.slice(0, 25)}...` : text;
 }

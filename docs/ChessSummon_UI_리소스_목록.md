@@ -20,6 +20,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
 | `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Full logo for title, store, and promotional layouts |
 | `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.svg` | Compact crown/summon mark for app icons and capsules |
+| `ingame-entry-mockup` | Concept mockup | `docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png` | 9:16 battle-entry mood reference for first-turn presentation and store screenshot direction |
 | `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.svg` | Bronze MMR tier badge |
 | `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.svg` | Silver MMR tier badge |
 | `mmr-gold` | Rank icon | `public/assets/rank/mmr-gold.svg` | Gold MMR tier badge |
@@ -35,6 +36,9 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.54 displays both player and opponent chess clocks in the top HUD, keeps the turn hint to one line, and expands help modal spacing.
+- v0.1.53 adds a first-turn battle entry overlay using existing chess piece textures and Phaser graphics, guided by the generated entry mockup.
+- v0.1.52 compresses the top HUD timer and moves board guidance into the top HUD via `hint-change` events.
 - v0.1.51 enlarges the board grid and retunes the vertical layout to use portrait space more efficiently without HUD overlap.
 - v0.1.50 slightly enlarges board pieces and their shadows so piece silhouettes can spill beyond cell edges without overwhelming the board.
 - v0.1.49 widens the board hint frame and wraps hint text so long Korean guidance stays inside the visible panel.

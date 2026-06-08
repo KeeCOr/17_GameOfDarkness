@@ -24,10 +24,6 @@ const State = {
 };
 
 const PIECE_TYPES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
-const HINT_FRAME_X = LAYOUT.HUD_PANEL_X;
-const HINT_FRAME_WIDTH = LAYOUT.HUD_PANEL_WIDTH;
-const HINT_FRAME_HEIGHT = 46;
-const HINT_TEXT_WIDTH = HINT_FRAME_WIDTH - 32;
 
 export class GameScene extends Phaser.Scene {
   constructor() { super('Game'); }
@@ -74,9 +70,9 @@ export class GameScene extends Phaser.Scene {
     this.fogGraphics = [];
     this.animating = false;
     this.checkRing = null;
-    this.hintText = null;
     this.currentHintMode = 'default';
     this.summonedCells = new Set();
+    this.entryIntroShown = false;
 
     this._drawStage();
     this._setupBoard();
@@ -111,22 +107,6 @@ export class GameScene extends Phaser.Scene {
     g.lineStyle(1, COLORS.GOLD, 0.25);
     g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
       BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
-
-    const hintY = LAYOUT.BOARD_OFFSET_Y + BOARD_SIZE * LAYOUT.CELL_SIZE + 50;
-    addHintFrame(this, HINT_FRAME_X, hintY - HINT_FRAME_HEIGHT / 2, HINT_FRAME_WIDTH, HINT_FRAME_HEIGHT);
-    this.hintText = this.add.text(
-      HINT_FRAME_X + HINT_FRAME_WIDTH / 2,
-      hintY,
-      '',
-      {
-        fontSize: '13px',
-        color: '#ffffff',
-        fontStyle: 'bold',
-        align: 'center',
-        lineSpacing: 2,
-        wordWrap: { width: HINT_TEXT_WIDTH },
-      },
-    ).setOrigin(0.5).setDepth(6);
   }
 
   _setupBoard() {
@@ -442,7 +422,120 @@ export class GameScene extends Phaser.Scene {
     if (this.checkRing) { this.checkRing.destroy(); this.checkRing = null; }
   }
 
+  _showBattleEntryOverlay(owner) {
+    const cx = LAYOUT.BOARD_OFFSET_X + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
+    const cy = LAYOUT.BOARD_OFFSET_Y + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
+    const enemyName = formatBotLabel(this.aiProfile) || UI_COPY.game.aiTurn;
+    const panelW = 336;
+    const panelH = 196;
+
+    const veil = this.add.rectangle(
+      LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2,
+      LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT,
+      0x02040a, 0.46,
+    ).setDepth(12).setAlpha(0);
+
+    const rune = this.add.circle(cx, cy, 134, 0x37d9ff, 0.11).setDepth(13).setAlpha(0);
+    const outer = this.add.rectangle(cx, cy, panelW, panelH, COLORS.GOLD, 0.96).setDepth(14).setAlpha(0);
+    const inner = this.add.rectangle(cx, cy, panelW - 10, panelH - 10, 0x101728, 0.95).setDepth(14).setAlpha(0);
+    const topLine = this.add.rectangle(cx, cy - 70, panelW - 38, 2, 0xf7c84b, 0.82).setDepth(15).setAlpha(0);
+    const bottomLine = this.add.rectangle(cx, cy + 70, panelW - 38, 2, 0x37d9ff, 0.5).setDepth(15).setAlpha(0);
+
+    const title = this.add.text(cx, cy - 48, '전투 시작', {
+      fontSize: '30px',
+      color: '#fff5c7',
+      fontStyle: 'bold',
+      stroke: '#261407',
+      strokeThickness: 4,
+    }).setOrigin(0.5).setDepth(16).setAlpha(0);
+
+    const subtitle = this.add.text(cx, cy - 18, '왕을 지키고 전장을 장악하세요', {
+      fontSize: '14px',
+      color: '#d9e6ff',
+      stroke: '#050812',
+      strokeThickness: 3,
+    }).setOrigin(0.5).setDepth(16).setAlpha(0);
+
+    const playerKing = this.add.image(cx - 92, cy + 28, 'king_w')
+      .setDisplaySize(68, 68)
+      .setDepth(16)
+      .setAlpha(0);
+    const enemyKing = this.add.image(cx + 92, cy + 28, 'king_d')
+      .setDisplaySize(68, 68)
+      .setDepth(16)
+      .setAlpha(0);
+
+    const playerTag = this.add.text(cx - 92, cy + 78, 'PLAYER', {
+      fontSize: '12px', color: '#6fffe0', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(16).setAlpha(0);
+    const enemyTag = this.add.text(cx + 92, cy + 78, enemyName, {
+      fontSize: '12px', color: '#ff9a70', fontStyle: 'bold',
+      fixedWidth: 96,
+      align: 'center',
+    }).setOrigin(0.5).setDepth(16).setAlpha(0);
+
+    const versus = this.add.text(cx, cy + 25, 'VS', {
+      fontSize: '24px',
+      color: '#f7c84b',
+      fontStyle: 'bold',
+      stroke: '#050812',
+      strokeThickness: 4,
+    }).setOrigin(0.5).setDepth(17).setAlpha(0);
+
+    const sparks = [];
+    for (let i = 0; i < 10; i++) {
+      const offsetX = -144 + i * 32;
+      const offsetY = i % 2 === 0 ? -84 : 86;
+      sparks.push(this.add.circle(cx + offsetX, cy + offsetY, i % 3 === 0 ? 4 : 3,
+        i % 2 === 0 ? 0xf7c84b : 0x37d9ff, 0.8).setDepth(16).setAlpha(0));
+    }
+
+    const targets = [
+      veil, rune, outer, inner, topLine, bottomLine, title, subtitle,
+      playerKing, enemyKing, playerTag, enemyTag, versus, ...sparks,
+    ];
+
+    rune.setScale(0.9);
+
+    this.tweens.add({
+      targets,
+      alpha: 1,
+      duration: 210,
+      ease: 'Power2',
+    });
+    this.tweens.add({
+      targets: [rune],
+      scaleX: 1.08,
+      scaleY: 1.08,
+      duration: 720,
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+    });
+    this.tweens.add({
+      targets: [playerKing, enemyKing],
+      displayWidth: 76,
+      displayHeight: 76,
+      duration: 260,
+      ease: 'Back.easeOut',
+    });
+    this.time.delayedCall(950, () => {
+      this.tweens.add({
+        targets,
+        alpha: 0,
+        duration: 260,
+        ease: 'Power2',
+        onComplete: () => targets.forEach(target => target.destroy()),
+      });
+    });
+  }
+
   _showTurnBanner(owner) {
+    if (!this.entryIntroShown && owner === Owner.PLAYER) {
+      this.entryIntroShown = true;
+      this._showBattleEntryOverlay(owner);
+      return;
+    }
+
     const cx = LAYOUT.BOARD_OFFSET_X + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
     const cy = LAYOUT.BOARD_OFFSET_Y + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
     const isPlayer = owner === Owner.PLAYER;
@@ -510,14 +603,13 @@ export class GameScene extends Phaser.Scene {
 
   _updateHint(mode = 'default') {
     this.currentHintMode = mode;
-    if (!this.hintText) return;
     const hint = getTurnHint({
       hasMoved: this.hasMoved,
       hasSummoned: this.hasSummoned,
       mode,
     });
-    this.hintText.setText(hint);
-    this.hintText.setColor(mode === 'summon' ? '#6fffe0' : (mode === 'ai' ? '#f7c84b' : '#ffffff'));
+    const color = mode === 'summon' ? '#6fffe0' : (mode === 'ai' ? '#f7c84b' : '#ffffff');
+    this.events.emit('hint-change', { hint, color, mode });
   }
 
   _emitPlayerAction() {
@@ -802,13 +894,4 @@ export class GameScene extends Phaser.Scene {
   getMana() { return this.board.mana; }
   getCurrentTurn() { return this.board.currentTurn; }
   getSummonCounts() { return this.board.summonCounts[Owner.PLAYER]; }
-}
-
-function addHintFrame(scene, x, y, width, height) {
-  const g = scene.add.graphics().setDepth(5);
-  g.fillStyle(COLORS.PANEL_DEEP, 0.92);
-  g.fillRoundedRect(x, y, width, height, 8);
-  g.lineStyle(2, COLORS.PANEL_EDGE, 0.62);
-  g.strokeRoundedRect(x, y, width, height, 8);
-  return g;
 }

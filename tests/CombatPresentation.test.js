@@ -21,6 +21,17 @@ describe('combat presentation resources', () => {
     expect(ids).toContain('mmr-tier-icons');
   });
 
+  it('shows a richer battle entry overlay before the first player turn', async () => {
+    const { readFileSync } = await import('node:fs');
+    const source = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+
+    expect(source).toContain('entryIntroShown');
+    expect(source).toContain('_showBattleEntryOverlay');
+    expect(source).toContain('전투 시작');
+    expect(source).toContain('king_w');
+    expect(source).toContain('king_d');
+  });
+
   it('emits a promotion effect for every pawn that becomes a queen', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);

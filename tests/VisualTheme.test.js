@@ -61,12 +61,34 @@ describe('visual theme helpers', () => {
     expect(getTurnHint({ hasMoved: true, hasSummoned: true, mode: 'default' })).toEqual(expect.any(String));
   });
 
-  it('wraps board hint text inside a full-width hint frame', () => {
+  it('moves board hint text into the compact top HUD', () => {
     const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
 
-    expect(gameSceneSource).toContain('HINT_FRAME_WIDTH = LAYOUT.HUD_PANEL_WIDTH');
-    expect(gameSceneSource).toContain('wordWrap: { width: HINT_TEXT_WIDTH }');
-    expect(gameSceneSource).toContain('HINT_FRAME_HEIGHT');
+    expect(gameSceneSource).toContain("this.events.emit('hint-change'");
+    expect(gameSceneSource).not.toContain('HINT_FRAME_WIDTH');
+    expect(uiSceneSource).toContain("gameScene.events.on('hint-change'");
+    expect(uiSceneSource).toContain('this.hintText');
+    expect(uiSceneSource).toContain('maxLines: 1');
+    expect(uiSceneSource).toContain('compactHint');
+    expect(uiSceneSource).not.toContain('wordWrap: { width: CONTENT_W - 82 }');
+  });
+
+  it('shows both chess clocks in the top HUD', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(uiSceneSource).toContain('this.playerClockText');
+    expect(uiSceneSource).toContain('this.aiClockText');
+    expect(uiSceneSource).toContain('_setClockTexts');
+    expect(uiSceneSource).toContain('clockTimes');
+  });
+
+  it('uses a taller help modal so body text and buttons stay separated', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(uiSceneSource).toContain('400, 390');
+    expect(uiSceneSource).toContain('cy + 160');
+    expect(uiSceneSource).toContain('wordWrap: { width: 344 }');
   });
 
   it('returns distinct button colors for enabled, active, and disabled states', () => {
@@ -201,6 +223,8 @@ describe('visual theme helpers', () => {
   it('reserves non-overlapping summon panel zones', () => {
     expect(LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT).toBeLessThan(LAYOUT.BOARD_OFFSET_Y - 8);
     expect(LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH - 12);
+    const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 22;
+    expect(LAYOUT.HUD_PANEL_Y - boardBottom).toBeLessThanOrEqual(18);
     const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 16 + 14;
     const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
     expect(hintBottom).toBeLessThanOrEqual(firstSummonTop - 6);
@@ -220,7 +244,7 @@ describe('visual theme helpers', () => {
     const topHudBottom = LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT;
     const boardLeft = LAYOUT.BOARD_OFFSET_X - 22;
     const boardRight = LAYOUT.BOARD_OFFSET_X + LAYOUT.CELL_SIZE * 5 + 22;
-    const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 72;
+    const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 22;
     const hudTop = LAYOUT.HUD_PANEL_Y;
     const hudBottom = LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT;
 
@@ -228,7 +252,8 @@ describe('visual theme helpers', () => {
     expect(LAYOUT.CELL_SIZE * 5).toBeGreaterThanOrEqual(310);
     expect(boardLeft).toBeGreaterThanOrEqual(0);
     expect(boardRight).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH);
-    expect(boardBottom).toBeLessThanOrEqual(hudTop - 8);
+    expect(boardBottom).toBeLessThanOrEqual(hudTop);
+    expect(hudTop - boardBottom).toBeLessThanOrEqual(18);
     expect(hudBottom).toBeLessThanOrEqual(LAYOUT.GAME_HEIGHT - 12);
   });
 });
