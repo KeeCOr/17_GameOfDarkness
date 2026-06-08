@@ -1,4 +1,4 @@
-import { COLORS, LAYOUT, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
+import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
 
 export const UI_ASSETS = Object.freeze({
   buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/button-primary.svg' }),
@@ -150,6 +150,12 @@ export function getTurnHint({ hasMoved = false, hasSummoned = false, mode = 'def
   if (hasMoved) return UI_COPY.hints.summonRemaining;
   if (hasSummoned) return UI_COPY.hints.moveRemaining;
   return UI_COPY.hints.default;
+}
+
+export function formatManaGaugeLabel(value, maxMana = MAX_MANA) {
+  const max = Math.max(1, Number(maxMana) || MAX_MANA);
+  const mana = Math.max(0, Math.min(max, Number(value) || 0));
+  return `보유 마나 ${mana} / ${max}`;
 }
 
 export function getButtonColors({ enabled = true, active = false, danger = false } = {}) {

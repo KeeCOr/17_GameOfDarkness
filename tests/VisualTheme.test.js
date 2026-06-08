@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { LAYOUT, PieceType } from '../src/config.js';
 import {
   getPieceName, UI_COPY, getButtonColors, getTurnHint,
-  UI_ASSETS, getButtonAssetKey, getPanelAssetKey,
+  UI_ASSETS, getButtonAssetKey, getPanelAssetKey, formatManaGaugeLabel,
 } from '../src/ui/visuals.js';
 
 describe('visual theme helpers', () => {
@@ -37,6 +37,15 @@ describe('visual theme helpers', () => {
     expect(UI_COPY.game.cost).toBe('');
   });
 
+  it('shows the current mana count directly inside the mana gauge', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(formatManaGaugeLabel(3)).toBe('보유 마나 3 / 10');
+    expect(formatManaGaugeLabel(99)).toBe('보유 마나 10 / 10');
+    expect(uiSceneSource).toContain('formatManaGaugeLabel');
+    expect(uiSceneSource).toContain('manaText.setStroke');
+  });
+
   it('keeps summon buttons focused on piece name and mana cost only', () => {
     const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
 
@@ -50,6 +59,14 @@ describe('visual theme helpers', () => {
     expect(getTurnHint({ hasMoved: false, hasSummoned: false, mode: 'summon' })).toEqual(expect.any(String));
     expect(getTurnHint({ hasMoved: true, hasSummoned: false, mode: 'default' })).toEqual(expect.any(String));
     expect(getTurnHint({ hasMoved: true, hasSummoned: true, mode: 'default' })).toEqual(expect.any(String));
+  });
+
+  it('wraps board hint text inside a full-width hint frame', () => {
+    const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+
+    expect(gameSceneSource).toContain('HINT_FRAME_WIDTH = LAYOUT.HUD_PANEL_WIDTH');
+    expect(gameSceneSource).toContain('wordWrap: { width: HINT_TEXT_WIDTH }');
+    expect(gameSceneSource).toContain('HINT_FRAME_HEIGHT');
   });
 
   it('returns distinct button colors for enabled, active, and disabled states', () => {
@@ -173,18 +190,27 @@ describe('visual theme helpers', () => {
     expect(graphics).toHaveLength(0);
   });
 
-  it('keeps rendered board pieces inside a single cell', () => {
-    expect(LAYOUT.PIECE_SIZE).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE);
-    expect(LAYOUT.PIECE_SIZE).toBeLessThanOrEqual(LAYOUT.CELL_SIZE + 8);
-    expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeLessThanOrEqual(LAYOUT.CELL_SIZE - 18);
+  it('lets rendered board pieces slightly spill outside a single cell', () => {
+    expect(LAYOUT.CELL_SIZE).toBeGreaterThanOrEqual(62);
+    expect(LAYOUT.PIECE_SIZE).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE + 8);
+    expect(LAYOUT.PIECE_SIZE).toBeLessThanOrEqual(LAYOUT.CELL_SIZE + 12);
+    expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE - 14);
+    expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeLessThanOrEqual(LAYOUT.CELL_SIZE - 8);
   });
 
   it('reserves non-overlapping summon panel zones', () => {
     expect(LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT).toBeLessThan(LAYOUT.BOARD_OFFSET_Y - 8);
     expect(LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH - 12);
+    const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 16 + 14;
+    const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
+    expect(hintBottom).toBeLessThanOrEqual(firstSummonTop - 6);
     const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_ROW_GAP * 4 + LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
-    expect(LAYOUT.HUD_MANA_Y).toBeLessThan(LAYOUT.HUD_FOOTER_Y - 24);
+    const manaGaugeBottom = LAYOUT.HUD_MANA_Y + 11;
+    const footerButtonTop = LAYOUT.HUD_FOOTER_Y - 17;
+    const footerButtonBottom = LAYOUT.HUD_FOOTER_Y + 17;
+    expect(manaGaugeBottom).toBeLessThanOrEqual(footerButtonTop - 14);
+    expect(footerButtonBottom).toBeLessThanOrEqual(LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT - 6);
   });
 
   it('uses a 9:16 portrait playfield with top HUD, board, and summon panel in separate vertical zones', () => {
@@ -199,9 +225,10 @@ describe('visual theme helpers', () => {
     const hudBottom = LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT;
 
     expect(topHudBottom).toBeLessThan(LAYOUT.BOARD_OFFSET_Y);
+    expect(LAYOUT.CELL_SIZE * 5).toBeGreaterThanOrEqual(310);
     expect(boardLeft).toBeGreaterThanOrEqual(0);
     expect(boardRight).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH);
-    expect(boardBottom).toBeLessThan(hudTop);
+    expect(boardBottom).toBeLessThanOrEqual(hudTop - 8);
     expect(hudBottom).toBeLessThanOrEqual(LAYOUT.GAME_HEIGHT - 12);
   });
 });

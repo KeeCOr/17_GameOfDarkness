@@ -35,6 +35,11 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.51 enlarges the board grid and retunes the vertical layout to use portrait space more efficiently without HUD overlap.
+- v0.1.50 slightly enlarges board pieces and their shadows so piece silhouettes can spill beyond cell edges without overwhelming the board.
+- v0.1.49 widens the board hint frame and wraps hint text so long Korean guidance stays inside the visible panel.
+- v0.1.48 increases vertical clearance in the summon HUD so the hint, summon cards, mana gauge, and footer buttons stay separated.
+- v0.1.47 writes the current mana count directly on the summon-panel mana gauge using a high-contrast outlined label.
 - v0.1.46 aligns the stage background, logo, and brand mark with the dark metal/gold button palette so the UI no longer feels visually split.
 - v0.1.45 button frames use edge-focused highlights and dark centers so text remains readable on 9:16 mobile layouts.
 

@@ -24,6 +24,10 @@ const State = {
 };
 
 const PIECE_TYPES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
+const HINT_FRAME_X = LAYOUT.HUD_PANEL_X;
+const HINT_FRAME_WIDTH = LAYOUT.HUD_PANEL_WIDTH;
+const HINT_FRAME_HEIGHT = 46;
+const HINT_TEXT_WIDTH = HINT_FRAME_WIDTH - 32;
 
 export class GameScene extends Phaser.Scene {
   constructor() { super('Game'); }
@@ -109,12 +113,19 @@ export class GameScene extends Phaser.Scene {
       BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
 
     const hintY = LAYOUT.BOARD_OFFSET_Y + BOARD_SIZE * LAYOUT.CELL_SIZE + 50;
-    addHintFrame(this, LAYOUT.BOARD_OFFSET_X - 6, hintY - 18, BOARD_SIZE * LAYOUT.CELL_SIZE + 12, 38);
+    addHintFrame(this, HINT_FRAME_X, hintY - HINT_FRAME_HEIGHT / 2, HINT_FRAME_WIDTH, HINT_FRAME_HEIGHT);
     this.hintText = this.add.text(
-      LAYOUT.BOARD_OFFSET_X + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2,
+      HINT_FRAME_X + HINT_FRAME_WIDTH / 2,
       hintY,
       '',
-      { fontSize: '15px', color: '#ffffff', fontStyle: 'bold', align: 'center' },
+      {
+        fontSize: '13px',
+        color: '#ffffff',
+        fontStyle: 'bold',
+        align: 'center',
+        lineSpacing: 2,
+        wordWrap: { width: HINT_TEXT_WIDTH },
+      },
     ).setOrigin(0.5).setDepth(6);
   }
 

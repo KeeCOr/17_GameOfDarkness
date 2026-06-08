@@ -5,7 +5,7 @@ import {
 } from '../config.js';
 import {
   addPanel, addSectionLabel, addTextButton, getPieceName,
-  setButtonState, UI_COPY,
+  formatManaGaugeLabel, setButtonState, UI_COPY,
 } from '../ui/visuals.js';
 
 const SUMMONABLE = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
@@ -66,9 +66,11 @@ export class UIScene extends Phaser.Scene {
       .setOrigin(0, 0.5)
       .setAlpha(0.92);
     this._addManaIcon(PANEL_X + 12, LAYOUT.HUD_MANA_Y, 0.82);
-    this.manaText = this.add.text(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, `${UI_COPY.game.manaIconLabel} 0/${MAX_MANA}`, {
-      fontSize: '13px', color: '#0d1324', fontStyle: 'bold',
+    this.manaText = this.add.text(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, formatManaGaugeLabel(0), {
+      fontSize: '13px', color: '#ffffff', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(2);
+    this.manaText.setStroke?.('#050812', 4);
+    this.manaText.setShadow?.(0, 1, '#000000', 3, true, true);
 
     this.checkText = this.add.text(PANEL_X + CONTENT_W - 84, LAYOUT.HUD_TOP_Y + 64, UI_COPY.game.check, {
       fontSize: '16px', color: TEXT_COLORS.DANGER, fontStyle: 'bold',
@@ -220,8 +222,8 @@ export class UIScene extends Phaser.Scene {
     const mana = Math.max(0, Math.min(MAX_MANA, Number(value) || 0));
     const ratio = mana / MAX_MANA;
     this.manaBarFill.width = Math.max(0, CONTENT_W * ratio);
-    this.manaText.setText(`${UI_COPY.game.manaIconLabel} ${mana}/${MAX_MANA}`);
-    this.manaText.setColor(ratio >= 0.45 ? '#0d1324' : TEXT_COLORS.MANA);
+    this.manaText.setText(formatManaGaugeLabel(mana));
+    this.manaText.setColor('#ffffff');
   }
 
   _refreshSummonButtons(playerMana, hasSummoned, summonCounts) {
