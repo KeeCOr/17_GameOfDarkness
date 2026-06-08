@@ -21,9 +21,13 @@ describe('visual theme helpers', () => {
     expect(UI_COPY.tutorial.complete).toEqual(expect.any(String));
   });
 
-  it('explains one move and one summon per turn', () => {
-    expect(UI_COPY.game.moveSlot).toContain('1');
-    expect(UI_COPY.game.summonSlot).toContain('1');
+  it('keeps one move and one summon guidance in help, not HUD action boxes', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(uiSceneSource).not.toContain('_addActionSlot');
+    expect(uiSceneSource).not.toContain('moveSlot');
+    expect(uiSceneSource).not.toContain('summonSlot');
+    expect(uiSceneSource).not.toContain('turnRule');
     expect(UI_COPY.help.lines.some(line => line.includes('1'))).toBe(true);
   });
 
@@ -56,7 +60,7 @@ describe('visual theme helpers', () => {
     expect(enabled.fill).not.toBe(active.fill);
     expect(enabled.fill).not.toBe(disabled.fill);
     expect(disabled.alpha).toBeLessThan(enabled.alpha);
-    expect(active.text).toBe(0x1a1208);
+    expect(active.text).toBe(0xffffff);
   });
 
   it('maps reusable SVG assets to shared UI controls', () => {
@@ -75,6 +79,20 @@ describe('visual theme helpers', () => {
     expect(getButtonAssetKey()).toBe(UI_ASSETS.buttonPrimary.key);
     expect(getButtonAssetKey({ danger: true })).toBe(UI_ASSETS.buttonDanger.key);
     expect(getPanelAssetKey()).toBe(UI_ASSETS.frameHudPanel.key);
+  });
+
+  it('uses high-contrast metal button artwork for readability', () => {
+    const primary = readFileSync(new URL('../public/assets/ui/button-primary.svg', import.meta.url), 'utf8');
+    const danger = readFileSync(new URL('../public/assets/ui/button-danger.svg', import.meta.url), 'utf8');
+
+    expect(primary).toContain('primaryBody');
+    expect(primary).toContain('primaryEdge');
+    expect(primary).toContain('#080D18');
+    expect(primary).toContain('#FFE39A');
+    expect(danger).toContain('dangerBody');
+    expect(danger).toContain('dangerEdge');
+    expect(danger).toContain('#14070B');
+    expect(danger).toContain('#FFD1C9');
   });
 
   it('preloads reusable UI art before the menu scene starts', async () => {
@@ -164,10 +182,9 @@ describe('visual theme helpers', () => {
   it('reserves non-overlapping summon panel zones', () => {
     expect(LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT).toBeLessThan(LAYOUT.BOARD_OFFSET_Y - 8);
     expect(LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH - 12);
-    expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(LAYOUT.HUD_SUMMON_LABEL_Y);
-    expect(LAYOUT.HUD_MANA_Y).toBeLessThan(LAYOUT.HUD_SUMMON_START_Y - 8);
     const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_ROW_GAP * 4 + LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
-    expect(lastSummonBottom).toBeLessThanOrEqual(LAYOUT.HUD_FOOTER_Y - 18);
+    expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
+    expect(LAYOUT.HUD_MANA_Y).toBeLessThan(LAYOUT.HUD_FOOTER_Y - 24);
   });
 
   it('uses a 9:16 portrait playfield with top HUD, board, and summon panel in separate vertical zones', () => {

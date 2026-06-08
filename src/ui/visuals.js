@@ -154,15 +154,15 @@ export function getTurnHint({ hasMoved = false, hasSummoned = false, mode = 'def
 
 export function getButtonColors({ enabled = true, active = false, danger = false } = {}) {
   if (!enabled) {
-    return { fill: COLORS.BUTTON_DISABLED, stroke: 0x242c45, text: 0x566077, alpha: 0.48 };
+    return { fill: COLORS.BUTTON_DISABLED, stroke: 0x2f3548, text: 0x9aa6bf, alpha: 0.46, bgTint: 0x72798a };
   }
   if (active) {
-    return { fill: COLORS.GOLD, stroke: 0xffdf7a, text: 0x1a1208, alpha: 1 };
+    return { fill: 0x5c3b16, stroke: 0xffdf7a, text: 0xffffff, alpha: 1, bgTint: 0xffdf7a };
   }
   if (danger) {
-    return { fill: COLORS.CRIMSON, stroke: 0xd65a4a, text: 0xffffff, alpha: 1 };
+    return { fill: COLORS.CRIMSON, stroke: 0xff8a7a, text: 0xffffff, alpha: 1, bgTint: null };
   }
-  return { fill: COLORS.BUTTON_BG, stroke: 0x526092, text: 0xffffff, alpha: 1 };
+  return { fill: COLORS.BUTTON_BG, stroke: 0xd4a64a, text: 0xffffff, alpha: 1, bgTint: null };
 }
 
 export function getButtonAssetKey({ danger = false } = {}) {
@@ -180,31 +180,37 @@ function hasTexture(scene, key) {
 export function addStageBackground(scene, title = '') {
   const { GAME_WIDTH: w, GAME_HEIGHT: h } = LAYOUT;
   scene.add.rectangle(w / 2, h / 2, w, h, COLORS.BACKDROP);
-  scene.add.rectangle(w / 2, h / 2, w - 54, h - 42, COLORS.PANEL_BG).setAlpha(0.92);
+  scene.add.rectangle(w / 2, h / 2, w - 54, h - 42, COLORS.PANEL_DEEP).setAlpha(0.94);
+  scene.add.rectangle(w / 2, h / 2, w - 86, h - 82, COLORS.PANEL_BG).setAlpha(0.32);
 
   const g = scene.add.graphics();
-  g.lineStyle(2, COLORS.PANEL_EDGE, 0.45);
+  g.lineStyle(2, COLORS.PANEL_EDGE, 0.58);
   g.strokeRect(36, 30, w - 72, h - 60);
-  g.lineStyle(1, COLORS.GOLD, 0.18);
-  for (let i = 0; i < 6; i++) {
-    const r = 96 + i * 38;
-    g.strokeCircle(w / 2, h / 2 + 18, r);
+  g.lineStyle(1, COLORS.GOLD, 0.22);
+  for (let i = 0; i < 5; i++) {
+    const inset = 60 + i * 25;
+    g.strokeRect(inset, 52 + i * 18, w - inset * 2, h - 104 - i * 36);
   }
-  g.lineStyle(2, COLORS.EMERALD, 0.16);
+  g.lineStyle(2, COLORS.GOLD, 0.24);
   g.beginPath();
-  g.moveTo(w / 2, 96);
-  g.lineTo(w / 2 + 165, h / 2 + 150);
-  g.lineTo(w / 2 - 165, h / 2 + 150);
+  g.moveTo(72, 86);
+  g.lineTo(w / 2, 48);
+  g.lineTo(w - 72, 86);
+  g.moveTo(72, h - 86);
+  g.lineTo(w / 2, h - 48);
+  g.lineTo(w - 72, h - 86);
   g.closePath();
   g.strokePath();
 
   if (title) {
-    scene.add.text(w / 2, 88, title, {
-      fontSize: '44px',
-      color: TEXT_COLORS.PRIMARY,
+    const titleText = scene.add.text(w / 2, 88, title, {
+      fontSize: '43px',
+      color: '#fff0b8',
       fontStyle: 'bold',
-      fontFamily: 'Georgia, serif',
+      fontFamily: 'Georgia, "Times New Roman", serif',
     }).setOrigin(0.5);
+    titleText.setStroke?.('#050812', 5);
+    titleText.setShadow?.(0, 2, '#000000', 4, true, true);
   }
 }
 
@@ -271,17 +277,18 @@ export function addTextButton(scene, x, y, width, height, label, options = {}) {
     fontStyle: 'bold',
     align: 'center',
   }).setOrigin(0.5).setDepth(depth + 1);
+  applyReadableTextStyle(text, state);
 
-  const applyArtState = ({ hover = false } = {}) => {
+  const applyArtState = ({ hover = false, nextState = state } = {}) => {
     if (!bg) return false;
     const enabled = rect.getData('enabled') !== false;
-    bg.setAlpha(enabled ? state.alpha : 0.42);
+    bg.setAlpha(enabled ? nextState.alpha : 0.42);
     if (!enabled) {
-      bg.setTint?.(0x666a78);
+      bg.setTint?.(nextState.bgTint ?? 0x72798a);
     } else if (hover) {
-      bg.setTint?.(options.danger ? 0xffc4bb : 0xffedb2);
-    } else if (options.active) {
-      bg.setTint?.(0xffdf7a);
+      bg.setTint?.(options.danger ? 0xffb0a5 : 0xffedb2);
+    } else if (nextState.bgTint) {
+      bg.setTint?.(nextState.bgTint);
     } else {
       bg.clearTint?.();
     }
@@ -317,13 +324,20 @@ export function setButtonState(button, options = {}) {
   if (button.bg) {
     button.bg.setAlpha(state.alpha);
     if (options.enabled === false) {
-      button.bg.setTint?.(0x666a78);
-    } else if (options.active) {
-      button.bg.setTint?.(0xffdf7a);
+      button.bg.setTint?.(state.bgTint ?? 0x72798a);
+    } else if (state.bgTint) {
+      button.bg.setTint?.(state.bgTint);
     } else {
       button.bg.clearTint?.();
     }
   }
   button.text.setColor(`#${state.text.toString(16).padStart(6, '0')}`);
   button.text.setAlpha(state.alpha < 1 ? 0.65 : 1);
+  applyReadableTextStyle(button.text, state);
+}
+
+function applyReadableTextStyle(text, state) {
+  const textIsDark = state.text === 0x1a1208;
+  text.setStroke?.(textIsDark ? '#fff0b8' : '#050812', textIsDark ? 1 : 4);
+  text.setShadow?.(0, 1, textIsDark ? '#fff6ce' : '#000000', textIsDark ? 1 : 3, true, true);
 }

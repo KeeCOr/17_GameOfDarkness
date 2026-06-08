@@ -12,8 +12,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 
 | ID | Type | File | Purpose |
 | --- | --- | --- | --- |
-| `button-primary` | Button frame | `public/assets/ui/button-primary.svg` | Primary actions, menu choices, confirmation buttons |
-| `button-danger` | Button frame | `public/assets/ui/button-danger.svg` | Surrender/destructive action buttons |
+| `button-primary` | Button frame | `public/assets/ui/button-primary.svg` | High-contrast dark metal frame for primary actions, menu choices, confirmation buttons |
+| `button-danger` | Button frame | `public/assets/ui/button-danger.svg` | High-contrast dark crimson frame for surrender/destructive action buttons |
 | `frame-hud-panel` | Panel frame | `public/assets/ui/frame-hud-panel.svg` | Right HUD and modal frame reference |
 | `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
 | `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
@@ -35,6 +35,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.46 aligns the stage background, logo, and brand mark with the dark metal/gold button palette so the UI no longer feels visually split.
+- v0.1.45 button frames use edge-focused highlights and dark centers so text remains readable on 9:16 mobile layouts.
 
 ## Follow-Up Candidates
 

@@ -23,6 +23,17 @@ describe('brand, rank, and bot presentation', () => {
       expect(fs.existsSync(tier.icon)).toBe(true);
   });
 
+  it('keeps brand art aligned with the dark metal button palette', () => {
+    const logo = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.svg'), 'utf8');
+    const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'), 'utf8');
+
+    expect(logo).toContain('logoGold');
+    expect(logo).toContain('Trajan Pro, Cinzel, Georgia');
+    expect(logo).not.toContain('#6fffe0');
+    expect(mark).toContain('#fff0b8');
+    expect(mark).not.toContain('#6fffe0');
+  });
+
   it('assigns deterministic international bot profiles', () => {
     const profile = getBotProfileForMatch('Alice', 1180);
     const again = getBotProfileForMatch('Alice', 1180);

@@ -1,10 +1,10 @@
 // src/scenes/UIScene.js
 import {
-  COLORS, LAYOUT, Owner, PieceType, SUMMON_COSTS, SUMMON_REPEAT_COST_INCREASE, TEXT_COLORS,
+  COLORS, LAYOUT, MAX_MANA, Owner, PieceType, SUMMON_COSTS, SUMMON_REPEAT_COST_INCREASE, TEXT_COLORS,
   TURN_TIME_LIMIT,
 } from '../config.js';
 import {
-  addDivider, addPanel, addSectionLabel, addTextButton, getPieceName,
+  addPanel, addSectionLabel, addTextButton, getPieceName,
   setButtonState, UI_COPY,
 } from '../ui/visuals.js';
 
@@ -31,28 +31,11 @@ export class UIScene extends Phaser.Scene {
     const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 28, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
     help.rect.on('pointerdown', () => this._showHelp());
 
-    addSectionLabel(this, PANEL_X + 178, LAYOUT.HUD_TOP_Y + 13, UI_COPY.game.action);
-    this.moveSlot = this._addActionSlot(PANEL_X + 176, LAYOUT.HUD_TOP_Y + 56, UI_COPY.game.moveSlot);
-
-    this.ruleText = this.add.text(PANEL_X + 178, LAYOUT.HUD_TOP_Y + 72, UI_COPY.game.turnRule, {
-      fontSize: '12px', color: '#ffffff', fontStyle: 'bold',
-    });
-    this.ruleSubText = this.add.text(PANEL_X + 302, LAYOUT.HUD_TOP_Y + 74, UI_COPY.game.turnRuleSub, {
-      fontSize: '10px', color: TEXT_COLORS.MUTED,
-    });
-
     addSectionLabel(this, PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y, UI_COPY.game.summon);
     this.summonHint = this.add.text(PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y + 16, UI_COPY.game.summonHint, {
       fontSize: '10px', color: '#6fffe0', fontStyle: 'bold',
       wordWrap: { width: 160 },
     }).setOrigin(0, 0);
-    this.manaBadge = this.add.rectangle(PANEL_X + CONTENT_W - 52, LAYOUT.HUD_MANA_Y, 94, 24, COLORS.BUTTON_DISABLED)
-      .setAlpha(0.86);
-    this.manaBadge.setStrokeStyle(1, COLORS.PANEL_EDGE, 0.45);
-    this._addManaIcon(PANEL_X + CONTENT_W - 88, LAYOUT.HUD_MANA_Y, 0.88);
-    this.manaText = this.add.text(PANEL_X + CONTENT_W - 74, LAYOUT.HUD_MANA_Y, '0/10', {
-      fontSize: '15px', color: TEXT_COLORS.MANA, fontStyle: 'bold',
-    }).setOrigin(0, 0.5);
 
     this.summonButtons = {};
     SUMMONABLE.forEach((type, i) => {
@@ -76,11 +59,22 @@ export class UIScene extends Phaser.Scene {
       this.summonButtons[type] = { ...button, icon, manaIcon, name, cost };
     });
 
-    this.summonSlot = this._addActionSlot(PANEL_X, LAYOUT.HUD_PANEL_Y + 211, UI_COPY.game.summonSlot);
+    this.manaBarBg = this.add.rectangle(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, CONTENT_W, 18, COLORS.BUTTON_DISABLED)
+      .setAlpha(0.88);
+    this.manaBarBg.setStrokeStyle(1, COLORS.PANEL_EDGE, 0.58);
+    this.manaBarFill = this.add.rectangle(PANEL_X, LAYOUT.HUD_MANA_Y, 0, 18, 0x37d9ff)
+      .setOrigin(0, 0.5)
+      .setAlpha(0.92);
+    this._addManaIcon(PANEL_X + 12, LAYOUT.HUD_MANA_Y, 0.82);
+    this.manaText = this.add.text(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, `${UI_COPY.game.manaIconLabel} 0/${MAX_MANA}`, {
+      fontSize: '13px', color: '#0d1324', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(2);
 
-    this.checkText = this.add.text(PANEL_X + CONTENT_W - 90, LAYOUT.HUD_TOP_Y + 72, UI_COPY.game.check, {
-      fontSize: '17px', color: TEXT_COLORS.DANGER, fontStyle: 'bold',
-    }).setVisible(false);
+    this.checkText = this.add.text(PANEL_X + CONTENT_W - 84, LAYOUT.HUD_TOP_Y + 64, UI_COPY.game.check, {
+      fontSize: '16px', color: TEXT_COLORS.DANGER, fontStyle: 'bold',
+      wordWrap: { width: 76 },
+      align: 'center',
+    }).setOrigin(0.5).setVisible(false);
 
     this.endButton = addTextButton(this, PANEL_X + 116, LAYOUT.HUD_FOOTER_Y, 220, 34, UI_COPY.game.endTurn, { danger: true, fontSize: '15px' });
     this.endButton.rect.on('pointerdown', () => this.gameScene.endTurnManually());
@@ -97,18 +91,6 @@ export class UIScene extends Phaser.Scene {
     this.gameScene.events.on('summon-cancel', this._onSummonCancel, this);
     this.gameScene.events.on('summon-mode', this._onSummonMode, this);
     this.gameScene.events.on('idle-warning', this._showIdleWarning, this);
-  }
-
-  _addActionSlot(x, y, label) {
-    const bg = this.add.rectangle(x + 82, y, 164, 46, COLORS.BUTTON_BG).setAlpha(0.95);
-    bg.setStrokeStyle(2, COLORS.PANEL_EDGE, 0.55);
-    const labelText = this.add.text(x + 82, y - 9, label, {
-      fontSize: '12px', color: '#ffffff', fontStyle: 'bold',
-    }).setOrigin(0.5);
-    const stateText = this.add.text(x + 82, y + 10, UI_COPY.game.moveReady, {
-      fontSize: '13px', color: '#6fffe0', fontStyle: 'bold',
-    }).setOrigin(0.5);
-    return { bg, labelText, stateText };
   }
 
   _addManaIcon(x, y, scale = 1, depth = 2) {
@@ -143,7 +125,7 @@ export class UIScene extends Phaser.Scene {
     }).setDepth(62);
 
     const ok = addTextButton(this, cx, cy + 112, 120, 38, UI_COPY.help.close, { active: true, depth: 62 });
-    const objs = [overlay, panel, title, body, ok.rect, ok.text];
+    const objs = [overlay, panel, title, body, ok.bg, ok.rect, ok.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());
     ok.rect.on('pointerdown', close);
     overlay.on('pointerdown', close);
@@ -160,7 +142,7 @@ export class UIScene extends Phaser.Scene {
     const yes = addTextButton(this, cx - 70, cy + 34, 112, 38, UI_COPY.game.surrender, { danger: true, depth: 52 });
     const no = addTextButton(this, cx + 70, cy + 34, 112, 38, UI_COPY.game.cancel, { depth: 52 });
 
-    const objs = [overlay, panel, msg, yes.rect, yes.text, no.rect, no.text];
+    const objs = [overlay, panel, msg, yes.bg, yes.rect, yes.text, no.bg, no.rect, no.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());
     yes.rect.on('pointerdown', () => { close(); this.gameScene.surrender(); });
     no.rect.on('pointerdown', close);
@@ -181,7 +163,7 @@ export class UIScene extends Phaser.Scene {
     const think = addTextButton(this, cx - 82, cy + 48, 144, 38, UI_COPY.game.keepThinking, { active: true, fontSize: '13px', depth: 72 });
     const lose = addTextButton(this, cx + 94, cy + 48, 116, 38, UI_COPY.game.loseNow, { danger: true, fontSize: '13px', depth: 72 });
 
-    const objs = [overlay, panel, title, body, think.rect, think.text, lose.rect, lose.text];
+    const objs = [overlay, panel, title, body, think.bg, think.rect, think.text, lose.bg, lose.rect, lose.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());
     const resolve = keepThinking => {
       close();
@@ -198,9 +180,8 @@ export class UIScene extends Phaser.Scene {
     this.turnText.setColor(playerTurn ? TEXT_COLORS.SUCCESS : TEXT_COLORS.DANGER);
     this.timerText.setText(formatClock(timeLeft));
     this.timerText.setColor(TEXT_COLORS.TIMER);
-    this.manaText.setText(`${mana[Owner.PLAYER]}/10`);
+    this._setMana(mana[Owner.PLAYER]);
     this.checkText.setVisible(false);
-    this._updateActionStatus(false, false);
     this._refreshSummonButtons(playerTurn ? mana[Owner.PLAYER] : -1, false, summonCounts || {});
   }
 
@@ -217,8 +198,7 @@ export class UIScene extends Phaser.Scene {
 
   _onPlayerAction({ hasMoved, hasSummoned, mana, summonCounts }) {
     this._refreshSummonButtons(mana, hasSummoned, summonCounts || {});
-    this._updateActionStatus(hasMoved, hasSummoned);
-    this.manaText.setText(`${mana}/10`);
+    this._setMana(mana);
     this._highlightActiveSummon(null);
   }
 
@@ -236,16 +216,12 @@ export class UIScene extends Phaser.Scene {
     this.timerText.setColor(timeLeft <= 10 ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.TIMER);
   }
 
-  _updateActionStatus(hasMoved, hasSummoned) {
-    this._setActionSlot(this.moveSlot, hasMoved);
-    this._setActionSlot(this.summonSlot, hasSummoned);
-  }
-
-  _setActionSlot(slot, done) {
-    slot.bg.setFillStyle(done ? COLORS.EMERALD : COLORS.BUTTON_BG);
-    slot.bg.setAlpha(done ? 1 : 0.95);
-    slot.stateText.setText(done ? UI_COPY.game.moveDone : UI_COPY.game.moveReady);
-    slot.stateText.setColor(done ? '#ffffff' : '#6fffe0');
+  _setMana(value) {
+    const mana = Math.max(0, Math.min(MAX_MANA, Number(value) || 0));
+    const ratio = mana / MAX_MANA;
+    this.manaBarFill.width = Math.max(0, CONTENT_W * ratio);
+    this.manaText.setText(`${UI_COPY.game.manaIconLabel} ${mana}/${MAX_MANA}`);
+    this.manaText.setColor(ratio >= 0.45 ? '#0d1324' : TEXT_COLORS.MANA);
   }
 
   _refreshSummonButtons(playerMana, hasSummoned, summonCounts) {
