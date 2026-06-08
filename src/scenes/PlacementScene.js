@@ -6,6 +6,18 @@ const KING_ROW = 4, KING_COL = 2;
 const PAWN_COUNT = 4;
 const PIECE_TYPES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
 
+export function createDefaultPawnPlacements(random = Math.random) {
+  const cells = [];
+  for (let r = 3; r <= 4; r++)
+    for (let c = 0; c < 5; c++)
+      if (!(r === KING_ROW && c === KING_COL)) cells.push({ row: r, col: c });
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [cells[i], cells[j]] = [cells[j], cells[i]];
+  }
+  return cells.slice(0, PAWN_COUNT);
+}
+
 export class PlacementScene extends Phaser.Scene {
   constructor() { super('Placement'); }
 
@@ -129,15 +141,7 @@ export class PlacementScene extends Phaser.Scene {
   }
 
   _autoStart() {
-    const cells = [];
-    for (let r = 3; r <= 4; r++)
-      for (let c = 0; c < 5; c++)
-        if (!(r === KING_ROW && c === KING_COL)) cells.push({ row: r, col: c });
-    for (let i = cells.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [cells[i], cells[j]] = [cells[j], cells[i]];
-    }
-    const placements = cells.slice(0, PAWN_COUNT);
+    const placements = createDefaultPawnPlacements();
 
     if (this.difficulty === Difficulty.EASY && !this.skipTutorialPrompt) {
       this._showTutorialPrompt(placements);

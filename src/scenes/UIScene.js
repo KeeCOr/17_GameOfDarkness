@@ -1,11 +1,11 @@
 // src/scenes/UIScene.js
 import {
   COLORS, LAYOUT, Owner, PieceType, SUMMON_COSTS, SUMMON_REPEAT_COST_INCREASE, TEXT_COLORS,
-  SUMMON_CARD_META, TURN_TIME_LIMIT,
+  TURN_TIME_LIMIT,
 } from '../config.js';
 import {
   addDivider, addPanel, addSectionLabel, addTextButton, getPieceName,
-  getSummonGradeStars, getSummonRequirementLabel, setButtonState, UI_COPY,
+  setButtonState, UI_COPY,
 } from '../ui/visuals.js';
 
 const SUMMONABLE = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
@@ -58,21 +58,14 @@ export class UIScene extends Phaser.Scene {
     SUMMONABLE.forEach((type, i) => {
       const y = LAYOUT.HUD_SUMMON_START_Y + i * LAYOUT.HUD_SUMMON_ROW_GAP;
       const button = addTextButton(this, PANEL_X + CONTENT_W / 2, y, CONTENT_W, LAYOUT.HUD_SUMMON_ROW_HEIGHT, '', { enabled: false, fontSize: '14px' });
-      const meta = SUMMON_CARD_META[type] || { requirement: 'FREE', grade: 1 };
       const icon = this.add.image(PANEL_X + 20, y, `${type.toLowerCase()}_w`).setDisplaySize(24, 24).setAlpha(0.3).setDepth(2);
-      const name = this.add.text(PANEL_X + 42, y - 7, getPieceName(type), {
-        fontSize: '13px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
+      const name = this.add.text(PANEL_X + 44, y, getPieceName(type), {
+        fontSize: '15px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
       }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
-      const grade = this.add.text(PANEL_X + 42, y + 7, getSummonGradeStars(meta.grade), {
-        fontSize: '10px', color: TEXT_COLORS.GOLD, fontStyle: 'bold',
-      }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
-      const requirement = this.add.text(PANEL_X + CONTENT_W - 82, y - 7, getSummonRequirementLabel(meta.requirement), {
-        fontSize: '10px', color: meta.requirement === 'TRIBUTE' ? '#ffcf63' : '#6fffe0', fontStyle: 'bold',
-      }).setOrigin(0.5).setAlpha(0.5).setDepth(2);
-      const manaIcon = this._addManaIcon(PANEL_X + CONTENT_W - 88, y + 7, 0.72, 2);
+      const manaIcon = this._addManaIcon(PANEL_X + CONTENT_W - 88, y, 0.78, 2);
       manaIcon.setAlpha(0.45);
-      const cost = this.add.text(PANEL_X + CONTENT_W - 78, y + 7, String(SUMMON_COSTS[type]), {
-        fontSize: '11px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
+      const cost = this.add.text(PANEL_X + CONTENT_W - 77, y, String(SUMMON_COSTS[type]), {
+        fontSize: '14px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
       }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
 
       button.rect.on('pointerdown', () => {
@@ -80,7 +73,7 @@ export class UIScene extends Phaser.Scene {
         this.gameScene.startSummonMode(type);
         this._highlightActiveSummon(button.rect.getData('active') ? null : type);
       });
-      this.summonButtons[type] = { ...button, icon, manaIcon, name, grade, requirement, cost };
+      this.summonButtons[type] = { ...button, icon, manaIcon, name, cost };
     });
 
     this.summonSlot = this._addActionSlot(PANEL_X, LAYOUT.HUD_PANEL_Y + 211, UI_COPY.game.summonSlot);
@@ -259,7 +252,6 @@ export class UIScene extends Phaser.Scene {
     for (const [type, entry] of Object.entries(this.summonButtons)) {
       const count = summonCounts?.[type] || 0;
       const cost = (SUMMON_COSTS[type] || 1) + count * SUMMON_REPEAT_COST_INCREASE;
-      const meta = SUMMON_CARD_META[type] || { requirement: 'FREE', grade: 1 };
       const enabled = !hasSummoned && playerMana >= cost;
       setButtonState(entry, { enabled, active: false });
       entry.rect.setData('active', false);
@@ -270,9 +262,6 @@ export class UIScene extends Phaser.Scene {
       entry.icon.setAlpha(enabled ? 0.96 : 0.34);
       entry.name.setAlpha(enabled ? 1 : 0.58);
       entry.name.setColor(enabled ? TEXT_COLORS.PRIMARY : TEXT_COLORS.DIM);
-      entry.grade.setAlpha(enabled ? 1 : 0.58);
-      entry.requirement.setAlpha(enabled ? 1 : 0.58);
-      entry.requirement.setColor(meta.requirement === 'TRIBUTE' ? '#ffcf63' : '#6fffe0');
     }
   }
 
@@ -285,8 +274,6 @@ export class UIScene extends Phaser.Scene {
         entry.cost.setColor(isActive ? '#1a1208' : '#dceeff');
         entry.manaIcon.setAlpha(1);
         entry.name.setColor(isActive ? '#1a1208' : TEXT_COLORS.PRIMARY);
-        entry.requirement.setColor(isActive ? '#1a1208' : (SUMMON_CARD_META[type]?.requirement === 'TRIBUTE' ? '#ffcf63' : '#6fffe0'));
-        entry.grade.setColor(isActive ? '#1a1208' : TEXT_COLORS.GOLD);
         entry.icon.setAlpha(1);
       }
     }

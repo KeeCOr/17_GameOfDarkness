@@ -244,15 +244,17 @@ describe('GameScene manual turn ending', () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
     let recorded = null;
+    const starts = [];
 
     scene.difficulty = Difficulty.HARD;
+    scene.aiProfile = { id: 'bot-hard', label: 'Hard Bot' };
     scene.timeLeft = 72;
     scene.input = { off() {} };
     scene.turnTimer = null;
     scene.idleWarningTimer = null;
     scene._clearIdleWarningLossTimer = () => {};
     scene.time = { delayedCall: (delay, callback) => callback() };
-    scene.scene = { stop() {}, start() {} };
+    scene.scene = { stop() {}, start: (key, data) => starts.push({ key, data }) };
     scene.achievements = { recordGameOver: payload => { recorded = payload; } };
 
     scene._gameOver(Owner.PLAYER);
@@ -262,6 +264,16 @@ describe('GameScene manual turn ending', () => {
       difficulty: Difficulty.HARD,
       timeRemaining: 72,
     });
+    expect(starts).toEqual([
+      {
+        key: 'Result',
+        data: {
+          winner: Owner.PLAYER,
+          difficulty: Difficulty.HARD,
+          aiProfile: { id: 'bot-hard', label: 'Hard Bot' },
+        },
+      },
+    ]);
   });
 
   it('records only player promotions for achievements', async () => {

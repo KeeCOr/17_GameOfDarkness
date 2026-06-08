@@ -115,7 +115,7 @@ describe('tutorial and replay flow', () => {
     expect(rectangles[0].interactive).toBe(true);
   });
 
-  it('marks replay placement as a direct retry without tutorial prompt', async () => {
+  it('restarts easy replay directly as a playable game without tutorial prompt', async () => {
     const { ResultScene } = await import('../src/scenes/ResultScene.js');
     const scene = Object.create(ResultScene.prototype);
     const starts = [];
@@ -130,8 +130,30 @@ describe('tutorial and replay flow', () => {
     scene._replay();
 
     expect(stops).toEqual(['UI', 'Tutorial', 'Game']);
+    expect(starts).toHaveLength(1);
+    expect(starts[0].key).toBe('Game');
+    expect(starts[0].data.difficulty).toBe(Difficulty.EASY);
+    expect(starts[0].data.tutorialMode).toBeUndefined();
+    expect(starts[0].data.playerPlacements).toHaveLength(4);
+  });
+
+  it('keeps hard replay in placement because pawns must be edited manually', async () => {
+    const { ResultScene } = await import('../src/scenes/ResultScene.js');
+    const scene = Object.create(ResultScene.prototype);
+    const starts = [];
+    const stops = [];
+
+    scene.difficulty = Difficulty.HARD;
+    scene.scene = {
+      stop: key => stops.push(key),
+      start: (key, data) => starts.push({ key, data }),
+    };
+
+    scene._replay();
+
+    expect(stops).toEqual(['UI', 'Tutorial', 'Game']);
     expect(starts).toEqual([
-      { key: 'Placement', data: { difficulty: Difficulty.EASY, skipTutorialPrompt: true } },
+      { key: 'Placement', data: { difficulty: Difficulty.HARD, skipTutorialPrompt: true } },
     ]);
   });
 
