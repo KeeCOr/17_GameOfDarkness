@@ -63,6 +63,8 @@ export class GameScene extends Phaser.Scene {
     this.turnTimer = null;
     this.idleWarningTimer = null;
     this.idleWarningLossTimer = null;
+    this.aiThinkTimer = null;
+    this.gameOverTransitionTimer = null;
     this.idleSeconds = 0;
     this.idleWarningShown = false;
     this.hasMoved = false;
@@ -86,6 +88,7 @@ export class GameScene extends Phaser.Scene {
     ).setDepth(1).setAlpha(0);
     this.tutorialLocked = false;
     this._refreshBoard();
+    this.events.once('shutdown', this.shutdown, this);
     this.scene.launch('UI');
     this.events.on('tutorial-complete', () => this.achievements.recordTutorialComplete());
     this.input.on('pointerdown', this._onPointerDown, this);
@@ -667,7 +670,8 @@ export class GameScene extends Phaser.Scene {
       this.state = State.AI_TURN;
       this.aiOverlay.setAlpha(0.25);
       this._updateHint('ai');
-      this.time.delayedCall(this._getAIThinkDelay(), this._doAITurn, [], this);
+      if (this.aiThinkTimer) { this.aiThinkTimer.remove(); this.aiThinkTimer = null; }
+      this.aiThinkTimer = this.time.delayedCall(this._getAIThinkDelay(), this._doAITurn, [], this);
     } else {
       this.idleSeconds = 0;
       this.idleWarningShown = false;
@@ -772,6 +776,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   _doAITurn() {
+    this.aiThinkTimer = null;
     if (this.state === State.GAME_OVER) return;
     const moveAction = this.ai.getMove(this.board);
     if (moveAction) {
@@ -826,6 +831,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   _gameOver(winner) {
+    if (this.state === State.GAME_OVER) return;
     this.state = State.GAME_OVER;
     this.achievements?.recordGameOver?.({
       winner,
@@ -833,10 +839,9 @@ export class GameScene extends Phaser.Scene {
       timeRemaining: this.timeLeft || 0,
     });
     this.input.off('pointerdown', this._onPointerDown, this);
-    if (this.turnTimer) this.turnTimer.remove();
-    if (this.idleWarningTimer) this.idleWarningTimer.remove();
-    this._clearIdleWarningLossTimer();
-    this.time.delayedCall(800, () => {
+    this._clearSceneTimers();
+    this.gameOverTransitionTimer = this.time.delayedCall(800, () => {
+      this.gameOverTransitionTimer = null;
       this.scene.stop('UI');
       if (this.tutorialMode) this.scene.stop('Tutorial');
       this.scene.start('Result', { winner, difficulty: this.difficulty, aiProfile: this.aiProfile });
@@ -901,4 +906,17 @@ export class GameScene extends Phaser.Scene {
   getMana() { return this.board.mana; }
   getCurrentTurn() { return this.board.currentTurn; }
   getSummonCounts() { return this.board.summonCounts[Owner.PLAYER]; }
+
+  _clearSceneTimers() {
+    if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
+    if (this.idleWarningTimer) { this.idleWarningTimer.remove(); this.idleWarningTimer = null; }
+    if (this.aiThinkTimer) { this.aiThinkTimer.remove(); this.aiThinkTimer = null; }
+    if (this.gameOverTransitionTimer) { this.gameOverTransitionTimer.remove(); this.gameOverTransitionTimer = null; }
+    this._clearIdleWarningLossTimer();
+  }
+
+  shutdown() {
+    this.input?.off?.('pointerdown', this._onPointerDown, this);
+    this._clearSceneTimers();
+  }
 }

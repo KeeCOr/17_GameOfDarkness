@@ -45,6 +45,7 @@ export class TutorialScene extends Phaser.Scene {
     this.gameScene = this.scene.get('Game');
     this.stepIndex = 0;
     this._overlayObjs = [];
+    this.events.once('shutdown', this.shutdown, this);
 
     this.gameScene.events.on('tutorial-piece-selected', () => this._tryAdvance('tutorial-piece-selected'), this);
     this.gameScene.events.on('tutorial-piece-moved', () => this._tryAdvance('tutorial-piece-moved'), this);
@@ -70,7 +71,7 @@ export class TutorialScene extends Phaser.Scene {
   }
 
   _clearOverlay() {
-    this._overlayObjs.forEach(o => o.destroy());
+    this._overlayObjs.forEach(o => o?.destroy?.());
     this._overlayObjs = [];
   }
 
@@ -130,7 +131,7 @@ export class TutorialScene extends Phaser.Scene {
 
     if (!step.waitEvent) {
       const confirm = addTextButton(this, boxX, boxY + boxH / 2 + 45, 112, 36, UI_COPY.tutorial.confirm, { active: true, depth: 23 });
-      this._overlayObjs.push(confirm.rect, confirm.text);
+      this._overlayObjs.push(confirm.bg, confirm.rect, confirm.text);
       confirm.rect.on('pointerdown', () => {
         if (this.stepIndex < TUTORIAL_STEPS.length - 1) this._nextStep();
         else this._finish();
@@ -155,6 +156,7 @@ export class TutorialScene extends Phaser.Scene {
   }
 
   shutdown() {
+    this._clearOverlay();
     if (this.gameScene) {
       ['tutorial-piece-selected', 'tutorial-piece-moved', 'tutorial-summon-clicked',
         'tutorial-summoned', 'tutorial-turn-ended', 'check'].forEach(ev =>

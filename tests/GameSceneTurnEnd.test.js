@@ -276,6 +276,47 @@ describe('GameScene manual turn ending', () => {
     ]);
   });
 
+  it('clears pending scene timers and schedules only one result transition on game over', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const removed = [];
+    const scheduled = [];
+    const starts = [];
+
+    const makeTimer = name => ({ remove: () => removed.push(name) });
+    scene.state = 'WAITING';
+    scene.difficulty = Difficulty.EASY;
+    scene.aiProfile = null;
+    scene.timeLeft = 91;
+    scene.turnTimer = makeTimer('turn');
+    scene.idleWarningTimer = makeTimer('idle');
+    scene.idleWarningLossTimer = makeTimer('idleLoss');
+    scene.aiThinkTimer = makeTimer('aiThink');
+    scene.gameOverTransitionTimer = null;
+    scene.input = { off() {} };
+    scene.time = {
+      delayedCall: (delay, callback) => {
+        scheduled.push({ delay, callback });
+        return makeTimer('gameOverTransition');
+      },
+    };
+    scene.scene = { stop() {}, start: (key, data) => starts.push({ key, data }) };
+    scene.achievements = { recordGameOver() {} };
+
+    scene._gameOver(Owner.AI);
+    scene._gameOver(Owner.PLAYER);
+
+    expect(removed).toEqual(['turn', 'idle', 'aiThink', 'idleLoss']);
+    expect(scheduled).toHaveLength(1);
+    expect(scheduled[0].delay).toBe(800);
+
+    scheduled[0].callback();
+
+    expect(starts).toEqual([
+      { key: 'Result', data: { winner: Owner.AI, difficulty: Difficulty.EASY, aiProfile: null } },
+    ]);
+  });
+
   it('records only player promotions for achievements', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);

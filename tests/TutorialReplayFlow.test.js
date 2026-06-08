@@ -120,16 +120,26 @@ describe('tutorial and replay flow', () => {
     const scene = Object.create(ResultScene.prototype);
     const starts = [];
     const stops = [];
+    const delayed = [];
 
     scene.difficulty = Difficulty.EASY;
+    scene.replaying = false;
     scene.scene = {
       stop: key => stops.push(key),
       start: (key, data) => starts.push({ key, data }),
     };
+    scene.time = { delayedCall: (delay, callback) => delayed.push({ delay, callback }) };
 
+    scene._replay();
     scene._replay();
 
     expect(stops).toEqual(['UI', 'Tutorial', 'Game']);
+    expect(starts).toEqual([]);
+    expect(delayed).toHaveLength(1);
+    expect(delayed[0].delay).toBe(0);
+
+    delayed[0].callback();
+
     expect(starts).toHaveLength(1);
     expect(starts[0].key).toBe('Game');
     expect(starts[0].data.difficulty).toBe(Difficulty.EASY);
@@ -142,18 +152,26 @@ describe('tutorial and replay flow', () => {
     const scene = Object.create(ResultScene.prototype);
     const starts = [];
     const stops = [];
+    const delayed = [];
 
     scene.difficulty = Difficulty.HARD;
+    scene.replaying = false;
     scene.scene = {
       stop: key => stops.push(key),
       start: (key, data) => starts.push({ key, data }),
     };
+    scene.time = { delayedCall: (delay, callback) => delayed.push({ delay, callback }) };
 
     scene._replay();
 
     expect(stops).toEqual(['UI', 'Tutorial', 'Game']);
+    expect(starts).toEqual([]);
+    expect(delayed).toHaveLength(1);
+
+    delayed[0].callback();
+
     expect(starts).toEqual([
-      { key: 'Placement', data: { difficulty: Difficulty.HARD, skipTutorialPrompt: true } },
+      { key: 'Placement', data: { difficulty: Difficulty.HARD, skipTutorialPrompt: true, aiProfile: undefined } },
     ]);
   });
 

@@ -16,6 +16,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.matchStarted = false;
     this.aiFallbackTimer = null;
     this.steamService = createSteamService();
+    this.events.once('shutdown', this.shutdown, this);
 
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.multiplayer.title);

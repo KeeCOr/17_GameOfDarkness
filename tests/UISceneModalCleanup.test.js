@@ -79,4 +79,59 @@ describe('UI modal cleanup', () => {
     expect(images.every(image => image.destroyed)).toBe(true);
     expect(texts.every(text => text.destroyed)).toBe(true);
   });
+
+  it('destroys tutorial confirmation button art when advancing an info popup', async () => {
+    const { TutorialScene } = await import('../src/scenes/TutorialScene.js');
+    const scene = Object.create(TutorialScene.prototype);
+    const rectangles = [];
+    const images = [];
+    const texts = [];
+    const circles = [];
+
+    scene.stepIndex = 4;
+    scene._overlayObjs = [];
+    scene.textures = { exists: () => true };
+    scene.add = {
+      rectangle: () => {
+        const obj = makeDisplayObject();
+        rectangles.push(obj);
+        return obj;
+      },
+      image: () => {
+        const obj = makeDisplayObject();
+        images.push(obj);
+        return obj;
+      },
+      text: () => {
+        const obj = makeDisplayObject({
+          setStroke() { return this; },
+          setShadow() { return this; },
+        });
+        texts.push(obj);
+        return obj;
+      },
+      graphics: () => makeDisplayObject({
+        fillStyle() { return this; },
+        fillRoundedRect() { return this; },
+        lineStyle() { return this; },
+        strokeRoundedRect() { return this; },
+      }),
+      circle: () => {
+        const obj = makeDisplayObject();
+        circles.push(obj);
+        return obj;
+      },
+    };
+    scene.tweens = { add: () => {} };
+    scene._nextStep = () => scene._clearOverlay();
+
+    scene._showStep();
+    const confirmRect = rectangles[rectangles.length - 1];
+    confirmRect.handlers.pointerdown.forEach(callback => callback());
+
+    expect(images.length).toBeGreaterThanOrEqual(2);
+    expect(images.every(image => image.destroyed)).toBe(true);
+    expect(texts.every(text => text.destroyed)).toBe(true);
+    expect(circles.every(circle => circle.destroyed)).toBe(true);
+  });
 });

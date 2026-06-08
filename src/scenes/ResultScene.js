@@ -10,6 +10,7 @@ export class ResultScene extends Phaser.Scene {
     this.winner = data.winner;
     this.difficulty = data.difficulty || Difficulty.EASY;
     this.aiProfile = data.aiProfile || null;
+    this.replaying = false;
   }
 
   create() {
@@ -34,23 +35,34 @@ export class ResultScene extends Phaser.Scene {
   }
 
   _replay() {
+    if (this.replaying) return;
+    this.replaying = true;
     this.scene.stop('UI');
     this.scene.stop('Tutorial');
     this.scene.stop('Game');
 
-    if (this.difficulty === Difficulty.HARD) {
-      this.scene.start('Placement', {
+    const startReplay = () => {
+      if (this.difficulty === Difficulty.HARD) {
+        this.scene.start('Placement', {
+          difficulty: this.difficulty,
+          skipTutorialPrompt: true,
+          aiProfile: this.aiProfile,
+        });
+        return;
+      }
+
+      this.scene.start('Game', {
         difficulty: this.difficulty,
-        skipTutorialPrompt: true,
+        playerPlacements: createDefaultPawnPlacements(),
         aiProfile: this.aiProfile,
       });
+    };
+
+    if (this.time?.delayedCall) {
+      this.time.delayedCall(0, startReplay);
       return;
     }
 
-    this.scene.start('Game', {
-      difficulty: this.difficulty,
-      playerPlacements: createDefaultPawnPlacements(),
-      aiProfile: this.aiProfile,
-    });
+    startReplay();
   }
 }

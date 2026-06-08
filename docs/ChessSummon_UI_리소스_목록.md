@@ -36,6 +36,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.58 stabilizes replay by deferring result-screen restarts and wiring scene shutdown cleanup for timers and event listeners.
+- v0.1.57 ensures tutorial confirmation button backgrounds are included in overlay cleanup so popup button art cannot remain after advancing.
 - v0.1.56 enlarges the in-game board cells and gives non-pawn pieces a larger display size so major silhouettes spill beyond their cells.
 - v0.1.55 centers the single-line top HUD hint and removes the separate current-turn text label, relying on clock emphasis for turn state.
 - v0.1.54 displays both player and opponent chess clocks in the top HUD, keeps the turn hint to one line, and expands help modal spacing.
