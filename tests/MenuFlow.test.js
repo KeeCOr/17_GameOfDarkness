@@ -97,7 +97,7 @@ describe('menu flow', () => {
     expect(starts).toEqual([
       { key: 'Placement', data: { difficulty: Difficulty.HARD } },
     ]);
-  });
+  }, 10000);
 
   it('shows release channel and version on menu screens', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');

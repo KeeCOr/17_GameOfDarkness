@@ -1,13 +1,10 @@
 const crypto = require('crypto');
 const http = require('http');
-const { getAccount } = require('./rankStore.cjs');
+const { createMultiplayerCore } = require('./multiplayerCore.cjs');
 const { getRankFilePath } = require('./savePaths.cjs');
 
 const PORT = Number(process.env.PORT || 8787);
 const RANK_FILE = getRankFilePath();
-
-const clients = new Set();
-let waiting = null;
 
 function send(socket, message) {
   const payload = Buffer.from(JSON.stringify(message));
@@ -17,26 +14,11 @@ function send(socket, message) {
   socket.write(Buffer.concat([header, payload]));
 }
 
-function closeClient(client) {
-  clients.delete(client);
-  if (waiting === client) waiting = null;
-  try { client.socket.destroy(); } catch {}
-}
-
-function handleMessage(client, message) {
-  if (message.type === 'joinQueue') {
-    if (waiting && waiting !== client) {
-      const opponent = waiting;
-      waiting = null;
-      const roomId = crypto.randomBytes(4).toString('hex');
-      send(opponent.socket, { type: 'matched', roomId, side: 'PLAYER', opponent: client.account });
-      send(client.socket, { type: 'matched', roomId, side: 'AI', opponent: opponent.account });
-    } else {
-      waiting = client;
-      send(client.socket, { type: 'queued' });
-    }
-  }
-}
+const core = createMultiplayerCore({
+  rankFile: RANK_FILE,
+  send,
+  randomRoomId: () => crypto.randomBytes(4).toString('hex'),
+});
 
 function parseFrames(buffer) {
   const messages = [];
@@ -84,18 +66,15 @@ server.on('upgrade', (req, socket) => {
   ].join('\r\n'));
 
   const url = new URL(req.url, `http://${req.headers.host}`);
-  const account = getAccount(RANK_FILE, url.searchParams.get('name'));
-  const client = { socket, account };
-  clients.add(client);
-  send(socket, { type: 'account', account });
+  const client = core.createClient(socket, url.searchParams.get('name'));
 
   socket.on('data', chunk => {
     for (const raw of parseFrames(chunk)) {
-      try { handleMessage(client, JSON.parse(raw)); } catch {}
+      try { core.handleMessage(client, JSON.parse(raw)); } catch {}
     }
   });
-  socket.on('close', () => closeClient(client));
-  socket.on('error', () => closeClient(client));
+  socket.on('close', () => core.closeClient(client));
+  socket.on('error', () => core.closeClient(client));
 });
 
 server.listen(PORT, () => {

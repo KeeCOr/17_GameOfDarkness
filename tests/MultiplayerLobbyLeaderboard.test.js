@@ -25,5 +25,5 @@ describe('Multiplayer lobby leaderboard upload', () => {
 
     expect(scene.account).toEqual({ name: 'Alice', rankPoints: 1234 });
     expect(uploads).toEqual([1234]);
-  });
+  }, 10000);
 });

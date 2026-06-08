@@ -166,7 +166,8 @@ describe('visual theme helpers', () => {
     expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeLessThanOrEqual(LAYOUT.CELL_SIZE - 18);
   });
 
-  it('reserves non-overlapping right panel zones', () => {
+  it('reserves non-overlapping summon panel zones', () => {
+    expect(LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT).toBeLessThan(LAYOUT.BOARD_OFFSET_Y - 8);
     expect(LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH - 12);
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(LAYOUT.HUD_SUMMON_LABEL_Y);
     expect(LAYOUT.HUD_MANA_Y).toBeLessThan(LAYOUT.HUD_SUMMON_START_Y - 8);
@@ -174,16 +175,18 @@ describe('visual theme helpers', () => {
     expect(lastSummonBottom).toBeLessThanOrEqual(LAYOUT.HUD_FOOTER_Y - 18);
   });
 
-  it('uses a 9:16 portrait playfield with board and HUD in separate vertical zones', () => {
+  it('uses a 9:16 portrait playfield with top HUD, board, and summon panel in separate vertical zones', () => {
     expect(LAYOUT.GAME_WIDTH).toBe(450);
     expect(LAYOUT.GAME_HEIGHT).toBe(800);
 
+    const topHudBottom = LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT;
     const boardLeft = LAYOUT.BOARD_OFFSET_X - 22;
     const boardRight = LAYOUT.BOARD_OFFSET_X + LAYOUT.CELL_SIZE * 5 + 22;
     const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 72;
     const hudTop = LAYOUT.HUD_PANEL_Y;
     const hudBottom = LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT;
 
+    expect(topHudBottom).toBeLessThan(LAYOUT.BOARD_OFFSET_Y);
     expect(boardLeft).toBeGreaterThanOrEqual(0);
     expect(boardRight).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH);
     expect(boardBottom).toBeLessThan(hudTop);

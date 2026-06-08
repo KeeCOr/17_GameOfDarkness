@@ -18,31 +18,29 @@ export class UIScene extends Phaser.Scene {
   create() {
     this.gameScene = this.scene.get('Game');
 
+    addPanel(this, LAYOUT.HUD_TOP_X, LAYOUT.HUD_TOP_Y, LAYOUT.HUD_TOP_WIDTH, LAYOUT.HUD_TOP_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
     addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
 
-    this.turnText = this.add.text(PANEL_X, LAYOUT.HUD_PANEL_Y + 18, UI_COPY.game.playerTurn, {
-      fontSize: '20px', color: TEXT_COLORS.SUCCESS, fontStyle: 'bold',
+    this.turnText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 14, UI_COPY.game.playerTurn, {
+      fontSize: '18px', color: TEXT_COLORS.SUCCESS, fontStyle: 'bold',
     });
-    this.timerText = this.add.text(PANEL_X, LAYOUT.HUD_PANEL_Y + 44, formatClock(TURN_TIME_LIMIT), {
-      fontSize: '26px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
+    this.timerText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 40, formatClock(TURN_TIME_LIMIT), {
+      fontSize: '24px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
     });
 
-    const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_PANEL_Y + 28, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
+    const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 28, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
     help.rect.on('pointerdown', () => this._showHelp());
 
-    addDivider(this, PANEL_X, LAYOUT.HUD_PANEL_Y + 78, CONTENT_W);
-    addSectionLabel(this, PANEL_X, LAYOUT.HUD_PANEL_Y + 90, UI_COPY.game.action);
-    this.moveSlot = this._addActionSlot(PANEL_X, LAYOUT.HUD_PANEL_Y + 122, UI_COPY.game.moveSlot);
-    this.summonSlot = this._addActionSlot(PANEL_X + 188, LAYOUT.HUD_PANEL_Y + 122, UI_COPY.game.summonSlot);
+    addSectionLabel(this, PANEL_X + 178, LAYOUT.HUD_TOP_Y + 13, UI_COPY.game.action);
+    this.moveSlot = this._addActionSlot(PANEL_X + 176, LAYOUT.HUD_TOP_Y + 56, UI_COPY.game.moveSlot);
 
-    this.ruleText = this.add.text(PANEL_X, LAYOUT.HUD_PANEL_Y + 154, UI_COPY.game.turnRule, {
+    this.ruleText = this.add.text(PANEL_X + 178, LAYOUT.HUD_TOP_Y + 72, UI_COPY.game.turnRule, {
       fontSize: '12px', color: '#ffffff', fontStyle: 'bold',
     });
-    this.ruleSubText = this.add.text(PANEL_X, LAYOUT.HUD_PANEL_Y + 170, UI_COPY.game.turnRuleSub, {
+    this.ruleSubText = this.add.text(PANEL_X + 302, LAYOUT.HUD_TOP_Y + 74, UI_COPY.game.turnRuleSub, {
       fontSize: '10px', color: TEXT_COLORS.MUTED,
     });
 
-    addDivider(this, PANEL_X, LAYOUT.HUD_PANEL_Y + 188, CONTENT_W);
     addSectionLabel(this, PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y, UI_COPY.game.summon);
     this.summonHint = this.add.text(PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y + 16, UI_COPY.game.summonHint, {
       fontSize: '10px', color: '#6fffe0', fontStyle: 'bold',
@@ -85,7 +83,9 @@ export class UIScene extends Phaser.Scene {
       this.summonButtons[type] = { ...button, icon, manaIcon, name, grade, requirement, cost };
     });
 
-    this.checkText = this.add.text(PANEL_X + CONTENT_W - 82, LAYOUT.HUD_PANEL_Y + 154, UI_COPY.game.check, {
+    this.summonSlot = this._addActionSlot(PANEL_X, LAYOUT.HUD_PANEL_Y + 211, UI_COPY.game.summonSlot);
+
+    this.checkText = this.add.text(PANEL_X + CONTENT_W - 90, LAYOUT.HUD_TOP_Y + 72, UI_COPY.game.check, {
       fontSize: '17px', color: TEXT_COLORS.DANGER, fontStyle: 'bold',
     }).setVisible(false);
 

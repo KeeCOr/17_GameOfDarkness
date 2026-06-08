@@ -214,6 +214,8 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.1.40: 9:16 플레이 화면에서 소환 관련 패널을 하단에 유지하고, 턴/시간/도움말/이동 상태 HUD를 상단으로 이동해 보드와 HUD 영역이 겹치지 않도록 재배치했다.
+- v0.1.39: 멀티플레이 서버 로직을 `server/multiplayerCore.cjs`로 분리하고, `matchResult` 메시지로 승패 결과를 받아 랭크 포인트를 갱신한 뒤 양쪽 클라이언트에 최신 account를 다시 보내는 흐름을 추가했다.
 - v0.1.38: 멀티플레이 로비가 서버 계정 페이로드의 `account.rankPoints`를 받는 시점에 `SteamService.uploadRankPoints()`를 호출하도록 연결해 `RANK_POINTS` 리더보드 업로드 경로를 실제 UI 흐름에 붙였다.
 - v0.1.37: Steam 리더보드 1차 카탈로그를 추가해 `RANK_POINTS`의 정렬 방향, 표시 타입, 업로드 정책, 점수 출처를 고정하고 Steamworks App Admin 입력 문서를 작성했다.
 - v0.1.36: `electron/steamClient.cjs`를 추가해 `STEAM_APP_ID` 기반 optional Steamworks SDK 로딩 구조를 만들고, SDK 미설치 상태에서도 Electron 빌드가 fallback 클라이언트로 안전하게 동작하게 했다.

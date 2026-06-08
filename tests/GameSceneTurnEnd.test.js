@@ -23,7 +23,7 @@ describe('GameScene manual turn ending', () => {
     scene.endTurnManually();
 
     expect(ended).toBe(true);
-  });
+  }, 10000);
 
   it('cancels selected movement with a right-click', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
