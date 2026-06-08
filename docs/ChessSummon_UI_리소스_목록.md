@@ -36,6 +36,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.56 enlarges the in-game board cells and gives non-pawn pieces a larger display size so major silhouettes spill beyond their cells.
+- v0.1.55 centers the single-line top HUD hint and removes the separate current-turn text label, relying on clock emphasis for turn state.
 - v0.1.54 displays both player and opponent chess clocks in the top HUD, keeps the turn hint to one line, and expands help modal spacing.
 - v0.1.53 adds a first-turn battle entry overlay using existing chess piece textures and Phaser graphics, guided by the generated entry mockup.
 - v0.1.52 compresses the top HUD timer and moves board guidance into the top HUD via `hint-change` events.

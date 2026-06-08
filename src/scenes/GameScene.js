@@ -204,21 +204,27 @@ export class GameScene extends Phaser.Scene {
     const x = LAYOUT.BOARD_OFFSET_X + c * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
     const y = LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
     const key = `${piece.type.toLowerCase()}_${piece.owner === Owner.PLAYER ? 'w' : 'd'}`;
+    const displaySize = this._getPieceDisplaySize(piece);
+    const shadowWidth = piece.type === PieceType.PAWN ? LAYOUT.PIECE_SHADOW_WIDTH : LAYOUT.NON_PAWN_PIECE_SHADOW_WIDTH;
     const shadow = this.add.ellipse(
       x + 2,
       y + LAYOUT.CELL_SIZE * 0.34,
-      LAYOUT.PIECE_SHADOW_WIDTH,
+      shadowWidth,
       LAYOUT.PIECE_SHADOW_HEIGHT,
       0x000000,
       0.34,
     ).setDepth(3);
     const obj = this.add.image(x, y, key)
-      .setDisplaySize(LAYOUT.PIECE_SIZE, LAYOUT.PIECE_SIZE)
+      .setDisplaySize(displaySize, displaySize)
       .setDepth(4);
     this.pieceObjects[`${r},${c}`] = {
       destroy: () => { shadow.destroy(); obj.destroy(); },
       setVisible: visible => { shadow.setVisible(visible); obj.setVisible(visible); },
     };
+  }
+
+  _getPieceDisplaySize(piece) {
+    return piece?.type === PieceType.PAWN ? LAYOUT.PIECE_SIZE : LAYOUT.NON_PAWN_PIECE_SIZE;
   }
 
   _clearHighlights() {
@@ -366,8 +372,9 @@ export class GameScene extends Phaser.Scene {
     if (origObj) origObj.setVisible(false);
 
     const key = `${piece.type.toLowerCase()}_${piece.owner === Owner.PLAYER ? 'w' : 'd'}`;
+    const displaySize = this._getPieceDisplaySize(piece);
     const animPiece = this.add.image(fromX, fromY, key)
-      .setDisplaySize(LAYOUT.PIECE_SIZE, LAYOUT.PIECE_SIZE)
+      .setDisplaySize(displaySize, displaySize)
       .setDepth(6);
 
     this.tweens.add({

@@ -70,6 +70,8 @@ describe('visual theme helpers', () => {
     expect(uiSceneSource).toContain("gameScene.events.on('hint-change'");
     expect(uiSceneSource).toContain('this.hintText');
     expect(uiSceneSource).toContain('maxLines: 1');
+    expect(uiSceneSource).toContain("align: 'center'");
+    expect(uiSceneSource).toContain('fixedWidth: CONTENT_W');
     expect(uiSceneSource).toContain('compactHint');
     expect(uiSceneSource).not.toContain('wordWrap: { width: CONTENT_W - 82 }');
   });
@@ -81,6 +83,12 @@ describe('visual theme helpers', () => {
     expect(uiSceneSource).toContain('this.aiClockText');
     expect(uiSceneSource).toContain('_setClockTexts');
     expect(uiSceneSource).toContain('clockTimes');
+  });
+
+  it('does not render a separate current-turn text label in the top HUD', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(uiSceneSource).not.toContain('this.turnText');
   });
 
   it('uses a taller help modal so body text and buttons stay separated', () => {
@@ -213,11 +221,21 @@ describe('visual theme helpers', () => {
   });
 
   it('lets rendered board pieces slightly spill outside a single cell', () => {
-    expect(LAYOUT.CELL_SIZE).toBeGreaterThanOrEqual(62);
-    expect(LAYOUT.PIECE_SIZE).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE + 8);
+    expect(LAYOUT.CELL_SIZE).toBeGreaterThanOrEqual(65);
+    expect(LAYOUT.PIECE_SIZE).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE + 6);
     expect(LAYOUT.PIECE_SIZE).toBeLessThanOrEqual(LAYOUT.CELL_SIZE + 12);
+    expect(LAYOUT.NON_PAWN_PIECE_SIZE).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE + 16);
+    expect(LAYOUT.NON_PAWN_PIECE_SIZE).toBeLessThanOrEqual(LAYOUT.CELL_SIZE + 20);
     expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE - 14);
     expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeLessThanOrEqual(LAYOUT.CELL_SIZE - 8);
+  });
+
+  it('uses a larger display size for non-pawn board pieces', () => {
+    const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+
+    expect(gameSceneSource).toContain('_getPieceDisplaySize');
+    expect(gameSceneSource).toContain('PieceType.PAWN');
+    expect(gameSceneSource).toContain('LAYOUT.NON_PAWN_PIECE_SIZE');
   });
 
   it('reserves non-overlapping summon panel zones', () => {
@@ -249,7 +267,7 @@ describe('visual theme helpers', () => {
     const hudBottom = LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT;
 
     expect(topHudBottom).toBeLessThan(LAYOUT.BOARD_OFFSET_Y);
-    expect(LAYOUT.CELL_SIZE * 5).toBeGreaterThanOrEqual(310);
+    expect(LAYOUT.CELL_SIZE * 5).toBeGreaterThanOrEqual(325);
     expect(boardLeft).toBeGreaterThanOrEqual(0);
     expect(boardRight).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH);
     expect(boardBottom).toBeLessThanOrEqual(hudTop);

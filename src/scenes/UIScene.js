@@ -21,22 +21,18 @@ export class UIScene extends Phaser.Scene {
     addPanel(this, LAYOUT.HUD_TOP_X, LAYOUT.HUD_TOP_Y, LAYOUT.HUD_TOP_WIDTH, LAYOUT.HUD_TOP_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
     addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
 
-    this.turnText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 14, UI_COPY.game.playerTurn, {
-      fontSize: '14px', color: TEXT_COLORS.SUCCESS, fontStyle: 'bold',
-      fixedWidth: 72,
-    });
-    this.playerClockBg = this.add.rectangle(PANEL_X + 126, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
+    this.playerClockBg = this.add.rectangle(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
       .setAlpha(0.82)
       .setStrokeStyle(1, COLORS.EMERALD, 0.58);
-    this.aiClockBg = this.add.rectangle(PANEL_X + 224, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
+    this.aiClockBg = this.add.rectangle(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
       .setAlpha(0.82)
       .setStrokeStyle(1, COLORS.CRIMSON, 0.46);
-    this.playerClockText = this.add.text(PANEL_X + 126, LAYOUT.HUD_TOP_Y + 24, `나 ${formatClock(TURN_TIME_LIMIT)}`, {
+    this.playerClockText = this.add.text(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, `나 ${formatClock(TURN_TIME_LIMIT)}`, {
       fontSize: '14px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
       fixedWidth: 82,
       align: 'center',
     }).setOrigin(0.5);
-    this.aiClockText = this.add.text(PANEL_X + 224, LAYOUT.HUD_TOP_Y + 24, `상대 ${formatClock(TURN_TIME_LIMIT)}`, {
+    this.aiClockText = this.add.text(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, `상대 ${formatClock(TURN_TIME_LIMIT)}`, {
       fontSize: '14px', color: TEXT_COLORS.MUTED, fontStyle: 'bold',
       fixedWidth: 82,
       align: 'center',
@@ -51,8 +47,8 @@ export class UIScene extends Phaser.Scene {
       fontSize: '12px',
       color: '#ffffff',
       fontStyle: 'bold',
-      align: 'left',
-      fixedWidth: CONTENT_W - 82,
+      align: 'center',
+      fixedWidth: CONTENT_W,
       maxLines: 1,
     }).setOrigin(0, 0).setDepth(2);
 
@@ -204,8 +200,6 @@ export class UIScene extends Phaser.Scene {
 
   _onTurnStart({ turn, mana, timeLeft, clockTimes, summonCounts }) {
     const playerTurn = turn === Owner.PLAYER;
-    this.turnText.setText(playerTurn ? UI_COPY.game.playerTurn : UI_COPY.game.aiTurn);
-    this.turnText.setColor(playerTurn ? TEXT_COLORS.SUCCESS : TEXT_COLORS.DANGER);
     this._setClockTexts(clockTimes, turn, timeLeft);
     this._setMana(mana[Owner.PLAYER]);
     this.checkText.setVisible(false);
