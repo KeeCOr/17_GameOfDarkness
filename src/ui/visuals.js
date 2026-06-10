@@ -52,7 +52,6 @@ export const UI_COPY = Object.freeze({
     summonReady: '가능',
     summonDone: '완료',
     summon: '소환 카드',
-    summonHint: '아군 주변 빈 칸',
     endTurn: '턴 종료',
     surrender: '기권',
     help: '?',
@@ -104,6 +103,8 @@ export const UI_COPY = Object.freeze({
   result: {
     win: '승리!',
     lose: '패배...',
+    timeoutLose: '시간이 부족해서 졌습니다',
+    timeoutWin: '상대 시간이 부족해 승리했습니다',
     replay: '다시하기',
     menu: '메인 메뉴',
   },

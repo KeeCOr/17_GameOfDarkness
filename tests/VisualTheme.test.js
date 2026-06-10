@@ -52,6 +52,7 @@ describe('visual theme helpers', () => {
     expect(uiSceneSource).not.toContain('getSummonGradeStars');
     expect(uiSceneSource).not.toContain('getSummonRequirementLabel');
     expect(uiSceneSource).not.toContain('SUMMON_CARD_META');
+    expect(uiSceneSource).not.toContain('summonHint');
   });
 
   it('returns board hints for turn states', () => {
@@ -243,9 +244,11 @@ describe('visual theme helpers', () => {
     expect(LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH - 12);
     const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 22;
     expect(LAYOUT.HUD_PANEL_Y - boardBottom).toBeLessThanOrEqual(18);
-    const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 16 + 14;
+    const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 14;
     const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
     expect(hintBottom).toBeLessThanOrEqual(firstSummonTop - 6);
+    expect(LAYOUT.HUD_SUMMON_ROW_HEIGHT).toBeGreaterThanOrEqual(36);
+    expect(LAYOUT.HUD_SUMMON_ROW_GAP).toBeGreaterThanOrEqual(LAYOUT.HUD_SUMMON_ROW_HEIGHT + 3);
     const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_ROW_GAP * 4 + LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
     const manaGaugeBottom = LAYOUT.HUD_MANA_Y + 11;

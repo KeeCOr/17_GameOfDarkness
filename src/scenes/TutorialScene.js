@@ -10,7 +10,7 @@ const PANEL_X = LAYOUT.PANEL_X;
 
 const HIGHLIGHT_RECTS = {
   board: { x: BOARD_X - 10, y: BOARD_Y - 10, w: BOARD_W + 20, h: BOARD_H + 20 },
-  summonUI: { x: LAYOUT.HUD_PANEL_X + 12, y: LAYOUT.HUD_SUMMON_LABEL_Y - 14, w: LAYOUT.HUD_PANEL_WIDTH - 24, h: 168 },
+  summonUI: { x: LAYOUT.HUD_PANEL_X + 12, y: LAYOUT.HUD_SUMMON_LABEL_Y - 14, w: LAYOUT.HUD_PANEL_WIDTH - 24, h: 230 },
   endBtn: { x: PANEL_X - 8, y: LAYOUT.HUD_FOOTER_Y - 22, w: LAYOUT.PANEL_WIDTH + 16, h: 44 },
 };
 

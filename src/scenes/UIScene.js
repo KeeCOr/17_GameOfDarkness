@@ -54,23 +54,19 @@ export class UIScene extends Phaser.Scene {
     }).setOrigin(0, 0).setDepth(2);
 
     addSectionLabel(this, PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y, UI_COPY.game.summon);
-    this.summonHint = this.add.text(PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y + 16, UI_COPY.game.summonHint, {
-      fontSize: '10px', color: '#6fffe0', fontStyle: 'bold',
-      wordWrap: { width: 160 },
-    }).setOrigin(0, 0);
 
     this.summonButtons = {};
     SUMMONABLE.forEach((type, i) => {
       const y = LAYOUT.HUD_SUMMON_START_Y + i * LAYOUT.HUD_SUMMON_ROW_GAP;
-      const button = addTextButton(this, PANEL_X + CONTENT_W / 2, y, CONTENT_W, LAYOUT.HUD_SUMMON_ROW_HEIGHT, '', { enabled: false, fontSize: '14px' });
-      const icon = this.add.image(PANEL_X + 20, y, `${type.toLowerCase()}_w`).setDisplaySize(24, 24).setAlpha(0.3).setDepth(2);
-      const name = this.add.text(PANEL_X + 44, y, getPieceName(type), {
-        fontSize: '15px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
+      const button = addTextButton(this, PANEL_X + CONTENT_W / 2, y, CONTENT_W, LAYOUT.HUD_SUMMON_ROW_HEIGHT, '', { enabled: false, fontSize: '15px' });
+      const icon = this.add.image(PANEL_X + 24, y, `${type.toLowerCase()}_w`).setDisplaySize(30, 30).setAlpha(0.3).setDepth(2);
+      const name = this.add.text(PANEL_X + 54, y, getPieceName(type), {
+        fontSize: '16px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
       }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
       const manaIcon = this._addManaIcon(PANEL_X + CONTENT_W - 88, y, 0.78, 2);
       manaIcon.setAlpha(0.45);
       const cost = this.add.text(PANEL_X + CONTENT_W - 77, y, String(SUMMON_COSTS[type]), {
-        fontSize: '14px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
+        fontSize: '15px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
       }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
 
       button.rect.on('pointerdown', () => {

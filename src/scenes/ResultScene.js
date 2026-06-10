@@ -8,6 +8,7 @@ export class ResultScene extends Phaser.Scene {
 
   init(data) {
     this.winner = data.winner;
+    this.resultReason = data.resultReason || null;
     this.difficulty = data.difficulty || Difficulty.EASY;
     this.aiProfile = data.aiProfile || null;
     this.replaying = false;
@@ -18,7 +19,7 @@ export class ResultScene extends Phaser.Scene {
     const playerWon = this.winner === Owner.PLAYER;
     addStageBackground(this, playerWon ? UI_COPY.result.win : UI_COPY.result.lose);
 
-    this.add.text(cx, 165, playerWon ? '왕좌를 지켜냈습니다' : '왕좌를 빼앗겼습니다', {
+    this.add.text(cx, 165, getResultDetailText(this.winner, this.resultReason), {
       fontSize: '18px',
       color: playerWon ? TEXT_COLORS.SUCCESS : TEXT_COLORS.DANGER,
       fontStyle: 'bold',
@@ -65,4 +66,12 @@ export class ResultScene extends Phaser.Scene {
 
     startReplay();
   }
+}
+
+export function getResultDetailText(winner, resultReason) {
+  const playerWon = winner === Owner.PLAYER;
+  if (resultReason === 'timeout') {
+    return playerWon ? UI_COPY.result.timeoutWin : UI_COPY.result.timeoutLose;
+  }
+  return playerWon ? '왕좌를 지켜냈습니다' : '왕좌를 빼앗겼습니다';
 }

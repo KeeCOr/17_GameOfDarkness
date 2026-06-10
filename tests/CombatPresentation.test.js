@@ -32,6 +32,17 @@ describe('combat presentation resources', () => {
     expect(source).toContain('king_d');
   });
 
+  it('floats regular turn labels upward without a board-covering background', async () => {
+    const { readFileSync } = await import('node:fs');
+    const source = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+
+    expect(source).toContain('y: cy - 58');
+    expect(source).toContain('Cubic.easeOut');
+    expect(source).toContain('targets: txt');
+    expect(source).not.toContain('const border = this.add.rectangle(cx, cy, 242');
+    expect(source).not.toContain('const bg = this.add.rectangle(cx, cy, 232');
+  });
+
   it('emits a promotion effect for every pawn that becomes a queen', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);

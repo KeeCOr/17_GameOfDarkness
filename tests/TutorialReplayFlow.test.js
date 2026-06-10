@@ -7,6 +7,13 @@ beforeAll(() => {
 });
 
 describe('tutorial and replay flow', () => {
+  it('uses clear timeout result copy', async () => {
+    const { getResultDetailText } = await import('../src/scenes/ResultScene.js');
+
+    expect(getResultDetailText('AI', 'timeout')).toBe(UI_COPY.result.timeoutLose);
+    expect(getResultDetailText('PLAYER', 'timeout')).toBe(UI_COPY.result.timeoutWin);
+  });
+
   it('keeps every tutorial copy step in the tutorial sequence', async () => {
     const { TUTORIAL_STEPS } = await import('../src/scenes/TutorialScene.js');
     const texts = TUTORIAL_STEPS.map(step => step.text);

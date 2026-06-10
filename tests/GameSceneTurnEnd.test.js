@@ -109,19 +109,21 @@ describe('GameScene manual turn ending', () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
     let winner = null;
+    let reason = null;
 
     scene.board = { currentTurn: Owner.AI };
     scene.clockTimes = { [Owner.PLAYER]: 12, [Owner.AI]: 1 };
     scene.tutorialMode = false;
     scene.events = { emit: () => {} };
     scene.turnTimer = { remove() {} };
-    scene._gameOver = value => { winner = value; };
+    scene._gameOver = (value, resultReason) => { winner = value; reason = resultReason; };
 
     scene._tickTimer();
 
     expect(scene.clockTimes[Owner.PLAYER]).toBe(12);
     expect(scene.clockTimes[Owner.AI]).toBe(0);
     expect(winner).toBe(Owner.PLAYER);
+    expect(reason).toBe('timeout');
   });
 
   it('warns after 30 seconds without player input', async () => {
@@ -223,21 +225,49 @@ describe('GameScene manual turn ending', () => {
     expect(removed).toBe(true);
   });
 
-  it('reveals the whole board on easy difficulty', async () => {
+  it('keeps fog of war on easy difficulty instead of revealing the whole board', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
 
     scene.difficulty = Difficulty.EASY;
     scene.board = new Board();
     scene.board.setPiece(4, 2, new Piece(PieceType.KING, Owner.PLAYER));
+    scene.board.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
     scene.calc = { getMoves: () => [] };
     scene.detector = { getThreats: () => [] };
 
     const visible = scene._getVisibleCells();
 
-    expect(visible.size).toBe(BOARD_SIZE * BOARD_SIZE);
-    expect(visible.has('0,0')).toBe(true);
-    expect(visible.has('4,4')).toBe(true);
+    expect(visible.size).toBeLessThan(BOARD_SIZE * BOARD_SIZE);
+    expect(visible.has('4,2')).toBe(true);
+    expect(visible.has('0,0')).toBe(false);
+  });
+
+  it('does not reveal every allied piece move path until a piece is selected', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+
+    scene.difficulty = Difficulty.MEDIUM;
+    scene.board = new Board();
+    scene.board.setPiece(4, 2, new Piece(PieceType.KING, Owner.PLAYER));
+    scene.board.setPiece(2, 2, new Piece(PieceType.ROOK, Owner.PLAYER));
+    scene.board.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
+    scene.selectedCell = null;
+    scene.calc = { getMoves: () => [
+      { row: 0, col: 0 },
+      { row: 0, col: 1 },
+      { row: 0, col: 2 },
+      { row: 0, col: 3 },
+      { row: 0, col: 4 },
+    ] };
+    scene.detector = { getThreats: () => [] };
+
+    const idleVisible = scene._getVisibleCells();
+    expect(idleVisible.has('0,0')).toBe(false);
+
+    scene.selectedCell = { row: 2, col: 2 };
+    const selectedVisible = scene._getVisibleCells();
+    expect(selectedVisible.has('0,0')).toBe(true);
   });
 
   it('reports game results to achievement progress before leaving the game scene', async () => {
@@ -271,6 +301,7 @@ describe('GameScene manual turn ending', () => {
           winner: Owner.PLAYER,
           difficulty: Difficulty.HARD,
           aiProfile: { id: 'bot-hard', label: 'Hard Bot' },
+          resultReason: null,
         },
       },
     ]);
@@ -313,7 +344,7 @@ describe('GameScene manual turn ending', () => {
     scheduled[0].callback();
 
     expect(starts).toEqual([
-      { key: 'Result', data: { winner: Owner.AI, difficulty: Difficulty.EASY, aiProfile: null } },
+      { key: 'Result', data: { winner: Owner.AI, difficulty: Difficulty.EASY, aiProfile: null, resultReason: null } },
     ]);
   });
 

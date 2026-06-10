@@ -156,12 +156,6 @@ export class GameScene extends Phaser.Scene {
 
   _getVisibleCells() {
     const visible = new Set();
-    if (this.difficulty === Difficulty.EASY) {
-      for (let r = 0; r < BOARD_SIZE; r++)
-        for (let c = 0; c < BOARD_SIZE; c++)
-          visible.add(`${r},${c}`);
-      return visible;
-    }
     for (let r = 0; r < BOARD_SIZE; r++)
       for (let c = 0; c < BOARD_SIZE; c++) {
         const piece = this.board.getPiece(r, c);
@@ -173,9 +167,14 @@ export class GameScene extends Phaser.Scene {
             if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE)
               visible.add(`${nr},${nc}`);
           }
-        const moves = this.calc.getMoves(this.board, r, c);
+      }
+    if (this.selectedCell) {
+      const selected = this.board.getPiece(this.selectedCell.row, this.selectedCell.col);
+      if (selected?.owner === Owner.PLAYER) {
+        const moves = this.calc.getMoves(this.board, this.selectedCell.row, this.selectedCell.col);
         for (const m of moves) visible.add(`${m.row},${m.col}`);
       }
+    }
     const threats = this.detector.getThreats(this.board, Owner.PLAYER);
     for (const t of threats) visible.add(`${t.row},${t.col}`);
     return visible;
@@ -550,32 +549,21 @@ export class GameScene extends Phaser.Scene {
     const cy = LAYOUT.BOARD_OFFSET_Y + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
     const isPlayer = owner === Owner.PLAYER;
     const label = isPlayer ? UI_COPY.game.playerTurn : formatBotLabel(this.aiProfile) || UI_COPY.game.aiTurn;
-    const accentColor = isPlayer ? COLORS.EMERALD : 0xff6b35;
-    const bgColor = isPlayer ? 0x071a0f : 0x1a0707;
     const textColor = isPlayer ? '#2ecc71' : '#ff6b35';
 
-    const border = this.add.rectangle(cx, cy, 242, 80, accentColor).setDepth(10).setAlpha(0);
-    const bg = this.add.rectangle(cx, cy, 232, 70, bgColor).setDepth(10).setAlpha(0);
-    const txt = this.add.text(cx, cy, label, {
-      fontSize: '34px', color: textColor, fontStyle: 'bold',
-    }).setOrigin(0.5).setDepth(11).setAlpha(0);
+    const txt = this.add.text(cx, cy + 8, label, {
+      fontSize: '30px', color: textColor, fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(11).setAlpha(0.95);
+    txt.setStroke?.('#050812', 5);
+    txt.setShadow?.(0, 2, '#000000', 5, true, true);
 
-    const targets = [border, bg, txt];
     this.tweens.add({
-      targets,
-      alpha: 1,
-      duration: 150,
-      ease: 'Power2',
-      onComplete: () => {
-        this.time.delayedCall(550, () => {
-          this.tweens.add({
-            targets,
-            alpha: 0,
-            duration: 250,
-            onComplete: () => { border.destroy(); bg.destroy(); txt.destroy(); },
-          });
-        });
-      },
+      targets: txt,
+      y: cy - 58,
+      alpha: 0,
+      duration: 760,
+      ease: 'Cubic.easeOut',
+      onComplete: () => txt.destroy(),
     });
   }
 
@@ -707,7 +695,7 @@ export class GameScene extends Phaser.Scene {
     if (this.timeLeft <= 0) {
       if (this.turnTimer) { this.turnTimer.remove(); this.turnTimer = null; }
       if (this.tutorialMode) return;
-      this._gameOver(owner === Owner.PLAYER ? Owner.AI : Owner.PLAYER);
+      this._gameOver(owner === Owner.PLAYER ? Owner.AI : Owner.PLAYER, 'timeout');
     }
   }
 
@@ -830,7 +818,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  _gameOver(winner) {
+  _gameOver(winner, resultReason = null) {
     if (this.state === State.GAME_OVER) return;
     this.state = State.GAME_OVER;
     this.achievements?.recordGameOver?.({
@@ -844,7 +832,7 @@ export class GameScene extends Phaser.Scene {
       this.gameOverTransitionTimer = null;
       this.scene.stop('UI');
       if (this.tutorialMode) this.scene.stop('Tutorial');
-      this.scene.start('Result', { winner, difficulty: this.difficulty, aiProfile: this.aiProfile });
+      this.scene.start('Result', { winner, difficulty: this.difficulty, aiProfile: this.aiProfile, resultReason });
     });
   }
 

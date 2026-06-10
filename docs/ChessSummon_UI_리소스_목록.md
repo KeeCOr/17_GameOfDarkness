@@ -36,6 +36,11 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.63 limits move-path visibility to the currently selected player piece so medium games do not reveal most of the board after long-range summons.
+- v0.1.62 removes the Easy-difficulty full-board reveal branch so fog-of-war remains active on the player-facing board.
+- v0.1.61 removes the regular turn banner background and changes it to a floating fade-up text cue so the board remains readable.
+- v0.1.60 adds timeout-specific result copy so flag-fall losses read differently from king capture or checkmate losses.
+- v0.1.59 removes the summon panel helper copy and enlarges summon card rows, icons, and spacing while preserving mana/footer clearance.
 - v0.1.58 stabilizes replay by deferring result-screen restarts and wiring scene shutdown cleanup for timers and event listeners.
 - v0.1.57 ensures tutorial confirmation button backgrounds are included in overlay cleanup so popup button art cannot remain after advancing.
 - v0.1.56 enlarges the in-game board cells and gives non-pawn pieces a larger display size so major silhouettes spill beyond their cells.
