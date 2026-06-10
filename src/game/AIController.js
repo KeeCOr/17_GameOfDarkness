@@ -7,6 +7,11 @@ import {
 } from '../config.js';
 
 const SUMMONABLE_TYPES = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
+const VERY_HARD_MINIMAX_DEPTH = MINIMAX_DEPTH + 1;
+
+export function getSearchDepthForDifficulty(difficulty) {
+  return difficulty === Difficulty.VERY_HARD ? VERY_HARD_MINIMAX_DEPTH : MINIMAX_DEPTH;
+}
 
 export class AIController {
   constructor(difficulty) {
@@ -21,6 +26,7 @@ export class AIController {
       case Difficulty.EASY:   return this._easyAction(board);
       case Difficulty.MEDIUM: return this._mediumAction(board);
       case Difficulty.HARD:   return this._hardAction(board);
+      case Difficulty.VERY_HARD: return this._hardAction(board);
       default: return { type: 'pass' };
     }
   }
@@ -57,18 +63,55 @@ export class AIController {
       case Difficulty.HARD: {
         const safeMoves = allMoves.filter(m => this._safeMove(board, m));
         const candidates = safeMoves.length > 0 ? safeMoves : allMoves;
-        let bestScore = -Infinity;
-        let bestMove = candidates[0];
-        for (const move of candidates) {
-          const clone = board.clone();
-          clone.movePiece(move.from.row, move.from.col, move.to.row, move.to.col);
-          const score = this._minimax(clone, MINIMAX_DEPTH - 1, -Infinity, Infinity, false);
-          if (score > bestScore) { bestScore = score; bestMove = move; }
-        }
-        return { type: 'move', ...bestMove };
+        return this._searchBestMove(board, candidates);
+      }
+      case Difficulty.VERY_HARD: {
+        const safeMoves = allMoves.filter(m => this._safeMove(board, m));
+        const candidates = safeMoves.length > 0 ? safeMoves : allMoves;
+        const mateMove = this._findImmediateCheckmateMove(board, candidates, Owner.PLAYER);
+        if (mateMove) return { type: 'move', ...mateMove };
+        return this._searchBestMove(board, candidates);
       }
       default: return null;
     }
+  }
+
+  _searchBestMove(board, candidates) {
+    const depth = getSearchDepthForDifficulty(this.difficulty);
+    const ordered = this._orderMoveCandidates(board, candidates, Owner.AI);
+    let bestScore = -Infinity;
+    let bestMove = ordered[0];
+    for (const move of ordered) {
+      const clone = board.clone();
+      clone.movePiece(move.from.row, move.from.col, move.to.row, move.to.col);
+      const score = this._minimax(clone, depth - 1, -Infinity, Infinity, false);
+      if (score > bestScore) { bestScore = score; bestMove = move; }
+    }
+    return { type: 'move', ...bestMove };
+  }
+
+  _findImmediateCheckmateMove(board, moves, targetOwner) {
+    for (const move of this._orderMoveCandidates(board, moves, Owner.AI)) {
+      const clone = board.clone();
+      clone.movePiece(move.from.row, move.from.col, move.to.row, move.to.col);
+      if (this.detector.isCheckmate(clone, targetOwner)) return move;
+    }
+    return null;
+  }
+
+  _orderMoveCandidates(board, moves, owner) {
+    const opponent = owner === Owner.AI ? Owner.PLAYER : Owner.AI;
+    return [...moves].sort((a, b) => this._scoreMoveOrdering(board, b, opponent) - this._scoreMoveOrdering(board, a, opponent));
+  }
+
+  _scoreMoveOrdering(board, move, opponent) {
+    const captured = board.getPiece(move.to.row, move.to.col);
+    let score = captured ? (PIECE_VALUES[captured.type] || 0) * 10 : 0;
+    const clone = board.clone();
+    clone.movePiece(move.from.row, move.from.col, move.to.row, move.to.col);
+    if (this.detector.isCheckmate(clone, opponent)) score += 10000;
+    else if (this.detector.isInCheck(clone, opponent)) score += 50;
+    return score;
   }
 
   getSummon(board) {
@@ -83,6 +126,7 @@ export class AIController {
         return { type: 'summon', ...sorted[0] };
       }
       case Difficulty.HARD:
+      case Difficulty.VERY_HARD:
         return { type: 'summon', ...this._bestSummonOption(board, options, Owner.AI) };
       default: return null;
     }
@@ -120,17 +164,39 @@ export class AIController {
     return { type: 'pass' };
   }
 
-  // --- Hard: minimax with alpha-beta ---
+  // --- Hard and Very Hard: minimax with alpha-beta ---
   _hardAction(board) {
     let bestScore = -Infinity;
     let bestAction = { type: 'pass' };
-    const actions = this._generateActions(board, Owner.AI);
+    const depth = getSearchDepthForDifficulty(this.difficulty);
+    const actions = this._orderActions(board, this._generateActions(board, Owner.AI), Owner.AI);
     for (const action of actions) {
       const clone = this._applyAction(board.clone(), action, Owner.AI);
-      const score = this._minimax(clone, MINIMAX_DEPTH - 1, -Infinity, Infinity, false);
+      if (this.difficulty === Difficulty.VERY_HARD && this.detector.isCheckmate(clone, Owner.PLAYER)) {
+        return action;
+      }
+      const score = this._minimax(clone, depth - 1, -Infinity, Infinity, false);
       if (score > bestScore) { bestScore = score; bestAction = action; }
     }
     return bestAction;
+  }
+
+  _orderActions(board, actions, owner) {
+    const opponent = owner === Owner.AI ? Owner.PLAYER : Owner.AI;
+    return [...actions].sort((a, b) => this._scoreActionOrdering(board, b, owner, opponent) - this._scoreActionOrdering(board, a, owner, opponent));
+  }
+
+  _scoreActionOrdering(board, action, owner, opponent) {
+    const clone = this._applyAction(board.clone(), action, owner);
+    let score = this.detector.isCheckmate(clone, opponent) ? 10000 : 0;
+    if (this.detector.isInCheck(clone, opponent)) score += 50;
+    if (action.type === 'move') {
+      const captured = board.getPiece(action.to.row, action.to.col);
+      if (captured) score += (PIECE_VALUES[captured.type] || 0) * 10;
+    } else if (action.type === 'summon') {
+      score += (PIECE_VALUES[action.pieceType] || 0);
+    }
+    return score;
   }
 
   _minimax(board, depth, alpha, beta, maximizing) {

@@ -16,5 +16,6 @@ describe('AI matchmaking fallback', () => {
     expect(getAIMatchDifficulty(899)).toBe(Difficulty.EASY);
     expect(getAIMatchDifficulty(1000)).toBe(Difficulty.MEDIUM);
     expect(getAIMatchDifficulty(1200)).toBe(Difficulty.HARD);
+    expect(getAIMatchDifficulty(1500)).toBe(Difficulty.VERY_HARD);
   });
 });

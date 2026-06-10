@@ -15,11 +15,13 @@ export const UI_COPY = Object.freeze({
     back: '뒤로',
     subtitle: '난이도를 선택하세요',
     difficulties: {
+      VERY_HARD: '매우 어려움',
       EASY: '쉬움',
       MEDIUM: '보통',
       HARD: '어려움',
     },
     difficultyHints: {
+      VERY_HARD: '깊은 수읽기 + 체크메이트 압박',
       EASY: '자동 배치 + 튜토리얼 선택',
       MEDIUM: '자동 배치로 바로 시작',
       HARD: '직접 배치 후 전투',

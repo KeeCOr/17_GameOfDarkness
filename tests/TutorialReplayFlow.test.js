@@ -189,6 +189,42 @@ describe('tutorial and replay flow', () => {
     ]);
   });
 
+  it('keeps very hard replay in placement because pawns must be edited manually', async () => {
+    const { ResultScene } = await import('../src/scenes/ResultScene.js');
+    const scene = Object.create(ResultScene.prototype);
+    const starts = [];
+    const stops = [];
+    const delayed = [];
+
+    scene.difficulty = Difficulty.VERY_HARD;
+    scene.replaying = false;
+    scene.scene = {
+      stop: key => stops.push(key),
+      start: (key, data) => starts.push({ key, data }),
+    };
+    scene.time = { delayedCall: (delay, callback) => delayed.push({ delay, callback }) };
+
+    scene._replay();
+
+    expect(stops).toEqual(['UI', 'Tutorial', 'Game']);
+    expect(starts).toEqual([]);
+    expect(delayed).toHaveLength(1);
+
+    delayed[0].callback();
+
+    expect(starts).toEqual([
+      { key: 'Placement', data: { difficulty: Difficulty.VERY_HARD, skipTutorialPrompt: true, aiProfile: undefined } },
+    ]);
+  });
+
+  it('treats very hard as a manual placement difficulty', async () => {
+    const { requiresManualPlacement } = await import('../src/scenes/PlacementScene.js');
+
+    expect(requiresManualPlacement(Difficulty.HARD)).toBe(true);
+    expect(requiresManualPlacement(Difficulty.VERY_HARD)).toBe(true);
+    expect(requiresManualPlacement(Difficulty.MEDIUM)).toBe(false);
+  });
+
   it('starts hard mode battle immediately with the edited pawn positions', async () => {
     const { PlacementScene } = await import('../src/scenes/PlacementScene.js');
     const scene = Object.create(PlacementScene.prototype);

@@ -102,6 +102,7 @@ describe('menu flow', () => {
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.EASY)).toBe(true);
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.MEDIUM)).toBe(true);
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.HARD)).toBe(true);
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD)).toBe(true);
     expect(texts.some(text => text.value === '?뚮젅??紐⑤뱶 ?좏깮')).toBe(false);
   }, 10000);
 

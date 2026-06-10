@@ -9,6 +9,7 @@ export function shouldFallbackToAI(waitedMs, timeoutMs = AI_MATCH_TIMEOUT_MS) {
 export function getAIMatchDifficulty(rankPoints = 1000) {
   const points = Number(rankPoints) || 1000;
   if (points < 950) return Difficulty.EASY;
+  if (points >= 1500) return Difficulty.VERY_HARD;
   if (points >= 1150) return Difficulty.HARD;
   return Difficulty.MEDIUM;
 }

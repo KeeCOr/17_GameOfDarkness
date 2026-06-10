@@ -18,6 +18,10 @@ export function createDefaultPawnPlacements(random = Math.random) {
   return cells.slice(0, PAWN_COUNT);
 }
 
+export function requiresManualPlacement(difficulty) {
+  return difficulty === Difficulty.HARD || difficulty === Difficulty.VERY_HARD;
+}
+
 export class PlacementScene extends Phaser.Scene {
   constructor() { super('Placement'); }
 
@@ -38,7 +42,7 @@ export class PlacementScene extends Phaser.Scene {
   }
 
   create() {
-    if (this.difficulty !== Difficulty.HARD) {
+    if (!requiresManualPlacement(this.difficulty)) {
       this._autoStart();
       return;
     }

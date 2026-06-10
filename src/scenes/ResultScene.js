@@ -1,7 +1,7 @@
 // src/scenes/ResultScene.js
 import { Difficulty, LAYOUT, TEXT_COLORS, Owner } from '../config.js';
 import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
-import { createDefaultPawnPlacements } from './PlacementScene.js';
+import { createDefaultPawnPlacements, requiresManualPlacement } from './PlacementScene.js';
 
 export class ResultScene extends Phaser.Scene {
   constructor() { super('Result'); }
@@ -43,7 +43,7 @@ export class ResultScene extends Phaser.Scene {
     this.scene.stop('Game');
 
     const startReplay = () => {
-      if (this.difficulty === Difficulty.HARD) {
+      if (requiresManualPlacement(this.difficulty)) {
         this.scene.start('Placement', {
           difficulty: this.difficulty,
           skipTutorialPrompt: true,

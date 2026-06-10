@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { AIController } from '../src/game/AIController.js';
+import { AIController, getSearchDepthForDifficulty } from '../src/game/AIController.js';
 import { Board } from '../src/game/Board.js';
 import { Piece } from '../src/game/Piece.js';
 import { PieceType, Owner, Difficulty } from '../src/config.js';
@@ -35,6 +35,15 @@ describe('AIController', () => {
     const ai = new AIController(Difficulty.HARD);
     const action = ai.getAction(makeStartBoard());
     expect(['move', 'summon', 'pass']).toContain(action.type);
+  });
+
+  it('very hard returns an action and searches deeper than hard', () => {
+    const ai = new AIController(Difficulty.VERY_HARD);
+    const action = ai.getAction(makeStartBoard());
+
+    expect(['move', 'summon', 'pass']).toContain(action.type);
+    expect(getSearchDepthForDifficulty(Difficulty.VERY_HARD))
+      .toBeGreaterThan(getSearchDepthForDifficulty(Difficulty.HARD));
   });
 
   it('medium captures player piece when available', () => {
@@ -81,6 +90,24 @@ describe('AIController', () => {
     expect(action).toMatchObject({
       type: 'summon',
       to: { row: 1, col: 2 },
+    });
+  });
+
+  it('very hard takes an immediate checkmate move when it exists', () => {
+    const b = new Board();
+    b.setPiece(0, 0, new Piece(PieceType.KING, Owner.AI));
+    b.setPiece(2, 1, new Piece(PieceType.QUEEN, Owner.AI));
+    b.setPiece(4, 0, new Piece(PieceType.KING, Owner.PLAYER));
+    b.setPiece(3, 1, new Piece(PieceType.ROOK, Owner.AI));
+    b.mana[Owner.AI] = 0;
+
+    const ai = new AIController(Difficulty.VERY_HARD);
+    const action = ai.getMove(b);
+
+    expect(action).toMatchObject({
+      type: 'move',
+      from: { row: 2, col: 1 },
+      to: { row: 3, col: 0 },
     });
   });
 });

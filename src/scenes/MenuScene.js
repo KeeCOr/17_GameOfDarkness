@@ -70,9 +70,10 @@ export class MenuScene extends Phaser.Scene {
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
     const difficulties = [
-      { value: Difficulty.EASY, y: 300 },
-      { value: Difficulty.MEDIUM, y: 380 },
-      { value: Difficulty.HARD, y: 460 },
+      { value: Difficulty.EASY, y: 292 },
+      { value: Difficulty.MEDIUM, y: 362 },
+      { value: Difficulty.HARD, y: 432 },
+      { value: Difficulty.VERY_HARD, y: 502 },
     ];
 
     for (const { value, y } of difficulties) {
@@ -87,7 +88,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     if (showBack) {
-      const back = addTextButton(this, cx, 535, 150, 40, UI_COPY.menu.back, { fontSize: '15px' });
+      const back = addTextButton(this, cx, 600, 150, 40, UI_COPY.menu.back, { fontSize: '15px' });
       back.rect.on('pointerdown', () => this._showModeSelect());
     }
   }

@@ -48,5 +48,6 @@ describe('brand, rank, and bot presentation', () => {
     expect(getAIThinkDelayRange(Difficulty.EASY)).toEqual({ min: 3000, max: 5000 });
     expect(getAIThinkDelayRange(Difficulty.MEDIUM)).toEqual({ min: 3000, max: 5000 });
     expect(getAIThinkDelayRange(Difficulty.HARD)).toEqual({ min: 3000, max: 5000 });
+    expect(getAIThinkDelayRange(Difficulty.VERY_HARD)).toEqual({ min: 3000, max: 5000 });
   });
 });

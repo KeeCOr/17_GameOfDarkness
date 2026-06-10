@@ -36,6 +36,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.72 adds the Very Hard difficulty option to menu/replay/placement flows and connects high-rank AI fallback matches to it.
 - v0.1.71 adds a dedicated checkmate flash, burst, camera shake, CHECKMATE label, and result copy.
 - v0.1.70 recharges a side to 10 seconds at turn start when its chess clock is at 10 seconds or less.
 - v0.1.69 keeps AI turn thinking at 3-5 seconds while restoring the chess clock limit to three minutes per side.

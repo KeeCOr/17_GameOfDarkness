@@ -23,6 +23,7 @@ export const Difficulty = Object.freeze({
   EASY: 'EASY',
   MEDIUM: 'MEDIUM',
   HARD: 'HARD',
+  VERY_HARD: 'VERY_HARD',
 });
 
 export const SUMMON_COSTS = Object.freeze({
