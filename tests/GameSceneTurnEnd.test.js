@@ -105,6 +105,38 @@ describe('GameScene manual turn ending', () => {
     expect(scene.clockTimes[Owner.AI]).toBe(23);
   });
 
+  it('recharges a side to ten seconds when starting a turn at ten seconds or less', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const emitted = [];
+
+    scene.board = {
+      addMana() {},
+      currentTurn: Owner.AI,
+      mana: { [Owner.PLAYER]: 0, [Owner.AI]: 0 },
+      summonCounts: { [Owner.PLAYER]: {} },
+    };
+    scene.clockTimes = { [Owner.PLAYER]: 7, [Owner.AI]: 11 };
+    scene.turnTimer = null;
+    scene.pendingSummonType = 'PAWN';
+    scene.aiOverlay = { setAlpha() {} };
+    scene.events = { emit: (event, payload) => emitted.push({ event, payload }) };
+    scene.time = { addEvent: () => ({ remove() {} }) };
+    scene._showTurnBanner = () => {};
+    scene._showMovablePieces = () => {};
+    scene._showThreatsIfInCheck = () => {};
+    scene._updateHint = () => {};
+
+    scene._startTurn(Owner.PLAYER);
+
+    const payload = emitted.find(e => e.event === 'turn-start').payload;
+    expect(scene.timeLeft).toBe(10);
+    expect(scene.clockTimes[Owner.PLAYER]).toBe(10);
+    expect(scene.clockTimes[Owner.AI]).toBe(11);
+    expect(payload.timeLeft).toBe(10);
+    expect(payload.clockTimes[Owner.PLAYER]).toBe(10);
+  });
+
   it('decrements only the active side clock and loses on flag fall', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
@@ -243,7 +275,7 @@ describe('GameScene manual turn ending', () => {
     expect(visible.has('0,0')).toBe(false);
   });
 
-  it('does not reveal every allied piece move path until a piece is selected', async () => {
+  it('reveals every allied piece move and attack zone as vision', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);
 
@@ -262,12 +294,10 @@ describe('GameScene manual turn ending', () => {
     ] };
     scene.detector = { getThreats: () => [] };
 
-    const idleVisible = scene._getVisibleCells();
-    expect(idleVisible.has('0,0')).toBe(false);
+    const visible = scene._getVisibleCells();
 
-    scene.selectedCell = { row: 2, col: 2 };
-    const selectedVisible = scene._getVisibleCells();
-    expect(selectedVisible.has('0,0')).toBe(true);
+    expect(visible.has('0,0')).toBe(true);
+    expect(visible.has('0,4')).toBe(true);
   });
 
   it('reports game results to achievement progress before leaving the game scene', async () => {
@@ -345,6 +375,26 @@ describe('GameScene manual turn ending', () => {
 
     expect(starts).toEqual([
       { key: 'Result', data: { winner: Owner.AI, difficulty: Difficulty.EASY, aiProfile: null, resultReason: null } },
+    ]);
+  });
+
+  it('marks checkmate as the result reason when a king has no escape', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const endings = [];
+
+    scene.board = {
+      findKing: owner => ({ row: owner === Owner.PLAYER ? 4 : 0, col: 2 }),
+    };
+    scene.detector = {
+      isCheckmate: (_board, owner) => owner === Owner.AI,
+    };
+    scene._gameOver = (winner, reason) => endings.push({ winner, reason });
+
+    scene._checkGameOver();
+
+    expect(endings).toEqual([
+      { winner: Owner.PLAYER, reason: 'checkmate' },
     ]);
   });
 

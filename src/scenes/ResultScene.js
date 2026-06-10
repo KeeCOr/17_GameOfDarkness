@@ -73,5 +73,8 @@ export function getResultDetailText(winner, resultReason) {
   if (resultReason === 'timeout') {
     return playerWon ? UI_COPY.result.timeoutWin : UI_COPY.result.timeoutLose;
   }
+  if (resultReason === 'checkmate') {
+    return playerWon ? UI_COPY.result.checkmateWin : UI_COPY.result.checkmateLose;
+  }
   return playerWon ? '왕좌를 지켜냈습니다' : '왕좌를 빼앗겼습니다';
 }

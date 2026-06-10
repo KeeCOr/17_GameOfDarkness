@@ -13,7 +13,7 @@ import {
   BOARD_SIZE, Difficulty,
 } from '../config.js';
 import { getTurnHint, UI_COPY } from '../ui/visuals.js';
-import { playCaptureEffect, playCheckAlert, playPromotionEffect } from '../ui/effects.js';
+import { playCaptureEffect, playCheckAlert, playCheckmateAlert, playPromotionEffect } from '../ui/effects.js';
 
 const State = {
   WAITING: 'WAITING',
@@ -167,14 +167,9 @@ export class GameScene extends Phaser.Scene {
             if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE)
               visible.add(`${nr},${nc}`);
           }
-      }
-    if (this.selectedCell) {
-      const selected = this.board.getPiece(this.selectedCell.row, this.selectedCell.col);
-      if (selected?.owner === Owner.PLAYER) {
-        const moves = this.calc.getMoves(this.board, this.selectedCell.row, this.selectedCell.col);
+        const moves = this.calc.getMoves(this.board, r, c);
         for (const m of moves) visible.add(`${m.row},${m.col}`);
       }
-    }
     const threats = this.detector.getThreats(this.board, Owner.PLAYER);
     for (const t of threats) visible.add(`${t.row},${t.col}`);
     return visible;
@@ -629,6 +624,7 @@ export class GameScene extends Phaser.Scene {
         [Owner.AI]: TURN_TIME_LIMIT,
       };
     }
+    if (this.clockTimes[owner] <= 10) this.clockTimes[owner] = 10;
     this.timeLeft = this.clockTimes[owner];
     this.hasMoved = false;
     this.hasSummoned = false;
@@ -812,15 +808,16 @@ export class GameScene extends Phaser.Scene {
     } else if (!this.board.findKing(Owner.AI)) {
       this._gameOver(Owner.PLAYER);
     } else if (this.detector.isCheckmate(this.board, Owner.PLAYER)) {
-      this._gameOver(Owner.AI);
+      this._gameOver(Owner.AI, 'checkmate');
     } else if (this.detector.isCheckmate(this.board, Owner.AI)) {
-      this._gameOver(Owner.PLAYER);
+      this._gameOver(Owner.PLAYER, 'checkmate');
     }
   }
 
   _gameOver(winner, resultReason = null) {
     if (this.state === State.GAME_OVER) return;
     this.state = State.GAME_OVER;
+    if (resultReason === 'checkmate') this._animateCheckmate(winner);
     this.achievements?.recordGameOver?.({
       winner,
       difficulty: this.difficulty,
@@ -834,6 +831,15 @@ export class GameScene extends Phaser.Scene {
       if (this.tutorialMode) this.scene.stop('Tutorial');
       this.scene.start('Result', { winner, difficulty: this.difficulty, aiProfile: this.aiProfile, resultReason });
     });
+  }
+
+  _animateCheckmate(winner) {
+    const defeated = winner === Owner.PLAYER ? Owner.AI : Owner.PLAYER;
+    const kingPos = this.board.findKing(defeated);
+    if (!kingPos) return;
+    const x = LAYOUT.BOARD_OFFSET_X + kingPos.col * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    const y = LAYOUT.BOARD_OFFSET_Y + kingPos.row * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    playCheckmateAlert(this, x, y, { winner });
   }
 
   startSummonMode(pieceType) {

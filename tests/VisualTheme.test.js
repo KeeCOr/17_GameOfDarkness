@@ -258,6 +258,14 @@ describe('visual theme helpers', () => {
     expect(footerButtonBottom).toBeLessThanOrEqual(LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT - 6);
   });
 
+  it('sizes the board to match the summon panel width', () => {
+    const boardGridWidth = LAYOUT.CELL_SIZE * 5;
+    const boardFrameWidth = boardGridWidth + 44;
+
+    expect(Math.abs(boardGridWidth - LAYOUT.PANEL_WIDTH)).toBeLessThanOrEqual(2);
+    expect(Math.abs(boardFrameWidth - LAYOUT.HUD_PANEL_WIDTH)).toBeLessThanOrEqual(2);
+  });
+
   it('uses a 9:16 portrait playfield with top HUD, board, and summon panel in separate vertical zones', () => {
     expect(LAYOUT.GAME_WIDTH).toBe(450);
     expect(LAYOUT.GAME_HEIGHT).toBe(800);
@@ -275,6 +283,6 @@ describe('visual theme helpers', () => {
     expect(boardRight).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH);
     expect(boardBottom).toBeLessThanOrEqual(hudTop);
     expect(hudTop - boardBottom).toBeLessThanOrEqual(18);
-    expect(hudBottom).toBeLessThanOrEqual(LAYOUT.GAME_HEIGHT - 12);
+    expect(hudBottom).toBeLessThanOrEqual(LAYOUT.GAME_HEIGHT - 4);
   });
 });

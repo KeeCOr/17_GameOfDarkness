@@ -209,6 +209,55 @@ export function playCheckAlert(scene, x, y) {
   showImpactLabel(scene, x, y - 62, 'CHECK', '#ff6b6b');
 }
 
+export function playCheckmateAlert(scene, x, y, { winner } = {}) {
+  scene.cameras?.main?.shake?.(420, 0.009);
+
+  const playerWon = winner === Owner.PLAYER;
+  const accent = playerWon ? COLORS.SUCCESS : COLORS.CRIMSON;
+  const overlay = scene.add.rectangle(
+    LAYOUT.GAME_WIDTH / 2,
+    LAYOUT.GAME_HEIGHT / 2,
+    LAYOUT.GAME_WIDTH,
+    LAYOUT.GAME_HEIGHT,
+    playerWon ? 0x0d7f66 : COLORS.CRIMSON,
+    0.26,
+  ).setDepth(14);
+
+  const burst = scene.add.graphics().setDepth(16);
+  burst.lineStyle(7, accent, 1);
+  burst.strokeCircle(x, y, 44);
+  burst.lineStyle(3, COLORS.GOLD, 0.9);
+  burst.strokeCircle(x, y, 62);
+  burst.lineStyle(2, 0xffffff, 0.74);
+  for (let i = 0; i < 8; i++) {
+    const angle = (Math.PI * 2 * i) / 8;
+    burst.lineBetween(
+      x + Math.cos(angle) * 34,
+      y + Math.sin(angle) * 34,
+      x + Math.cos(angle) * 82,
+      y + Math.sin(angle) * 82,
+    );
+  }
+
+  scene.tweens.add({
+    targets: overlay,
+    alpha: 0,
+    duration: 720,
+    ease: 'Sine.easeOut',
+    onComplete: () => overlay.destroy(),
+  });
+  scene.tweens.add({
+    targets: burst,
+    alpha: 0,
+    scaleX: 1.65,
+    scaleY: 1.65,
+    duration: 760,
+    ease: 'Back.easeOut',
+    onComplete: () => burst.destroy(),
+  });
+  showImpactLabel(scene, LAYOUT.GAME_WIDTH / 2, y - 80, 'CHECKMATE', playerWon ? '#6fffe0' : '#ff6b6b');
+}
+
 export function showImpactLabel(scene, x, y, label, color) {
   const bg = scene.add.rectangle(x, y, 128, 30, 0x050710, 0.86)
     .setDepth(11)

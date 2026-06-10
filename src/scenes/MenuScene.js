@@ -1,6 +1,6 @@
 // src/scenes/MenuScene.js
 import { LAYOUT, Difficulty, TEXT_COLORS } from '../config.js';
-import { RELEASE_INFO } from '../releaseInfo.js';
+import { RELEASE_CHANNELS, RELEASE_INFO } from '../releaseInfo.js';
 import {
   addReleaseBadge,
   addStageBackground,
@@ -12,9 +12,15 @@ export class MenuScene extends Phaser.Scene {
   constructor() { super('Menu'); }
 
   create() {
-    this.mode = 'mode';
     this.buttons = [];
-    this._showModeSelect();
+    if (shouldShowModeSelect(RELEASE_INFO)) {
+      this.mode = 'mode';
+      this._showModeSelect();
+      return;
+    }
+
+    this.mode = 'difficulty';
+    this._showDifficultySelect({ showBack: false });
   }
 
   _clearMenu() {
@@ -46,7 +52,7 @@ export class MenuScene extends Phaser.Scene {
     multi.rect.on('pointerdown', () => this.scene.start('MultiplayerLobby'));
   }
 
-  _showDifficultySelect() {
+  _showDifficultySelect({ showBack = true } = {}) {
     this._clearMenu();
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.menu.title);
@@ -80,8 +86,10 @@ export class MenuScene extends Phaser.Scene {
       this._wireDifficultyOption(button, cx, y, value);
     }
 
-    const back = addTextButton(this, cx, 535, 150, 40, UI_COPY.menu.back, { fontSize: '15px' });
-    back.rect.on('pointerdown', () => this._showModeSelect());
+    if (showBack) {
+      const back = addTextButton(this, cx, 535, 150, 40, UI_COPY.menu.back, { fontSize: '15px' });
+      back.rect.on('pointerdown', () => this._showModeSelect());
+    }
   }
 
   _wireDifficultyOption(button, x, y, value) {
@@ -98,4 +106,8 @@ export class MenuScene extends Phaser.Scene {
     hitArea.on('pointerout', () => button.rect.setFillStyle(0x263155));
     hitArea.on('pointerdown', startPlacement);
   }
+}
+
+export function shouldShowModeSelect(releaseInfo = RELEASE_INFO) {
+  return releaseInfo?.channel === RELEASE_CHANNELS.STEAM;
 }

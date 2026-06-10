@@ -84,6 +84,27 @@ function makeMenuScene() {
 }
 
 describe('menu flow', () => {
+  it('uses the full mode select flow on Steam release builds', async () => {
+    const { shouldShowModeSelect } = await import('../src/scenes/MenuScene.js');
+
+    expect(shouldShowModeSelect({ channel: 'steam' })).toBe(true);
+    expect(shouldShowModeSelect({ channel: 'desktop' })).toBe(false);
+    expect(shouldShowModeSelect({ channel: 'html' })).toBe(false);
+  });
+
+  it('opens directly on difficulty select during test distribution', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { scene, rectangles, texts } = makeMenuScene();
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+
+    scene.create();
+
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.EASY)).toBe(true);
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.MEDIUM)).toBe(true);
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.HARD)).toBe(true);
+    expect(texts.some(text => text.value === '?뚮젅??紐⑤뱶 ?좏깮')).toBe(false);
+  }, 10000);
+
   it('lets the enlarged difficulty hit area start placement', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { scene, rectangles, starts } = makeMenuScene();

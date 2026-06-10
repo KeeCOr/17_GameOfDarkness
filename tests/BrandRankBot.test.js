@@ -45,8 +45,8 @@ describe('brand, rank, and bot presentation', () => {
   });
 
   it('uses human-like AI thinking windows by difficulty', () => {
-    expect(getAIThinkDelayRange(Difficulty.EASY)).toEqual({ min: 850, max: 1500 });
-    expect(getAIThinkDelayRange(Difficulty.MEDIUM)).toEqual({ min: 1100, max: 1900 });
-    expect(getAIThinkDelayRange(Difficulty.HARD)).toEqual({ min: 1400, max: 2600 });
+    expect(getAIThinkDelayRange(Difficulty.EASY)).toEqual({ min: 3000, max: 5000 });
+    expect(getAIThinkDelayRange(Difficulty.MEDIUM)).toEqual({ min: 3000, max: 5000 });
+    expect(getAIThinkDelayRange(Difficulty.HARD)).toEqual({ min: 3000, max: 5000 });
   });
 });

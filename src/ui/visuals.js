@@ -105,6 +105,8 @@ export const UI_COPY = Object.freeze({
     lose: '패배...',
     timeoutLose: '시간이 부족해서 졌습니다',
     timeoutWin: '상대 시간이 부족해 승리했습니다',
+    checkmateLose: '체크메이트로 패배했습니다',
+    checkmateWin: '체크메이트로 승리했습니다',
     replay: '다시하기',
     menu: '메인 메뉴',
   },

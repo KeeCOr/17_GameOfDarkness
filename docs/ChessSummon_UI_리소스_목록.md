@@ -36,6 +36,14 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.71 adds a dedicated checkmate flash, burst, camera shake, CHECKMATE label, and result copy.
+- v0.1.70 recharges a side to 10 seconds at turn start when its chess clock is at 10 seconds or less.
+- v0.1.69 keeps AI turn thinking at 3-5 seconds while restoring the chess clock limit to three minutes per side.
+- v0.1.68 sets AI turn thinking to 3-5 seconds and restores the chess clock limit to five minutes per side.
+- v0.1.67 restores the full single/multiplayer mode-select entry flow for Steam-channel builds while keeping test-channel difficulty direct entry.
+- v0.1.66 skips the mode-select screen for test distribution and opens directly on difficulty selection.
+- v0.1.65 aligns the board grid/frame width with the summon panel and compresses the top HUD to give the board more room.
+- v0.1.64 restores vision from every allied move and attack zone while keeping the Easy full-board reveal branch removed.
 - v0.1.63 limits move-path visibility to the currently selected player piece so medium games do not reveal most of the board after long-range summons.
 - v0.1.62 removes the Easy-difficulty full-board reveal branch so fog-of-war remains active on the player-facing board.
 - v0.1.61 removes the regular turn banner background and changes it to a floating fade-up text cue so the board remains readable.
