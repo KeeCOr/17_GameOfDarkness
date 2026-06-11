@@ -93,6 +93,24 @@ describe('AIController', () => {
     });
   });
 
+  it('hard takes an immediate checkmate move when it exists', () => {
+    const b = new Board();
+    b.setPiece(0, 0, new Piece(PieceType.KING, Owner.AI));
+    b.setPiece(2, 1, new Piece(PieceType.QUEEN, Owner.AI));
+    b.setPiece(4, 0, new Piece(PieceType.KING, Owner.PLAYER));
+    b.setPiece(3, 1, new Piece(PieceType.ROOK, Owner.AI));
+    b.mana[Owner.AI] = 0;
+
+    const ai = new AIController(Difficulty.HARD);
+    const action = ai.getMove(b);
+
+    expect(action).toMatchObject({
+      type: 'move',
+      from: { row: 2, col: 1 },
+      to: { row: 3, col: 0 },
+    });
+  });
+
   it('very hard takes an immediate checkmate move when it exists', () => {
     const b = new Board();
     b.setPiece(0, 0, new Piece(PieceType.KING, Owner.AI));

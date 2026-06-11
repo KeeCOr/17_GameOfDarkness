@@ -11,7 +11,7 @@ function createWindow() {
     height: 680,
     minWidth: 900,
     minHeight: 680,
-    title: 'Chess Summon',
+    title: 'Chess of Dark',
     backgroundColor: '#1a1a2e',
     webPreferences: {
       nodeIntegration: false,

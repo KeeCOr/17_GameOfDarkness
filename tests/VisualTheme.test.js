@@ -112,6 +112,10 @@ describe('visual theme helpers', () => {
   });
 
   it('maps reusable SVG assets to shared UI controls', () => {
+    expect(UI_ASSETS.stageBackground).toEqual({
+      key: 'ui_stage_background',
+      path: 'assets/ui/stage-background.svg',
+    });
     expect(UI_ASSETS.buttonPrimary).toEqual({
       key: 'ui_button_primary',
       path: 'assets/ui/button-primary.svg',
@@ -124,6 +128,18 @@ describe('visual theme helpers', () => {
       key: 'ui_frame_hud_panel',
       path: 'assets/ui/frame-hud-panel.svg',
     });
+    expect(UI_ASSETS.frameTopHud).toEqual({
+      key: 'ui_frame_top_hud',
+      path: 'assets/ui/frame-top-hud.svg',
+    });
+    expect(UI_ASSETS.frameSummonCard).toEqual({
+      key: 'ui_frame_summon_card',
+      path: 'assets/ui/frame-summon-card.svg',
+    });
+    expect(UI_ASSETS.frameMana).toEqual({
+      key: 'ui_frame_mana',
+      path: 'assets/ui/frame-mana.svg',
+    });
     expect(getButtonAssetKey()).toBe(UI_ASSETS.buttonPrimary.key);
     expect(getButtonAssetKey({ danger: true })).toBe(UI_ASSETS.buttonDanger.key);
     expect(getPanelAssetKey()).toBe(UI_ASSETS.frameHudPanel.key);
@@ -132,6 +148,10 @@ describe('visual theme helpers', () => {
   it('uses high-contrast metal button artwork for readability', () => {
     const primary = readFileSync(new URL('../public/assets/ui/button-primary.svg', import.meta.url), 'utf8');
     const danger = readFileSync(new URL('../public/assets/ui/button-danger.svg', import.meta.url), 'utf8');
+    const stage = readFileSync(new URL('../public/assets/ui/stage-background.svg', import.meta.url), 'utf8');
+    const topHud = readFileSync(new URL('../public/assets/ui/frame-top-hud.svg', import.meta.url), 'utf8');
+    const summon = readFileSync(new URL('../public/assets/ui/frame-summon-card.svg', import.meta.url), 'utf8');
+    const mana = readFileSync(new URL('../public/assets/ui/frame-mana.svg', import.meta.url), 'utf8');
 
     expect(primary).toContain('primaryBody');
     expect(primary).toContain('primaryEdge');
@@ -141,6 +161,10 @@ describe('visual theme helpers', () => {
     expect(danger).toContain('dangerEdge');
     expect(danger).toContain('#14070B');
     expect(danger).toContain('#FFD1C9');
+    expect(stage).toContain('stageStone');
+    expect(topHud).toContain('topHudEdge');
+    expect(summon).toContain('summonCardEdge');
+    expect(mana).toContain('manaVial');
   });
 
   it('preloads reusable UI art before the menu scene starts', async () => {
@@ -155,6 +179,10 @@ describe('visual theme helpers', () => {
     expect(loaded).toContainEqual(UI_ASSETS.buttonPrimary);
     expect(loaded).toContainEqual(UI_ASSETS.buttonDanger);
     expect(loaded).toContainEqual(UI_ASSETS.frameHudPanel);
+    expect(loaded).toContainEqual(UI_ASSETS.stageBackground);
+    expect(loaded).toContainEqual(UI_ASSETS.frameTopHud);
+    expect(loaded).toContainEqual(UI_ASSETS.frameSummonCard);
+    expect(loaded).toContainEqual(UI_ASSETS.frameMana);
   });
 
   it('uses preloaded button and frame artwork when Phaser textures are available', async () => {
@@ -219,6 +247,17 @@ describe('visual theme helpers', () => {
     ]);
     expect(rectangles).toHaveLength(1);
     expect(graphics).toHaveLength(0);
+  });
+
+  it('applies sliced/generated UI frames to the stage and gameplay HUD', () => {
+    const visualsSource = readFileSync(new URL('../src/ui/visuals.js', import.meta.url), 'utf8');
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(visualsSource).toContain('ui_stage_background');
+    expect(visualsSource).toContain('addFramedImage');
+    expect(uiSceneSource).toContain('UI_ASSETS.frameTopHud.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.frameSummonCard.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.frameMana.key');
   });
 
   it('lets rendered board pieces slightly spill outside a single cell', () => {

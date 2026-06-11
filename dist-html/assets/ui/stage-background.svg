@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="800" viewBox="0 0 450 800" fill="none">
+  <defs>
+    <linearGradient id="stageStone" x1="225" y1="0" x2="225" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#111A2B"/>
+      <stop offset="0.42" stop-color="#07101E"/>
+      <stop offset="1" stop-color="#03060C"/>
+    </linearGradient>
+    <radialGradient id="stageCyan" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(225 430) rotate(90) scale(310 160)">
+      <stop offset="0" stop-color="#37D9FF" stop-opacity=".22"/>
+      <stop offset=".45" stop-color="#37D9FF" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#37D9FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stageGold" x1="46" y1="42" x2="404" y2="758" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF0B8"/>
+      <stop offset=".44" stop-color="#B7893D"/>
+      <stop offset="1" stop-color="#4A2A0A"/>
+    </linearGradient>
+  </defs>
+  <rect width="450" height="800" fill="url(#stageStone)"/>
+  <rect width="450" height="800" fill="url(#stageCyan)"/>
+  <g opacity=".24" stroke="#26334C" stroke-width="1">
+    <path d="M42 0v800M408 0v800M95 0v800M355 0v800"/>
+    <path d="M0 80h450M0 156h450M0 235h450M0 318h450M0 404h450M0 493h450M0 586h450M0 681h450"/>
+    <path d="M95 0l260 800M355 0 95 800"/>
+  </g>
+  <g opacity=".9">
+    <path d="M18 28h414v744H18z" fill="#050A13" fill-opacity=".3" stroke="#050812" stroke-width="10"/>
+    <path d="M32 42h386v716H32z" fill="none" stroke="url(#stageGold)" stroke-width="2" stroke-opacity=".65"/>
+    <path d="M53 70h344v660H53z" fill="none" stroke="#26334C" stroke-width="2" stroke-opacity=".72"/>
+    <path d="M77 110h296v82l-35 35v346l35 35v82H77v-82l35-35V227l-35-35z" fill="#070D18" fill-opacity=".35" stroke="#B7893D" stroke-opacity=".28" stroke-width="2"/>
+  </g>
+  <g opacity=".65" stroke="url(#stageGold)" stroke-width="2" fill="none">
+    <path d="M225 22l34 34-34 34-34-34 34-34z"/>
+    <path d="M225 710l34 34-34 34-34-34 34-34z"/>
+    <path d="M33 398l26-26 26 26-26 26-26-26z"/>
+    <path d="M365 398l26-26 26 26-26 26-26-26z"/>
+  </g>
+  <g opacity=".28" fill="#FFF0B8">
+    <path d="M207 620h36l-5-48 14-18-19 7-8-20-8 20-19-7 14 18z"/>
+    <path d="M200 638h50l8 13h-66z"/>
+  </g>
+</svg>

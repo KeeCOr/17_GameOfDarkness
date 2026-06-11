@@ -1,4 +1,4 @@
-# Chess Summon UI Resource List
+# Chess of Dark UI Resource List
 
 ## Goal
 
@@ -14,7 +14,12 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | --- | --- | --- | --- |
 | `button-primary` | Button frame | `public/assets/ui/button-primary.svg` | High-contrast dark metal frame for primary actions, menu choices, confirmation buttons |
 | `button-danger` | Button frame | `public/assets/ui/button-danger.svg` | High-contrast dark crimson frame for surrender/destructive action buttons |
+| `stage-background` | Stage background | `public/assets/ui/stage-background.svg` | Generated dark stone/gold/cyan background for title and stage screens |
+| `frame-top-hud` | HUD frame | `public/assets/ui/frame-top-hud.svg` | Generated top clock HUD frame based on the approved play-screen direction |
 | `frame-hud-panel` | Panel frame | `public/assets/ui/frame-hud-panel.svg` | Right HUD and modal frame reference |
+| `frame-summon-card` | Summon frame | `public/assets/ui/frame-summon-card.svg` | Generated summon-row frame for in-game piece recruitment controls |
+| `frame-mana` | Mana frame | `public/assets/ui/frame-mana.svg` | Generated mana gauge frame with cyan/gold accents |
+| `battle-entry-plate` | Cropped bitmap | `public/assets/ui/battle-entry-plate.png` | Cropped battle-start plate from the approved gameplay mockup for the in-game entry overlay |
 | `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
 | `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
 | `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
@@ -36,6 +41,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.73 renames the visible game brand to Chess of Dark and adds generated/cropped stage, HUD, summon-card, mana, and battle-entry resources from the approved screen direction.
 - v0.1.72 adds the Very Hard difficulty option to menu/replay/placement flows and connects high-rank AI fallback matches to it.
 - v0.1.71 adds a dedicated checkmate flash, burst, camera shake, CHECKMATE label, and result copy.
 - v0.1.70 recharges a side to 10 seconds at turn start when its chess clock is at 10 seconds or less.

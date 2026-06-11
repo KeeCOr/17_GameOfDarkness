@@ -4,8 +4,8 @@ import {
   TURN_TIME_LIMIT,
 } from '../config.js';
 import {
-  addPanel, addSectionLabel, addTextButton, getPieceName,
-  formatManaGaugeLabel, setButtonState, UI_COPY,
+  addFramedImage, addPanel, addSectionLabel, addTextButton, getPieceName,
+  formatManaGaugeLabel, setButtonState, UI_ASSETS, UI_COPY,
 } from '../ui/visuals.js';
 
 const SUMMONABLE = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
@@ -19,7 +19,15 @@ export class UIScene extends Phaser.Scene {
     this.gameScene = this.scene.get('Game');
     this.events.once('shutdown', this.shutdown, this);
 
-    addPanel(this, LAYOUT.HUD_TOP_X, LAYOUT.HUD_TOP_Y, LAYOUT.HUD_TOP_WIDTH, LAYOUT.HUD_TOP_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
+    addFramedImage(
+      this,
+      LAYOUT.HUD_TOP_X + LAYOUT.HUD_TOP_WIDTH / 2,
+      LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT / 2,
+      LAYOUT.HUD_TOP_WIDTH + 10,
+      LAYOUT.HUD_TOP_HEIGHT + 4,
+      UI_ASSETS.frameTopHud.key,
+      { depth: -0.2 },
+    ) || addPanel(this, LAYOUT.HUD_TOP_X, LAYOUT.HUD_TOP_Y, LAYOUT.HUD_TOP_WIDTH, LAYOUT.HUD_TOP_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
     addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
 
     this.playerClockBg = this.add.rectangle(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
@@ -59,6 +67,7 @@ export class UIScene extends Phaser.Scene {
     SUMMONABLE.forEach((type, i) => {
       const y = LAYOUT.HUD_SUMMON_START_Y + i * LAYOUT.HUD_SUMMON_ROW_GAP;
       const button = addTextButton(this, PANEL_X + CONTENT_W / 2, y, CONTENT_W, LAYOUT.HUD_SUMMON_ROW_HEIGHT, '', { enabled: false, fontSize: '15px' });
+      const cardFrame = addFramedImage(this, PANEL_X + CONTENT_W / 2, y, CONTENT_W, LAYOUT.HUD_SUMMON_ROW_HEIGHT + 4, UI_ASSETS.frameSummonCard.key, { depth: 0.45, alpha: 0.92 });
       const icon = this.add.image(PANEL_X + 24, y, `${type.toLowerCase()}_w`).setDisplaySize(30, 30).setAlpha(0.3).setDepth(2);
       const name = this.add.text(PANEL_X + 54, y, getPieceName(type), {
         fontSize: '16px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
@@ -74,9 +83,10 @@ export class UIScene extends Phaser.Scene {
         this.gameScene.startSummonMode(type);
         this._highlightActiveSummon(button.rect.getData('active') ? null : type);
       });
-      this.summonButtons[type] = { ...button, icon, manaIcon, name, cost };
+      this.summonButtons[type] = { ...button, cardFrame, icon, manaIcon, name, cost };
     });
 
+    addFramedImage(this, PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, CONTENT_W, 34, UI_ASSETS.frameMana.key, { depth: 0.3, alpha: 0.96 });
     this.manaBarBg = this.add.rectangle(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, CONTENT_W, 18, COLORS.BUTTON_DISABLED)
       .setAlpha(0.88);
     this.manaBarBg.setStrokeStyle(1, COLORS.PANEL_EDGE, 0.58);

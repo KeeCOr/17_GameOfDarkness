@@ -1,7 +1,7 @@
 {
   "name": "chess-summon",
-  "version": "0.1.72",
-  "description": "A 5x5 tactical chess-summoning game built for single-player Steam release candidates.",
+  "version": "0.1.73",
+  "description": "A 5x5 dark tactical chess game built for single-player Steam release candidates.",
   "author": "Jinwoo Oh",
   "license": "UNLICENSED",
   "private": true,
@@ -22,7 +22,7 @@
   },
   "build": {
     "appId": "com.chesssummon.game",
-    "productName": "Chess Summon",
+    "productName": "Chess of Dark",
     "copyright": "Copyright © 2026 Jinwoo Oh",
     "win": {
       "target": [
@@ -36,7 +36,7 @@
       "icon": "icon.ico"
     },
     "portable": {
-      "artifactName": "ChessSummon_v0.1.72_portable.exe"
+      "artifactName": "ChessSummon_v0.1.73_portable.exe"
     },
     "files": [
       "electron/**/*",

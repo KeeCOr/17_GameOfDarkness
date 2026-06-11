@@ -33,6 +33,7 @@ export class GameScene extends Phaser.Scene {
       this.load.image(`${t}_w`, `assets/pieces/${t}_w.png`);
       this.load.image(`${t}_d`, `assets/pieces/${t}_d.png`);
     }
+    this.load.image('ui_battle_entry_plate', 'assets/ui/battle-entry-plate.png');
   }
 
   init(data) {
@@ -440,8 +441,11 @@ export class GameScene extends Phaser.Scene {
     ).setDepth(12).setAlpha(0);
 
     const rune = this.add.circle(cx, cy, 134, 0x37d9ff, 0.11).setDepth(13).setAlpha(0);
-    const outer = this.add.rectangle(cx, cy, panelW, panelH, COLORS.GOLD, 0.96).setDepth(14).setAlpha(0);
-    const inner = this.add.rectangle(cx, cy, panelW - 10, panelH - 10, 0x101728, 0.95).setDepth(14).setAlpha(0);
+    const plate = this.textures?.exists?.('ui_battle_entry_plate')
+      ? this.add.image(cx, cy, 'ui_battle_entry_plate').setDisplaySize(panelW + 24, panelH).setDepth(14).setAlpha(0)
+      : null;
+    const outer = plate || this.add.rectangle(cx, cy, panelW, panelH, COLORS.GOLD, 0.96).setDepth(14).setAlpha(0);
+    const inner = plate ? null : this.add.rectangle(cx, cy, panelW - 10, panelH - 10, 0x101728, 0.95).setDepth(14).setAlpha(0);
     const topLine = this.add.rectangle(cx, cy - 70, panelW - 38, 2, 0xf7c84b, 0.82).setDepth(15).setAlpha(0);
     const bottomLine = this.add.rectangle(cx, cy + 70, panelW - 38, 2, 0x37d9ff, 0.5).setDepth(15).setAlpha(0);
 
@@ -497,7 +501,7 @@ export class GameScene extends Phaser.Scene {
     const targets = [
       veil, rune, outer, inner, topLine, bottomLine, title, subtitle,
       playerKing, enemyKing, playerTag, enemyTag, versus, ...sparks,
-    ];
+    ].filter(Boolean);
 
     rune.setScale(0.9);
 

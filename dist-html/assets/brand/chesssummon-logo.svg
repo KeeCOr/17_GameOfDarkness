@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" role="img" aria-label="Chess Summon logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" role="img" aria-label="Chess of Dark logo">
   <defs>
     <linearGradient id="logoPlate" x1="380" y1="0" x2="380" y2="220" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#1A2130"/>
@@ -21,7 +21,7 @@
     <path d="M94 194h68l10 18H84z" fill="url(#logoGold)" stroke="#fff0b8" stroke-width="4"/>
   </g>
   <text x="228" y="94" font-family="Trajan Pro, Cinzel, Georgia, 'Times New Roman', serif" font-size="54" font-weight="700" fill="#fff0b8" letter-spacing="2">CHESS</text>
-  <text x="228" y="157" font-family="Trajan Pro, Cinzel, Georgia, 'Times New Roman', serif" font-size="58" font-weight="700" fill="url(#logoGold)" letter-spacing="1">SUMMON</text>
+  <text x="228" y="157" font-family="Trajan Pro, Cinzel, Georgia, 'Times New Roman', serif" font-size="56" font-weight="700" fill="url(#logoGold)" letter-spacing="1">OF DARK</text>
   <path d="M228 172h410" stroke="url(#logoGold)" stroke-width="4" stroke-linecap="round"/>
-  <text x="230" y="196" font-family="Arial, sans-serif" font-size="16" fill="#95a0b8" letter-spacing="4">TACTICAL SUMMONING CHESS</text>
+  <text x="230" y="196" font-family="Arial, sans-serif" font-size="16" fill="#95a0b8" letter-spacing="4">DARK TACTICAL CHESS</text>
 </svg>

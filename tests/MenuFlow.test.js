@@ -42,6 +42,7 @@ function makeMenuScene() {
       setDepth(value) { this.depth = value; return this; },
       setColor(value) { this.color = value; return this; },
       setAlpha(value) { this.alpha = value; return this; },
+      setText(value) { this.value = value; return this; },
       destroy() {},
     };
     texts.push(text);
@@ -102,8 +103,37 @@ describe('menu flow', () => {
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.EASY)).toBe(true);
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.MEDIUM)).toBe(true);
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.HARD)).toBe(true);
-    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD)).toBe(true);
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD)).toBe(false);
     expect(texts.some(text => text.value === '?뚮젅??紐⑤뱶 ?좏깮')).toBe(false);
+  }, 10000);
+
+  it('locks very hard until hard mode is cleared', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { scene, rectangles, texts, starts } = makeMenuScene();
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+    scene.steamService = { isUnlocked: () => false };
+
+    scene._showDifficultySelect();
+
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD)).toBe(false);
+    expect(texts.some(text => String(text.value).includes('어려움 승리'))).toBe(true);
+    expect(starts).toEqual([]);
+  }, 10000);
+
+  it('unlocks very hard after hard mode has been cleared', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { scene, rectangles, starts } = makeMenuScene();
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+    scene.steamService = { isUnlocked: id => id === 'hard_win' };
+
+    scene._showDifficultySelect();
+    const veryHardHitArea = rectangles.find(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD);
+
+    expect(veryHardHitArea).toBeDefined();
+    veryHardHitArea.handlers.pointerdown();
+    expect(starts).toEqual([
+      { key: 'Placement', data: { difficulty: Difficulty.VERY_HARD } },
+    ]);
   }, 10000);
 
   it('lets the enlarged difficulty hit area start placement', async () => {

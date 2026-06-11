@@ -1,8 +1,8 @@
-# Chess Summon 기획서
+# Chess of Dark 기획서
 
-**버전:** 0.1.72  
+**버전:** 0.1.73  
 **작성일:** 2026-05-12  
-**최종 수정:** 2026-06-10  
+**최종 수정:** 2026-06-11  
 **장르:** 디지털 전략 / 체스 변형
 
 ---
@@ -18,7 +18,7 @@
 ---
 ## 1. 게임 개요
 
-Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 소환하는 전술 게임이다. 플레이어는 제한된 시야와 3분 체스 시계 안에서 이동 1번, 소환 1번을 선택하고, 소환 위치를 확보해 전세를 뒤집어야 한다.
+Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을 소환하는 전술 게임이다. 플레이어는 제한된 시야와 3분 체스 시계 안에서 이동 1번, 소환 1번을 선택하고, 소환 위치를 확보해 전세를 뒤집어야 한다.
 
 ### 핵심 재미
 
@@ -70,6 +70,14 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.73 Chess of Dark 리브랜딩 및 화면 리소스 적용
+
+- 게임 표시명을 `Chess of Dark`로 변경하고 메뉴 타이틀, HTML title, Electron 창 제목, Windows productName을 맞췄다.
+- 승인된 시작화면 방향을 바탕으로 어두운 석조/금속/금색 계열의 `stage-background.svg`를 생성해 메뉴와 주요 씬 배경에 적용했다.
+- 승인된 플레이화면 방향을 바탕으로 상단 HUD, 소환 카드, 마나 게이지 프레임 SVG를 생성해 인게임 UI에 적용했다.
+- 기존 플레이 예시 이미지에서 전투 시작 플레이트를 잘라 `battle-entry-plate.png`로 만들고 인게임 입장 연출에 적용했다.
+- 기존 저장 경로와 실행파일 접두어는 테스트/유저 데이터 호환성을 위해 유지한다.
 
 ### v0.1.72 매우 어려움 난이도 추가
 
@@ -384,7 +392,7 @@ Chess Summon은 5x5 체스판에서 말을 지키며 마나로 새로운 말을 
 
 ### v0.1.22 로고, MMR 아이콘, 국제 AI 봇 연출
 
-- `public/assets/brand/`에 Chess Summon 전체 로고와 심볼 마크 SVG를 추가했다.
+- `public/assets/brand/`에 Chess of Dark 전체 로고와 심볼 마크 SVG를 추가했다.
 - `public/assets/rank/`에 Bronze, Silver, Gold, Platinum, Diamond, Master MMR 티어 아이콘을 추가했다.
 - `src/game/rankTiers.js`를 추가해 MMR 점수에 따라 티어와 아이콘을 구분한다.
 - AI 대체 매칭 상대는 국가 코드/국기/이름을 가진 봇 프로필로 표시해 국제전 느낌을 강화했다.
@@ -573,9 +581,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.72.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.72_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.72_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.73.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.73_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.73_portable.exe` |
 
 ---
 

@@ -27,6 +27,8 @@ describe('brand, rank, and bot presentation', () => {
     const logo = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.svg'), 'utf8');
     const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'), 'utf8');
 
+    expect(logo).toContain('CHESS');
+    expect(logo).toContain('OF DARK');
     expect(logo).toContain('logoGold');
     expect(logo).toContain('Trajan Pro, Cinzel, Georgia');
     expect(logo).not.toContain('#6fffe0');

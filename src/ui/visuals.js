@@ -1,14 +1,19 @@
 import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
 
 export const UI_ASSETS = Object.freeze({
+  brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.svg' }),
+  stageBackground: Object.freeze({ key: 'ui_stage_background', path: 'assets/ui/stage-background.svg' }),
   buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/button-primary.svg' }),
   buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/button-danger.svg' }),
   frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/frame-hud-panel.svg' }),
+  frameTopHud: Object.freeze({ key: 'ui_frame_top_hud', path: 'assets/ui/frame-top-hud.svg' }),
+  frameSummonCard: Object.freeze({ key: 'ui_frame_summon_card', path: 'assets/ui/frame-summon-card.svg' }),
+  frameMana: Object.freeze({ key: 'ui_frame_mana', path: 'assets/ui/frame-mana.svg' }),
 });
 
 export const UI_COPY = Object.freeze({
   menu: {
-    title: 'Chess Summon',
+    title: 'Chess of Dark',
     modeTitle: '플레이 모드 선택',
     single: '싱글 플레이',
     multiplayer: '멀티 플레이',
@@ -190,9 +195,16 @@ function hasTexture(scene, key) {
 
 export function addStageBackground(scene, title = '') {
   const { GAME_WIDTH: w, GAME_HEIGHT: h } = LAYOUT;
-  scene.add.rectangle(w / 2, h / 2, w, h, COLORS.BACKDROP);
-  scene.add.rectangle(w / 2, h / 2, w - 54, h - 42, COLORS.PANEL_DEEP).setAlpha(0.94);
-  scene.add.rectangle(w / 2, h / 2, w - 86, h - 82, COLORS.PANEL_BG).setAlpha(0.32);
+  const stageKey = UI_ASSETS.stageBackground.key;
+  if (hasTexture(scene, stageKey)) {
+    scene.add.image(w / 2, h / 2, stageKey)
+      .setDisplaySize(w, h)
+      .setDepth(-10);
+  } else {
+    scene.add.rectangle(w / 2, h / 2, w, h, COLORS.BACKDROP);
+    scene.add.rectangle(w / 2, h / 2, w - 54, h - 42, COLORS.PANEL_DEEP).setAlpha(0.94);
+    scene.add.rectangle(w / 2, h / 2, w - 86, h - 82, COLORS.PANEL_BG).setAlpha(0.32);
+  }
 
   const g = scene.add.graphics();
   g.lineStyle(2, COLORS.PANEL_EDGE, 0.58);
@@ -214,6 +226,11 @@ export function addStageBackground(scene, title = '') {
   g.strokePath();
 
   if (title) {
+    if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
+      return scene.add.image(w / 2, 118, UI_ASSETS.brandLogo.key)
+        .setDisplaySize(348, 101)
+        .setDepth(1);
+    }
     const titleText = scene.add.text(w / 2, 88, title, {
       fontSize: '43px',
       color: '#fff0b8',
@@ -223,6 +240,14 @@ export function addStageBackground(scene, title = '') {
     titleText.setStroke?.('#050812', 5);
     titleText.setShadow?.(0, 2, '#000000', 4, true, true);
   }
+}
+
+export function addFramedImage(scene, x, y, width, height, key, options = {}) {
+  if (!hasTexture(scene, key)) return null;
+  return scene.add.image(x, y, key)
+    .setDisplaySize(width, height)
+    .setAlpha(options.alpha ?? 1)
+    .setDepth(options.depth ?? 0);
 }
 
 export function addPanel(scene, x, y, width, height, options = {}) {

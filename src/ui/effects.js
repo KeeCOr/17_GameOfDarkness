@@ -20,6 +20,36 @@ export const UI_RESOURCE_LIST = Object.freeze([
     file: 'public/assets/ui/frame-hud-panel.svg',
   },
   {
+    id: 'stage-background',
+    type: 'background',
+    purpose: 'Dark stone-and-gold stage background generated from the approved start screen direction.',
+    file: 'public/assets/ui/stage-background.svg',
+  },
+  {
+    id: 'frame-top-hud',
+    type: 'frame',
+    purpose: 'Top chess-clock HUD frame inspired by the approved play screen.',
+    file: 'public/assets/ui/frame-top-hud.svg',
+  },
+  {
+    id: 'frame-summon-card',
+    type: 'frame',
+    purpose: 'Summon row/card frame inspired by the approved play screen.',
+    file: 'public/assets/ui/frame-summon-card.svg',
+  },
+  {
+    id: 'frame-mana',
+    type: 'frame',
+    purpose: 'Mana gauge frame with cyan/gold accents.',
+    file: 'public/assets/ui/frame-mana.svg',
+  },
+  {
+    id: 'battle-entry-plate',
+    type: 'cropped-bitmap',
+    purpose: 'Cropped battle-start plate from the approved gameplay mockup for the in-game entry overlay.',
+    file: 'public/assets/ui/battle-entry-plate.png',
+  },
+  {
     id: 'state-check-alert',
     type: 'state-feedback',
     purpose: 'Board-wide check warning using red vignette, king ring, and impact label.',
@@ -40,7 +70,7 @@ export const UI_RESOURCE_LIST = Object.freeze([
   {
     id: 'brand-logo',
     type: 'brand',
-    purpose: 'Full Chess Summon logo for title, store, and promotional use.',
+    purpose: 'Full Chess of Dark logo for title, store, and promotional use.',
     file: 'public/assets/brand/chesssummon-logo.svg',
   },
   {

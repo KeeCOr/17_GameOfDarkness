@@ -1,4 +1,4 @@
-// src/scenes/MenuScene.js
+﻿// src/scenes/MenuScene.js
 import { LAYOUT, Difficulty, TEXT_COLORS } from '../config.js';
 import { RELEASE_CHANNELS, RELEASE_INFO } from '../releaseInfo.js';
 import {
@@ -33,22 +33,22 @@ export class MenuScene extends Phaser.Scene {
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.menu.title);
 
-    this.add.text(cx, 148, '5x5 전술판 위에서 병사를 소환해 왕을 무너뜨리세요', {
+    this.add.text(cx, 198, '5x5 ?꾩닠???꾩뿉??蹂묒궗瑜??뚰솚???뺤쓣 臾대꼫?⑤━?몄슂', {
       fontSize: '16px',
       color: TEXT_COLORS.MUTED,
     }).setOrigin(0.5);
 
-    this.add.text(cx, 220, UI_COPY.menu.modeTitle, {
+    this.add.text(cx, 252, UI_COPY.menu.modeTitle, {
       fontSize: '22px',
       color: TEXT_COLORS.GOLD,
       fontStyle: 'bold',
     }).setOrigin(0.5);
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
-    const single = addTextButton(this, cx, 315, 240, 56, UI_COPY.menu.single, { fontSize: '21px', active: true });
+    const single = addTextButton(this, cx, 365, 264, 62, UI_COPY.menu.single, { fontSize: '22px', active: true });
     single.rect.on('pointerdown', () => this._showDifficultySelect());
 
-    const multi = addTextButton(this, cx, 395, 240, 56, UI_COPY.menu.multiplayer, { fontSize: '21px' });
+    const multi = addTextButton(this, cx, 455, 264, 62, UI_COPY.menu.multiplayer, { fontSize: '22px' });
     multi.rect.on('pointerdown', () => this.scene.start('MultiplayerLobby'));
   }
 
@@ -57,12 +57,12 @@ export class MenuScene extends Phaser.Scene {
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.menu.title);
 
-    this.add.text(cx, 148, UI_COPY.menu.single, {
+    this.add.text(cx, 196, UI_COPY.menu.single, {
       fontSize: '16px',
       color: TEXT_COLORS.MUTED,
     }).setOrigin(0.5);
 
-    this.add.text(cx, 215, UI_COPY.menu.subtitle, {
+    this.add.text(cx, 242, UI_COPY.menu.subtitle, {
       fontSize: '22px',
       color: TEXT_COLORS.GOLD,
       fontStyle: 'bold',
@@ -70,16 +70,16 @@ export class MenuScene extends Phaser.Scene {
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
     const difficulties = [
-      { value: Difficulty.EASY, y: 292 },
-      { value: Difficulty.MEDIUM, y: 362 },
-      { value: Difficulty.HARD, y: 432 },
-      { value: Difficulty.VERY_HARD, y: 502 },
+      { value: Difficulty.EASY, y: 312 },
+      { value: Difficulty.MEDIUM, y: 382 },
+      { value: Difficulty.HARD, y: 452 },
+      { value: Difficulty.VERY_HARD, y: 522 },
     ];
 
     for (const { value, y } of difficulties) {
       const label = UI_COPY.menu.difficulties[value];
       const hint = UI_COPY.menu.difficultyHints[value];
-      const button = addTextButton(this, cx, y, 230, 54, label, { fontSize: '21px' });
+      const button = addTextButton(this, cx, y, 264, 58, label, { fontSize: '21px' });
       this.add.text(cx, y + 36, hint, {
         fontSize: '12px',
         color: TEXT_COLORS.MUTED,
@@ -88,7 +88,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     if (showBack) {
-      const back = addTextButton(this, cx, 600, 150, 40, UI_COPY.menu.back, { fontSize: '15px' });
+      const back = addTextButton(this, cx, 632, 158, 42, UI_COPY.menu.back, { fontSize: '15px' });
       back.rect.on('pointerdown', () => this._showModeSelect());
     }
   }
@@ -112,3 +112,4 @@ export class MenuScene extends Phaser.Scene {
 export function shouldShowModeSelect(releaseInfo = RELEASE_INFO) {
   return releaseInfo?.channel === RELEASE_CHANNELS.STEAM;
 }
+
