@@ -17,6 +17,13 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `stage-background` | Stage background | `public/assets/ui/stage-background.svg` | Dark stone/gold/cyan background shared by title and gameplay stages |
 | `title-background` | Title bitmap | `public/assets/ui/title-background.png` | Generated 9:16 gothic chess hall background for the start screen |
 | `title-button-frame` | Title button bitmap | `public/assets/ui/title-button-frame.png` | Generated dark metal/gold/cyan button frame for start and difficulty buttons |
+| `game-background` | Gameplay bitmap | `public/assets/ui/game-background.png` | Dark gothic gameplay backdrop derived for the active play screen |
+| `game-top-hud-frame` | Gameplay HUD bitmap | `public/assets/ui/game-top-hud-frame.png` | Wide top clock HUD frame for player/opponent timers and hint text |
+| `game-board-frame` | Gameplay board bitmap | `public/assets/ui/game-board-frame.png` | Square gold/cyan board frame surrounding the 5x5 grid |
+| `game-summon-card-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-card-frame.png` | Wide dark metal summon-card frame for each recruit row |
+| `game-summon-tile-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-tile-frame.png` | Vertical summon tile frame for the horizontal recruit-card layout |
+| `game-mana-frame` | Gameplay mana bitmap | `public/assets/ui/game-mana-frame.png` | Thin dark metal frame for the mana gauge |
+| `game-action-button-frame` | Gameplay button bitmap | `public/assets/ui/game-action-button-frame.png` | Dark metal action frame for turn-end and surrender buttons |
 | `frame-top-hud` | HUD frame | `public/assets/ui/frame-top-hud.svg` | Generated top clock HUD frame based on the approved play-screen direction |
 | `frame-hud-panel` | Panel frame | `public/assets/ui/frame-hud-panel.svg` | Right HUD and modal frame reference |
 | `frame-summon-card` | Summon frame | `public/assets/ui/frame-summon-card.svg` | Generated summon-row frame for in-game piece recruitment controls |
@@ -25,7 +32,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
 | `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
 | `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
-| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Metallic Chess of Dark wordmark with king mark and cyan jewel accent |
+| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Integrated metallic Chess of Dark wordmark with crown, summon jewel, and ornament lines built into the lettering |
 | `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.svg` | Compact crown/summon mark for app icons and capsules |
 | `title-logo-ornament` | Brand bitmap | `public/assets/brand/title-logo-ornament.png` | Generated gold king ornament behind the title logo |
 | `ingame-entry-mockup` | Concept mockup | `docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png` | 9:16 battle-entry mood reference for first-turn presentation and store screenshot direction |
@@ -44,6 +51,11 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.81 changes the title logo from a separated symbol-plus-text composition to an integrated wordmark and stops rendering the separate title ornament behind it.
+- v0.1.80 regenerates the title logo as a larger high-contrast SVG wordmark and removes the mode-select title text from the start screen.
+- v0.1.79 replaces the title logo with a heraldic dark-fantasy SVG wordmark while keeping the existing `brand_logo` load key.
+- v0.1.78 changes the gameplay summon area from a vertical list to five horizontal cards, adds the summon-tile frame, and repositions the title/difficulty menu around the generated title button frame.
+- v0.1.77 adds gameplay-specific PNG background, top HUD, board, summon, mana, and action-button frames and wires them into GameScene/UIScene.
 - v0.1.76 adds generated PNG title background, button frame, and logo ornament assets and wires them into the menu screen.
 - v0.1.75 replaces the boxed logo with a larger metallic wordmark and connects gameplay staging to the shared dark stone background.
 - v0.1.74 strengthens Hard AI checkmate/check-pressure choices and locks Very Hard until the Hard clear achievement is unlocked.

@@ -126,6 +126,41 @@ describe('visual theme helpers', () => {
       path: 'assets/ui/title-button-frame.png',
       type: 'image',
     });
+    expect(UI_ASSETS.gameBackground).toEqual({
+      key: 'ui_game_background',
+      path: 'assets/ui/game-background.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameTopHudFrame).toEqual({
+      key: 'ui_game_top_hud_frame',
+      path: 'assets/ui/game-top-hud-frame.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameBoardFrame).toEqual({
+      key: 'ui_game_board_frame',
+      path: 'assets/ui/game-board-frame.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameSummonCardFrame).toEqual({
+      key: 'ui_game_summon_card_frame',
+      path: 'assets/ui/game-summon-card-frame.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameSummonTileFrame).toEqual({
+      key: 'ui_game_summon_tile_frame',
+      path: 'assets/ui/game-summon-tile-frame.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameManaFrame).toEqual({
+      key: 'ui_game_mana_frame',
+      path: 'assets/ui/game-mana-frame.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameActionButtonFrame).toEqual({
+      key: 'ui_game_action_button_frame',
+      path: 'assets/ui/game-action-button-frame.png',
+      type: 'image',
+    });
     expect(UI_ASSETS.buttonPrimary).toEqual({
       key: 'ui_button_primary',
       path: 'assets/ui/button-primary.svg',
@@ -160,6 +195,13 @@ describe('visual theme helpers', () => {
     const titleBackground = readFileSync(new URL('../public/assets/ui/title-background.png', import.meta.url));
     const titleButton = readFileSync(new URL('../public/assets/ui/title-button-frame.png', import.meta.url));
     const logoOrnament = readFileSync(new URL('../public/assets/brand/title-logo-ornament.png', import.meta.url));
+    const gameBackground = readFileSync(new URL('../public/assets/ui/game-background.png', import.meta.url));
+    const gameTopHud = readFileSync(new URL('../public/assets/ui/game-top-hud-frame.png', import.meta.url));
+    const gameBoard = readFileSync(new URL('../public/assets/ui/game-board-frame.png', import.meta.url));
+    const gameSummon = readFileSync(new URL('../public/assets/ui/game-summon-card-frame.png', import.meta.url));
+    const gameSummonTile = readFileSync(new URL('../public/assets/ui/game-summon-tile-frame.png', import.meta.url));
+    const gameMana = readFileSync(new URL('../public/assets/ui/game-mana-frame.png', import.meta.url));
+    const gameAction = readFileSync(new URL('../public/assets/ui/game-action-button-frame.png', import.meta.url));
     const primary = readFileSync(new URL('../public/assets/ui/button-primary.svg', import.meta.url), 'utf8');
     const danger = readFileSync(new URL('../public/assets/ui/button-danger.svg', import.meta.url), 'utf8');
     const stage = readFileSync(new URL('../public/assets/ui/stage-background.svg', import.meta.url), 'utf8');
@@ -168,12 +210,20 @@ describe('visual theme helpers', () => {
     const mana = readFileSync(new URL('../public/assets/ui/frame-mana.svg', import.meta.url), 'utf8');
 
     expect(logo).toContain('CHESS');
-    expect(logo).toContain('OF DARK');
+    expect(logo).toContain('DARK');
     expect(logo).toContain('darkGold');
     expect(logo).toContain('cyanGem');
+    expect(logo).toContain('integratedSummonWordmark');
     expect(titleBackground.length).toBeGreaterThan(100000);
     expect(titleButton.length).toBeGreaterThan(100000);
     expect(logoOrnament.length).toBeGreaterThan(100000);
+    expect(gameBackground.length).toBeGreaterThan(100000);
+    expect(gameTopHud.length).toBeGreaterThan(30000);
+    expect(gameBoard.length).toBeGreaterThan(2000);
+    expect(gameSummon.length).toBeGreaterThan(15000);
+    expect(gameSummonTile.length).toBeGreaterThan(10000);
+    expect(gameMana.length).toBeGreaterThan(15000);
+    expect(gameAction.length).toBeGreaterThan(10000);
     expect(primary).toContain('primaryBody');
     expect(primary).toContain('primaryEdge');
     expect(primary).toContain('#080D18');
@@ -207,6 +257,13 @@ describe('visual theme helpers', () => {
     expect(loaded).toContainEqual(UI_ASSETS.titleBackground);
     expect(loaded).toContainEqual(UI_ASSETS.titleButtonFrame);
     expect(loaded).toContainEqual(UI_ASSETS.titleLogoOrnament);
+    expect(loaded).toContainEqual(UI_ASSETS.gameBackground);
+    expect(loaded).toContainEqual(UI_ASSETS.gameTopHudFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameBoardFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameSummonCardFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameSummonTileFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameManaFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameActionButtonFrame);
     expect(loaded).toContainEqual(UI_ASSETS.frameTopHud);
     expect(loaded).toContainEqual(UI_ASSETS.frameSummonCard);
     expect(loaded).toContainEqual(UI_ASSETS.frameMana);
@@ -284,11 +341,18 @@ describe('visual theme helpers', () => {
     expect(visualsSource).toContain('ui_stage_background');
     expect(visualsSource).toContain('ui_title_background');
     expect(visualsSource).toContain('ui_title_button_frame');
+    expect(visualsSource).toContain('ui_game_background');
+    expect(visualsSource).toContain('ui_game_top_hud_frame');
+    expect(visualsSource).toContain('ui_game_board_frame');
+    expect(visualsSource).not.toContain('scene.add.image(w / 2, 94, UI_ASSETS.titleLogoOrnament.key)');
     expect(visualsSource).toContain('addFramedImage');
+    expect(gameSceneSource).toContain('UI_ASSETS.gameBackground.key');
+    expect(gameSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
     expect(gameSceneSource).toContain('UI_ASSETS.stageBackground.key');
-    expect(uiSceneSource).toContain('UI_ASSETS.frameTopHud.key');
-    expect(uiSceneSource).toContain('UI_ASSETS.frameSummonCard.key');
-    expect(uiSceneSource).toContain('UI_ASSETS.frameMana.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameTopHudFrame.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameSummonTileFrame.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameManaFrame.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameActionButtonFrame.key');
   });
 
   it('lets rendered board pieces slightly spill outside a single cell', () => {
@@ -315,15 +379,16 @@ describe('visual theme helpers', () => {
     const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 22;
     expect(LAYOUT.HUD_PANEL_Y - boardBottom).toBeLessThanOrEqual(18);
     const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 14;
-    const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
+    const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(hintBottom).toBeLessThanOrEqual(firstSummonTop - 6);
-    expect(LAYOUT.HUD_SUMMON_ROW_HEIGHT).toBeGreaterThanOrEqual(36);
-    expect(LAYOUT.HUD_SUMMON_ROW_GAP).toBeGreaterThanOrEqual(LAYOUT.HUD_SUMMON_ROW_HEIGHT + 3);
-    const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_ROW_GAP * 4 + LAYOUT.HUD_SUMMON_ROW_HEIGHT / 2;
+    expect(LAYOUT.HUD_SUMMON_CARD_HEIGHT).toBeGreaterThanOrEqual(100);
+    expect(LAYOUT.HUD_SUMMON_CARD_WIDTH * 5).toBeLessThanOrEqual(LAYOUT.PANEL_WIDTH);
+    expect(LAYOUT.HUD_SUMMON_ROW_GAP).toBeGreaterThanOrEqual(LAYOUT.HUD_SUMMON_CARD_WIDTH);
+    const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
     const manaGaugeBottom = LAYOUT.HUD_MANA_Y + 11;
-    const footerButtonTop = LAYOUT.HUD_FOOTER_Y - 17;
-    const footerButtonBottom = LAYOUT.HUD_FOOTER_Y + 17;
+    const footerButtonTop = LAYOUT.HUD_FOOTER_Y - 19;
+    const footerButtonBottom = LAYOUT.HUD_FOOTER_Y + 19;
     expect(manaGaugeBottom).toBeLessThanOrEqual(footerButtonTop - 14);
     expect(footerButtonBottom).toBeLessThanOrEqual(LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT - 6);
   });

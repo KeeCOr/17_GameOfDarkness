@@ -6,6 +6,13 @@ export const UI_ASSETS = Object.freeze({
   stageBackground: Object.freeze({ key: 'ui_stage_background', path: 'assets/ui/stage-background.svg' }),
   titleBackground: Object.freeze({ key: 'ui_title_background', path: 'assets/ui/title-background.png', type: 'image' }),
   titleButtonFrame: Object.freeze({ key: 'ui_title_button_frame', path: 'assets/ui/title-button-frame.png', type: 'image' }),
+  gameBackground: Object.freeze({ key: 'ui_game_background', path: 'assets/ui/game-background.png', type: 'image' }),
+  gameTopHudFrame: Object.freeze({ key: 'ui_game_top_hud_frame', path: 'assets/ui/game-top-hud-frame.png', type: 'image' }),
+  gameBoardFrame: Object.freeze({ key: 'ui_game_board_frame', path: 'assets/ui/game-board-frame.png', type: 'image' }),
+  gameSummonCardFrame: Object.freeze({ key: 'ui_game_summon_card_frame', path: 'assets/ui/game-summon-card-frame.png', type: 'image' }),
+  gameSummonTileFrame: Object.freeze({ key: 'ui_game_summon_tile_frame', path: 'assets/ui/game-summon-tile-frame.png', type: 'image' }),
+  gameManaFrame: Object.freeze({ key: 'ui_game_mana_frame', path: 'assets/ui/game-mana-frame.png', type: 'image' }),
+  gameActionButtonFrame: Object.freeze({ key: 'ui_game_action_button_frame', path: 'assets/ui/game-action-button-frame.png', type: 'image' }),
   buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/button-primary.svg' }),
   buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/button-danger.svg' }),
   frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/frame-hud-panel.svg' }),
@@ -232,12 +239,6 @@ export function addStageBackground(scene, title = '') {
 
   if (title) {
     if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
-      if (hasTexture(scene, UI_ASSETS.titleLogoOrnament.key)) {
-        scene.add.image(w / 2, 94, UI_ASSETS.titleLogoOrnament.key)
-          .setDisplaySize(360, 170)
-          .setAlpha(0.94)
-          .setDepth(0.8);
-      }
       return scene.add.image(w / 2, 118, UI_ASSETS.brandLogo.key)
         .setDisplaySize(360, 142)
         .setDepth(1);

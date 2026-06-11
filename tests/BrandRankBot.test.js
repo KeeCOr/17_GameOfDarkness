@@ -29,10 +29,14 @@ describe('brand, rank, and bot presentation', () => {
     const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'), 'utf8');
 
     expect(logo).toContain('CHESS');
-    expect(logo).toContain('OF DARK');
+    expect(logo).toContain('DARK');
     expect(logo).toContain('darkGold');
     expect(logo).toContain('brightEdge');
     expect(logo).toContain('cyanGem');
+    expect(logo).toContain('integratedSummonWordmark');
+    expect(logo).toContain('letterSummonCrown');
+    expect(logo).not.toContain('heraldicSummonMark');
+    expect(logo).toContain('cyanGlow');
     expect(logo).toContain('Cinzel, Trajan Pro, Georgia');
     expect(logo).not.toContain('#6fffe0');
     expect(mark).toContain('#fff0b8');

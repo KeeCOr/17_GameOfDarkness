@@ -1,68 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" role="img" aria-label="Chess of Dark logo">
   <defs>
-    <linearGradient id="darkGold" x1="106" y1="42" x2="656" y2="236" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff6c8"/>
-      <stop offset=".18" stop-color="#f3d480"/>
-      <stop offset=".44" stop-color="#b67a2f"/>
-      <stop offset=".7" stop-color="#ffe7a4"/>
-      <stop offset="1" stop-color="#815019"/>
+    <linearGradient id="darkGold" x1="94" y1="46" x2="668" y2="238" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8d0"/>
+      <stop offset=".2" stop-color="#f1c960"/>
+      <stop offset=".46" stop-color="#9a5d1d"/>
+      <stop offset=".7" stop-color="#ffeaa2"/>
+      <stop offset="1" stop-color="#6d4314"/>
     </linearGradient>
-    <linearGradient id="brightEdge" x1="114" y1="52" x2="612" y2="202" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#fffdf1"/>
-      <stop offset=".34" stop-color="#ffd873"/>
-      <stop offset=".72" stop-color="#8e551b"/>
-      <stop offset="1" stop-color="#fff0b0"/>
+    <linearGradient id="brightEdge" x1="122" y1="56" x2="640" y2="226" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf0"/>
+      <stop offset=".34" stop-color="#ffde80"/>
+      <stop offset=".68" stop-color="#7b4513"/>
+      <stop offset="1" stop-color="#fff0b4"/>
     </linearGradient>
-    <linearGradient id="steelShadow" x1="380" y1="0" x2="380" y2="300" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#172238" stop-opacity=".22"/>
-      <stop offset=".52" stop-color="#050812" stop-opacity=".84"/>
-      <stop offset="1" stop-color="#00030a" stop-opacity=".12"/>
+    <linearGradient id="blackSteel" x1="380" y1="62" x2="380" y2="244" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1b263c"/>
+      <stop offset=".48" stop-color="#070b14"/>
+      <stop offset="1" stop-color="#010307"/>
     </linearGradient>
-    <radialGradient id="cyanGem" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(380 237) scale(24 18)">
+    <linearGradient id="summonBlue" x1="318" y1="92" x2="442" y2="224" gradientUnits="userSpaceOnUse">
       <stop stop-color="#f0ffff"/>
-      <stop offset=".34" stop-color="#42ecff"/>
-      <stop offset=".74" stop-color="#0e8497"/>
-      <stop offset="1" stop-color="#063d4a"/>
+      <stop offset=".28" stop-color="#64f3ff"/>
+      <stop offset=".68" stop-color="#0b8497"/>
+      <stop offset="1" stop-color="#043442"/>
+    </linearGradient>
+    <radialGradient id="cyanGem" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(380 175) scale(22 16)">
+      <stop stop-color="#ffffff"/>
+      <stop offset=".3" stop-color="#67f5ff"/>
+      <stop offset=".72" stop-color="#0c879a"/>
+      <stop offset="1" stop-color="#042f3a"/>
     </radialGradient>
-    <filter id="softDrop" x="-12%" y="-22%" width="124%" height="150%">
-      <feDropShadow dx="0" dy="8" stdDeviation="4" flood-color="#000000" flood-opacity=".82"/>
-      <feDropShadow dx="0" dy="0" stdDeviation="2.2" flood-color="#f2bd55" flood-opacity=".3"/>
+    <filter id="softDrop" x="-14%" y="-24%" width="128%" height="156%">
+      <feDropShadow dx="0" dy="10" stdDeviation="5" flood-color="#000000" flood-opacity=".9"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#f6cb68" flood-opacity=".34"/>
+    </filter>
+    <filter id="cyanGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.1" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
 
-  <rect width="760" height="300" fill="url(#steelShadow)" opacity=".01"/>
-  <g filter="url(#softDrop)">
-    <g transform="translate(285 8)">
-      <path d="M95 0 122 33l41 5-25 31 8 41-51-18-51 18 8-41-25-31 41-5z" fill="#070b13" stroke="url(#darkGold)" stroke-width="5" stroke-linejoin="round"/>
-      <path d="M67 129h56l-8-74 23-28-31 10-12-31-12 31-31-10 23 28z" fill="url(#darkGold)" stroke="#fff2bd" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M52 151h86l12 22H40z" fill="url(#darkGold)" stroke="#fff2bd" stroke-width="4"/>
-      <path d="M95 45v100" stroke="#593712" stroke-width="3" opacity=".55"/>
+  <rect width="760" height="300" fill="#02050b" opacity=".01"/>
+  <g id="integratedSummonWordmark" filter="url(#softDrop)">
+    <path d="M88 156h178l25-21h178l25 21h178" stroke="#03060b" stroke-width="16" stroke-linecap="round" opacity=".78"/>
+    <path d="M104 156h162l25-21h178l25 21h162" stroke="url(#darkGold)" stroke-width="6" stroke-linecap="round"/>
+
+    <text x="380" y="126" text-anchor="middle"
+      font-family="Cinzel, Trajan Pro, Georgia, 'Times New Roman', serif"
+      font-size="82" font-weight="900" letter-spacing="5"
+      fill="#060300" stroke="#02050b" stroke-width="15" stroke-linejoin="round">CHESS</text>
+    <text x="380" y="126" text-anchor="middle"
+      font-family="Cinzel, Trajan Pro, Georgia, 'Times New Roman', serif"
+      font-size="82" font-weight="900" letter-spacing="5"
+      fill="url(#darkGold)" stroke="url(#brightEdge)" stroke-width="1.7">CHESS</text>
+
+    <g id="letterSummonCrown" transform="translate(380 151)">
+      <path d="M-54 3h108l16 19-16 19H-54L-70 22z" fill="url(#blackSteel)" stroke="#050812" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M-54 3h108l16 19-16 19H-54L-70 22z" fill="none" stroke="url(#darkGold)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M-18 19-8 4 0 20 8 4 18 19" fill="none" stroke="url(#brightEdge)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M0 6v31M-23 37h46" stroke="#1a0d02" stroke-width="8" stroke-linecap="round"/>
+      <path d="M0 6v31M-23 37h46" stroke="url(#darkGold)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M0 6 15 22 0 38-15 22z" fill="url(#cyanGem)" stroke="#fff4bf" stroke-width="2.5" filter="url(#cyanGlow)"/>
     </g>
 
-    <text x="380" y="136" text-anchor="middle"
+    <text x="380" y="227" text-anchor="middle"
       font-family="Cinzel, Trajan Pro, Georgia, 'Times New Roman', serif"
-      font-size="72" font-weight="700" letter-spacing="8"
-      fill="#0b0702" stroke="#050812" stroke-width="12" stroke-linejoin="round">CHESS</text>
-    <text x="380" y="136" text-anchor="middle"
+      font-size="84" font-weight="900" letter-spacing="3"
+      fill="#060300" stroke="#02050b" stroke-width="15" stroke-linejoin="round">DARK</text>
+    <text x="380" y="227" text-anchor="middle"
       font-family="Cinzel, Trajan Pro, Georgia, 'Times New Roman', serif"
-      font-size="72" font-weight="700" letter-spacing="8"
-      fill="url(#darkGold)" stroke="url(#brightEdge)" stroke-width="1.4">CHESS</text>
+      font-size="84" font-weight="900" letter-spacing="3"
+      fill="url(#darkGold)" stroke="url(#brightEdge)" stroke-width="1.7">DARK</text>
 
-    <text x="380" y="218" text-anchor="middle"
-      font-family="Cinzel, Trajan Pro, Georgia, 'Times New Roman', serif"
-      font-size="76" font-weight="700" letter-spacing="5"
-      fill="#0b0702" stroke="#050812" stroke-width="12" stroke-linejoin="round">OF DARK</text>
-    <text x="380" y="218" text-anchor="middle"
-      font-family="Cinzel, Trajan Pro, Georgia, 'Times New Roman', serif"
-      font-size="76" font-weight="700" letter-spacing="5"
-      fill="url(#darkGold)" stroke="url(#brightEdge)" stroke-width="1.4">OF DARK</text>
-
-    <path d="M124 239h211l18-13h54l18 13h211" fill="none" stroke="url(#darkGold)" stroke-width="4" stroke-linecap="round"/>
-    <path d="M380 222 398 238 380 254 362 238z" fill="url(#cyanGem)" stroke="#fff7bf" stroke-width="3"/>
-    <path d="M214 261h332" stroke="#51300e" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-    <text x="380" y="284" text-anchor="middle"
-      font-family="Georgia, 'Times New Roman', serif"
-      font-size="18" font-weight="700" letter-spacing="3"
-      fill="#ead295" stroke="#050812" stroke-width="3" paint-order="stroke">SUMMON THE DARK BOARD</text>
+    <path d="M160 248h151l22-13h94l22 13h151" fill="none" stroke="#050812" stroke-width="9" stroke-linecap="round" opacity=".7"/>
+    <path d="M176 248h135l22-13h94l22 13h135" fill="none" stroke="url(#darkGold)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M259 270h242" stroke="#6d471b" stroke-width="2" stroke-linecap="round" opacity=".8"/>
   </g>
 </svg>

@@ -98,7 +98,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   _drawStage() {
-    const stageKey = UI_ASSETS.stageBackground.key;
+    const stageKey = this.textures.exists(UI_ASSETS.gameBackground.key)
+      ? UI_ASSETS.gameBackground.key
+      : UI_ASSETS.stageBackground.key;
     if (this.textures.exists(stageKey)) {
       this.add.image(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, stageKey)
         .setDisplaySize(LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT)
@@ -107,17 +109,26 @@ export class GameScene extends Phaser.Scene {
       this.add.rectangle(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, COLORS.BACKDROP);
     }
     const g = this.add.graphics();
-    g.fillStyle(COLORS.PANEL_BG, 0.36);
+    g.fillStyle(COLORS.PANEL_BG, 0.2);
     g.fillRect(0, 0, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT);
-    g.fillStyle(COLORS.PANEL_DEEP, 0.78);
-    g.fillRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
-      BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
-    g.lineStyle(3, COLORS.PANEL_EDGE, 0.74);
-    g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
-      BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
-    g.lineStyle(1, COLORS.GOLD, 0.25);
-    g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
-      BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
+    const boardW = BOARD_SIZE * LAYOUT.CELL_SIZE;
+    const boardCX = LAYOUT.BOARD_OFFSET_X + boardW / 2;
+    const boardCY = LAYOUT.BOARD_OFFSET_Y + boardW / 2;
+    if (this.textures.exists(UI_ASSETS.gameBoardFrame.key)) {
+      this.add.image(boardCX, boardCY, UI_ASSETS.gameBoardFrame.key)
+        .setDisplaySize(boardW + 70, boardW + 70)
+        .setDepth(-0.5);
+    } else {
+      g.fillStyle(COLORS.PANEL_DEEP, 0.78);
+      g.fillRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
+        BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
+      g.lineStyle(3, COLORS.PANEL_EDGE, 0.74);
+      g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
+        BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
+      g.lineStyle(1, COLORS.GOLD, 0.25);
+      g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
+        BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
+    }
   }
 
   _setupBoard() {
@@ -138,8 +149,9 @@ export class GameScene extends Phaser.Scene {
         const y = LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
         const isLight = (r + c) % 2 === 0;
         const cell = this.add.rectangle(x, y, LAYOUT.CELL_SIZE - 2, LAYOUT.CELL_SIZE - 2,
-          isLight ? COLORS.BOARD_LIGHT : COLORS.BOARD_DARK);
-        cell.setStrokeStyle(1, 0x2e2118, 0.45);
+          isLight ? 0x5e6470 : 0x171d27);
+        cell.setAlpha(isLight ? 0.86 : 0.94);
+        cell.setStrokeStyle(1, 0xd4a64a, 0.34);
         cell.setInteractive({ useHandCursor: true });
         cell.on('pointerdown', () => this._onCellClick(r, c));
       }
