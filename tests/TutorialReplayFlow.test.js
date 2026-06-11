@@ -21,6 +21,14 @@ describe('tutorial and replay flow', () => {
     expect(getResultDetailText('PLAYER', 'checkmate')).toBe(UI_COPY.result.checkmateWin);
   });
 
+  it('uses readable result reason labels for the result plate', async () => {
+    const { getResultReasonLabel } = await import('../src/scenes/ResultScene.js');
+
+    expect(getResultReasonLabel('timeout')).toBe('TIME OUT');
+    expect(getResultReasonLabel('checkmate')).toBe('CHECKMATE');
+    expect(getResultReasonLabel(null)).toBe('KING CAPTURED');
+  });
+
   it('keeps every tutorial copy step in the tutorial sequence', async () => {
     const { TUTORIAL_STEPS } = await import('../src/scenes/TutorialScene.js');
     const texts = TUTORIAL_STEPS.map(step => step.text);

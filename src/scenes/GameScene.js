@@ -111,24 +111,15 @@ export class GameScene extends Phaser.Scene {
     const g = this.add.graphics();
     g.fillStyle(COLORS.PANEL_BG, 0.2);
     g.fillRect(0, 0, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT);
-    const boardW = BOARD_SIZE * LAYOUT.CELL_SIZE;
-    const boardCX = LAYOUT.BOARD_OFFSET_X + boardW / 2;
-    const boardCY = LAYOUT.BOARD_OFFSET_Y + boardW / 2;
-    if (this.textures.exists(UI_ASSETS.gameBoardFrame.key)) {
-      this.add.image(boardCX, boardCY, UI_ASSETS.gameBoardFrame.key)
-        .setDisplaySize(boardW + 70, boardW + 70)
-        .setDepth(-0.5);
-    } else {
-      g.fillStyle(COLORS.PANEL_DEEP, 0.78);
-      g.fillRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
-        BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
-      g.lineStyle(3, COLORS.PANEL_EDGE, 0.74);
-      g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
-        BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
-      g.lineStyle(1, COLORS.GOLD, 0.25);
-      g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
-        BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
-    }
+    g.fillStyle(COLORS.PANEL_DEEP, 0.78);
+    g.fillRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
+      BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
+    g.lineStyle(3, COLORS.PANEL_EDGE, 0.74);
+    g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
+      BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
+    g.lineStyle(1, COLORS.GOLD, 0.25);
+    g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
+      BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
   }
 
   _setupBoard() {
@@ -451,7 +442,7 @@ export class GameScene extends Phaser.Scene {
     const cy = LAYOUT.BOARD_OFFSET_Y + (BOARD_SIZE * LAYOUT.CELL_SIZE) / 2;
     const enemyName = formatBotLabel(this.aiProfile) || UI_COPY.game.aiTurn;
     const panelW = 336;
-    const panelH = 196;
+    const panelH = 228;
 
     const veil = this.add.rectangle(
       LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2,
@@ -465,10 +456,12 @@ export class GameScene extends Phaser.Scene {
       : null;
     const outer = plate || this.add.rectangle(cx, cy, panelW, panelH, COLORS.GOLD, 0.96).setDepth(14).setAlpha(0);
     const inner = plate ? null : this.add.rectangle(cx, cy, panelW - 10, panelH - 10, 0x101728, 0.95).setDepth(14).setAlpha(0);
-    const topLine = this.add.rectangle(cx, cy - 70, panelW - 38, 2, 0xf7c84b, 0.82).setDepth(15).setAlpha(0);
-    const bottomLine = this.add.rectangle(cx, cy + 70, panelW - 38, 2, 0x37d9ff, 0.5).setDepth(15).setAlpha(0);
+    const topLine = this.add.rectangle(cx, cy - 96, panelW - 38, 2, 0xf7c84b, 0.82).setDepth(15).setAlpha(0);
+    const bottomLine = this.add.rectangle(cx, cy + 96, panelW - 38, 2, 0x37d9ff, 0.5).setDepth(15).setAlpha(0);
+    const textBand = this.add.rectangle(cx, cy - 58, panelW - 54, 64, 0x050812, 0.42).setDepth(15).setAlpha(0);
+    const duelDivider = this.add.rectangle(cx, cy - 12, panelW - 82, 1, 0xf7c84b, 0.44).setDepth(15).setAlpha(0);
 
-    const title = this.add.text(cx, cy - 48, '전투 시작', {
+    const title = this.add.text(cx, cy - 72, '전투 시작', {
       fontSize: '30px',
       color: '#fff5c7',
       fontStyle: 'bold',
@@ -476,32 +469,32 @@ export class GameScene extends Phaser.Scene {
       strokeThickness: 4,
     }).setOrigin(0.5).setDepth(16).setAlpha(0);
 
-    const subtitle = this.add.text(cx, cy - 18, '왕을 지키고 전장을 장악하세요', {
+    const subtitle = this.add.text(cx, cy - 42, '왕을 지키고 전장을 장악하세요', {
       fontSize: '14px',
       color: '#d9e6ff',
       stroke: '#050812',
       strokeThickness: 3,
     }).setOrigin(0.5).setDepth(16).setAlpha(0);
 
-    const playerKing = this.add.image(cx - 92, cy + 28, 'king_w')
-      .setDisplaySize(68, 68)
+    const playerKing = this.add.image(cx - 102, cy + 34, 'king_w')
+      .setDisplaySize(60, 60)
       .setDepth(16)
       .setAlpha(0);
-    const enemyKing = this.add.image(cx + 92, cy + 28, 'king_d')
-      .setDisplaySize(68, 68)
+    const enemyKing = this.add.image(cx + 102, cy + 34, 'king_d')
+      .setDisplaySize(60, 60)
       .setDepth(16)
       .setAlpha(0);
 
-    const playerTag = this.add.text(cx - 92, cy + 78, 'PLAYER', {
+    const playerTag = this.add.text(cx - 102, cy + 84, 'PLAYER', {
       fontSize: '12px', color: '#6fffe0', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(16).setAlpha(0);
-    const enemyTag = this.add.text(cx + 92, cy + 78, enemyName, {
+    const enemyTag = this.add.text(cx + 102, cy + 84, enemyName, {
       fontSize: '12px', color: '#ff9a70', fontStyle: 'bold',
       fixedWidth: 96,
       align: 'center',
     }).setOrigin(0.5).setDepth(16).setAlpha(0);
 
-    const versus = this.add.text(cx, cy + 25, 'VS', {
+    const versus = this.add.text(cx, cy + 34, 'VS', {
       fontSize: '24px',
       color: '#f7c84b',
       fontStyle: 'bold',
@@ -512,13 +505,13 @@ export class GameScene extends Phaser.Scene {
     const sparks = [];
     for (let i = 0; i < 10; i++) {
       const offsetX = -144 + i * 32;
-      const offsetY = i % 2 === 0 ? -84 : 86;
+      const offsetY = i % 2 === 0 ? -108 : 108;
       sparks.push(this.add.circle(cx + offsetX, cy + offsetY, i % 3 === 0 ? 4 : 3,
         i % 2 === 0 ? 0xf7c84b : 0x37d9ff, 0.8).setDepth(16).setAlpha(0));
     }
 
     const targets = [
-      veil, rune, outer, inner, topLine, bottomLine, title, subtitle,
+      veil, rune, outer, inner, topLine, bottomLine, textBand, duelDivider, title, subtitle,
       playerKing, enemyKing, playerTag, enemyTag, versus, ...sparks,
     ].filter(Boolean);
 
@@ -540,8 +533,8 @@ export class GameScene extends Phaser.Scene {
     });
     this.tweens.add({
       targets: [playerKing, enemyKing],
-      displayWidth: 76,
-      displayHeight: 76,
+      displayWidth: 68,
+      displayHeight: 68,
       duration: 260,
       ease: 'Back.easeOut',
     });

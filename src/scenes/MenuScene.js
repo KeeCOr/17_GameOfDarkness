@@ -43,10 +43,10 @@ export class MenuScene extends Phaser.Scene {
 
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
-    const single = addTextButton(this, cx, 454, 316, 76, UI_COPY.menu.single, { fontSize: '23px', active: true, assetKey: UI_ASSETS.titleButtonFrame.key });
+    const single = addTextButton(this, cx, 440, 322, 90, UI_COPY.menu.single, { fontSize: '24px', active: true, assetKey: UI_ASSETS.titleButtonFrame.key });
     single.rect.on('pointerdown', () => this._showDifficultySelect());
 
-    const multi = addTextButton(this, cx, 554, 316, 76, UI_COPY.menu.multiplayer, { fontSize: '23px', assetKey: UI_ASSETS.titleButtonFrame.key });
+    const multi = addTextButton(this, cx, 548, 322, 90, UI_COPY.menu.multiplayer, { fontSize: '24px', assetKey: UI_ASSETS.titleButtonFrame.key });
     multi.rect.on('pointerdown', () => this.scene.start('MultiplayerLobby'));
   }
 
@@ -68,18 +68,18 @@ export class MenuScene extends Phaser.Scene {
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
     const difficulties = [
-      { value: Difficulty.EASY, y: 382 },
-      { value: Difficulty.MEDIUM, y: 454 },
-      { value: Difficulty.HARD, y: 526 },
-      { value: Difficulty.VERY_HARD, y: 598 },
+      { value: Difficulty.EASY, y: 376 },
+      { value: Difficulty.MEDIUM, y: 458 },
+      { value: Difficulty.HARD, y: 540 },
+      { value: Difficulty.VERY_HARD, y: 622 },
     ];
 
     for (const { value, y } of difficulties) {
       const locked = value === Difficulty.VERY_HARD && !this._isVeryHardUnlocked();
       const label = UI_COPY.menu.difficulties[value];
       const hint = locked ? UI_COPY.menu.veryHardLocked : UI_COPY.menu.difficultyHints[value];
-      const button = addTextButton(this, cx, y, 316, 70, label, { fontSize: '21px', enabled: !locked, assetKey: UI_ASSETS.titleButtonFrame.key });
-      this.add.text(cx, y + 38, hint, {
+      const button = addTextButton(this, cx, y, 322, 74, label, { fontSize: '21px', enabled: !locked, assetKey: UI_ASSETS.titleButtonFrame.key });
+      this.add.text(cx, y + 40, hint, {
         fontSize: '12px',
         color: locked ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.MUTED,
       }).setOrigin(0.5);
@@ -87,7 +87,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     if (showBack) {
-      const back = addTextButton(this, cx, 704, 190, 48, UI_COPY.menu.back, { fontSize: '15px', assetKey: UI_ASSETS.titleButtonFrame.key });
+      const back = addTextButton(this, cx, 724, 198, 52, UI_COPY.menu.back, { fontSize: '15px', assetKey: UI_ASSETS.titleButtonFrame.key });
       back.rect.on('pointerdown', () => this._showModeSelect());
     }
   }
@@ -96,7 +96,7 @@ export class MenuScene extends Phaser.Scene {
     const startPlacement = () => this.scene.start('Placement', { difficulty: value });
     button.rect.on('pointerdown', startPlacement);
 
-    const hitArea = this.add.rectangle(x, y + 18, 316, 84, 0x000000)
+    const hitArea = this.add.rectangle(x, y + 20, 322, 88, 0x000000)
       .setAlpha(0.001)
       .setDepth(5)
       .setInteractive({ useHandCursor: true })

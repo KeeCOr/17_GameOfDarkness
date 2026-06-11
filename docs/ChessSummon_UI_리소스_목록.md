@@ -19,7 +19,6 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `title-button-frame` | Title button bitmap | `public/assets/ui/title-button-frame.png` | Generated dark metal/gold/cyan button frame for start and difficulty buttons |
 | `game-background` | Gameplay bitmap | `public/assets/ui/game-background.png` | Dark gothic gameplay backdrop derived for the active play screen |
 | `game-top-hud-frame` | Gameplay HUD bitmap | `public/assets/ui/game-top-hud-frame.png` | Wide top clock HUD frame for player/opponent timers and hint text |
-| `game-board-frame` | Gameplay board bitmap | `public/assets/ui/game-board-frame.png` | Square gold/cyan board frame surrounding the 5x5 grid |
 | `game-summon-card-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-card-frame.png` | Wide dark metal summon-card frame for each recruit row |
 | `game-summon-tile-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-tile-frame.png` | Vertical summon tile frame for the horizontal recruit-card layout |
 | `game-mana-frame` | Gameplay mana bitmap | `public/assets/ui/game-mana-frame.png` | Thin dark metal frame for the mana gauge |
@@ -51,6 +50,10 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.85 restyles the defeat/result screen as a dark metal result plate with a cracked crown motif, stronger defeat-state contrast, and larger bottom action buttons.
+- v0.1.84 removes the gameplay board bitmap frame from the active resource set because it did not match the in-game tone. The board now uses a code-drawn dark panel with restrained gold lines.
+- v0.1.83 separates the battle-entry text band from the king-versus-king image band to avoid visual overlap during the intro.
+- v0.1.82 lowers/enlarges the integrated title wordmark and increases title/difficulty button heights for roomier text and touch padding.
 - v0.1.81 changes the title logo from a separated symbol-plus-text composition to an integrated wordmark and stops rendering the separate title ornament behind it.
 - v0.1.80 regenerates the title logo as a larger high-contrast SVG wordmark and removes the mode-select title text from the start screen.
 - v0.1.79 replaces the title logo with a heraldic dark-fantasy SVG wordmark while keeping the existing `brand_logo` load key.

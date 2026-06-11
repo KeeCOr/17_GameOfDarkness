@@ -171,7 +171,20 @@ describe('menu flow', () => {
 
     const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
     expect(titleButtonFrames).toHaveLength(4);
-    expect(titleButtonFrames.some(image => image.y === 598 && image.width === 316 && image.height === 70)).toBe(true);
+    expect(titleButtonFrames.some(image => image.y === 622 && image.width === 322 && image.height === 74)).toBe(true);
+  }, 10000);
+
+  it('uses taller mode buttons with more touch padding', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { UI_ASSETS } = await import('../src/ui/visuals.js');
+    const { scene, images } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+
+    scene._showModeSelect();
+
+    const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
+    expect(titleButtonFrames.some(image => image.y === 440 && image.width === 322 && image.height === 90)).toBe(true);
+    expect(titleButtonFrames.some(image => image.y === 548 && image.width === 322 && image.height === 90)).toBe(true);
   }, 10000);
 
   it('unlocks very hard after hard mode has been cleared', async () => {

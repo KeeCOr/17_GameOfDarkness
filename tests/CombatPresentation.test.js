@@ -28,6 +28,10 @@ describe('combat presentation resources', () => {
     expect(source).toContain('entryIntroShown');
     expect(source).toContain('_showBattleEntryOverlay');
     expect(source).toContain('전투 시작');
+    expect(source).toContain('const textBand');
+    expect(source).toContain('const duelDivider');
+    expect(source).toContain('cy - 72');
+    expect(source).toContain('cy + 34');
     expect(source).toContain('king_w');
     expect(source).toContain('king_d');
   });
