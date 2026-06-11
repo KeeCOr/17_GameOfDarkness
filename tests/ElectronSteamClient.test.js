@@ -14,7 +14,7 @@ describe('Electron Steam client adapter', () => {
     expect(resolveSteamAppId({ STEAM_APP_ID: 'abc' })).toBe(null);
   });
 
-  it('delegates achievements, stats, storage, and leaderboard upload to the loaded SDK adapter', () => {
+  it('delegates achievements, stats, storage, and leaderboard calls to the loaded SDK adapter', () => {
     const calls = [];
     const sdk = {
       setAchievement: apiName => calls.push(['achievement', apiName]),
@@ -23,6 +23,10 @@ describe('Electron Steam client adapter', () => {
       uploadLeaderboardScore: (leaderboardName, score) => {
         calls.push(['leaderboard', leaderboardName, score]);
         return { ok: true };
+      },
+      downloadLeaderboardEntries: (leaderboardName, limit) => {
+        calls.push(['leaderboard-download', leaderboardName, limit]);
+        return { ok: true, entries: [] };
       },
     };
 
@@ -39,12 +43,14 @@ describe('Electron Steam client adapter', () => {
     expect(client.setStat('STAT_GAMES_WON', 2)).toEqual({ ok: true });
     expect(client.storeStats()).toEqual({ ok: true });
     expect(client.uploadLeaderboardScore('RANK_POINTS', 1200)).toEqual({ ok: true });
+    expect(client.downloadLeaderboardEntries('RANK_POINTS', 5)).toEqual({ ok: true, entries: [] });
     expect(calls).toEqual([
       ['load', 123456],
       ['achievement', 'ACH_FIRST_WIN'],
       ['stat', 'STAT_GAMES_WON', 2],
       ['store'],
       ['leaderboard', 'RANK_POINTS', 1200],
+      ['leaderboard-download', 'RANK_POINTS', 5],
     ]);
   });
 });

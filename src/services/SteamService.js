@@ -63,6 +63,13 @@ export class SteamService {
     return this.steamClient.uploadLeaderboardScore(getLeaderboardById('rank_points').apiName, score);
   }
 
+  downloadRankLeaderboard(limit = 5) {
+    if (!this.isSteamAvailable() || typeof this.steamClient.downloadLeaderboardEntries !== 'function') {
+      return { ok: false, reason: 'steam-unavailable', entries: [] };
+    }
+    return this.steamClient.downloadLeaderboardEntries(getLeaderboardById('rank_points').apiName, limit);
+  }
+
   _syncSteam() {
     if (!this.isSteamAvailable()) return;
     for (const stat of ACHIEVEMENT_STATS) {

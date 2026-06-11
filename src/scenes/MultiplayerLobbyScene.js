@@ -13,6 +13,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.statusText = null;
     this.accountText = null;
     this.rankText = null;
+    this.leaderboardText = null;
     this.matchStarted = false;
     this.aiFallbackTimer = null;
     this.steamService = createSteamService();
@@ -30,11 +31,19 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.rankText = this.add.text(cx, 280, '', {
       fontSize: '20px', color: TEXT_COLORS.GOLD, fontStyle: 'bold',
     }).setOrigin(0.5);
+    this.leaderboardText = this.add.text(cx, 326, formatLeaderboardSummary(), {
+      fontSize: '13px',
+      color: TEXT_COLORS.MUTED,
+      fontStyle: 'bold',
+      align: 'center',
+      wordWrap: { width: 350 },
+      lineSpacing: 4,
+    }).setOrigin(0.5);
 
-    const queue = addTextButton(this, cx, 365, 230, 54, UI_COPY.multiplayer.queue, { fontSize: '20px', active: true });
+    const queue = addTextButton(this, cx, 405, 230, 54, UI_COPY.multiplayer.queue, { fontSize: '20px', active: true });
     queue.rect.on('pointerdown', () => this._joinQueue());
 
-    const back = addTextButton(this, cx, 440, 160, 44, UI_COPY.menu.back, { fontSize: '16px' });
+    const back = addTextButton(this, cx, 480, 160, 44, UI_COPY.menu.back, { fontSize: '16px' });
     back.rect.on('pointerdown', () => this._backToMenu());
 
     this._connect();
@@ -63,6 +72,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
       this.accountText.setText(`${UI_COPY.multiplayer.account}: ${message.account.name}`);
       this.rankText.setText(`${UI_COPY.multiplayer.rank}: ${message.account.rankPoints}`);
       this.steamService.uploadRankPoints(message.account.rankPoints);
+      this._refreshLeaderboard();
     } else if (message.type === 'queued') {
       this.statusText.setText(UI_COPY.multiplayer.queued);
     } else if (message.type === 'matched') {
@@ -80,6 +90,13 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.socket.send(JSON.stringify({ type: 'joinQueue' }));
     this.statusText.setText(UI_COPY.multiplayer.queued);
     this._startAIFallbackTimer();
+  }
+
+  _refreshLeaderboard() {
+    const result = this.steamService.downloadRankLeaderboard?.(5);
+    Promise.resolve(result)
+      .then(board => this.leaderboardText?.setText(formatLeaderboardSummary(board)))
+      .catch(() => this.leaderboardText?.setText(formatLeaderboardSummary({ ok: false, entries: [] })));
   }
 
   _startAIFallbackTimer() {
@@ -122,4 +139,17 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this._clearAIFallbackTimer();
     if (this.socket) this.socket.close();
   }
+}
+
+export function formatLeaderboardSummary(result = null) {
+  if (!result?.ok || !Array.isArray(result.entries) || result.entries.length === 0) {
+    return 'Steam 랭킹: 연결 대기';
+  }
+  const rows = result.entries.slice(0, 3).map((entry, index) => {
+    const rank = entry.rank ?? index + 1;
+    const name = entry.name || entry.displayName || `Player ${rank}`;
+    const score = Number.isFinite(Number(entry.score)) ? Number(entry.score) : 0;
+    return `${rank}. ${name} ${score}`;
+  });
+  return `Steam 랭킹\n${rows.join('\n')}`;
 }

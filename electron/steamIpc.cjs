@@ -28,6 +28,13 @@ function registerSteamIpcHandlers(ipcMain, { steamClient = null } = {}) {
     if (!isReady(steamClient) || !steamClient.uploadLeaderboardScore) return STEAM_UNAVAILABLE;
     return steamClient.uploadLeaderboardScore(leaderboardName, score);
   });
+
+  ipcMain.handle('steam:download-leaderboard-entries', (_event, { leaderboardName, limit } = {}) => {
+    if (!isReady(steamClient) || !steamClient.downloadLeaderboardEntries) {
+      return { ...STEAM_UNAVAILABLE, entries: [] };
+    }
+    return steamClient.downloadLeaderboardEntries(leaderboardName, limit);
+  });
 }
 
 function isReady(steamClient) {

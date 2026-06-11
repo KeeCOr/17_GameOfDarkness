@@ -6,6 +6,8 @@ function createSteamRendererApi(ipcRenderer) {
     storeStats: () => ipcRenderer.invoke('steam:store-stats'),
     uploadLeaderboardScore: (leaderboardName, score) =>
       ipcRenderer.invoke('steam:upload-leaderboard-score', { leaderboardName, score }),
+    downloadLeaderboardEntries: (leaderboardName, limit = 5) =>
+      ipcRenderer.invoke('steam:download-leaderboard-entries', { leaderboardName, limit }),
   };
 }
 

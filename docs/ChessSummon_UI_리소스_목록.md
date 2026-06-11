@@ -50,6 +50,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.87 adds a Steam leaderboard summary slot to the multiplayer lobby so the release build has an in-game surface for `RANK_POINTS` lookup results.
+- v0.1.86 aligns the Electron portable window content area to the 450x800 game canvas so desktop launches no longer start with wide empty space around the portrait layout.
 - v0.1.85 restyles the defeat/result screen as a dark metal result plate with a cracked crown motif, stronger defeat-state contrast, and larger bottom action buttons.
 - v0.1.84 removes the gameplay board bitmap frame from the active resource set because it did not match the in-game tone. The board now uses a code-drawn dark panel with restrained gold lines.
 - v0.1.83 separates the battle-entry text band from the king-versus-king image band to avoid visual overlap during the intro.

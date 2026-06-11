@@ -1,6 +1,6 @@
 # Chess of Dark 기획서
 
-**버전:** 0.1.85  
+**버전:** 0.1.87  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-11  
 **장르:** 디지털 전략 / 체스 변형
@@ -70,6 +70,16 @@ Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.87 Steam 리더보드 조회 경로 추가
+- Steam 브릿지에 `downloadLeaderboardEntries` 경로를 추가해 `RANK_POINTS` 리더보드 업로드뿐 아니라 조회도 요청할 수 있게 했다.
+- Electron main/preload/IPC와 SteamService가 리더보드 조회를 안전한 fallback 응답과 함께 전달하도록 확장했다.
+- 멀티플레이 로비에 Steam 랭킹 요약 텍스트를 추가해 Steam SDK가 준비된 환경에서는 상위 랭킹을 표시할 수 있게 했다.
+
+### v0.1.86 실행파일 창 크기 정렬
+- Windows 포터블 실행파일의 Electron 창 콘텐츠 영역을 게임 기준 해상도인 450x800으로 맞췄다.
+- `useContentSize: true`를 적용해 창 프레임을 제외한 실제 게임 화면이 캔버스 크기와 일치하게 했다.
+- 세로형 9:16 테스트 빌드에서 불필요한 가로 여백이 생기지 않도록 초기 창 크기를 고정했다.
 
 ### v0.1.85 패배 결과 화면 연출 개선
 - 결과 화면을 시작/인게임 화면과 같은 다크 판타지 금속 플레이트 구성으로 다시 배치했다.
@@ -655,9 +665,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.85.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.85_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.85_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.87.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.87_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.87_portable.exe` |
 
 ---
 

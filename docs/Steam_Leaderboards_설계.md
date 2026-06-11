@@ -38,4 +38,5 @@
 
 1. 실제 Steamworks SDK에서 `RANK_POINTS` 핸들을 찾거나 생성하는 구현을 확정한다.
 2. 실제 클라이언트 대국 종료 시 `matchResult` 메시지를 서버에 보내는 UI/네트워크 경로를 추가한다.
+3. v0.1.87부터 Electron Steam 브릿지는 `downloadLeaderboardEntries`를 제공하며, 멀티플레이 로비는 `RANK_POINTS` 상위 항목 표시 자리를 가진다.
 3. Steam 테스트 계정에서 업로드 후 Steam 클라이언트/커뮤니티 표시에 반영되는지 확인한다.

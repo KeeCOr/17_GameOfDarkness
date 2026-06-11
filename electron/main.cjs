@@ -5,14 +5,19 @@ const { registerSteamIpcHandlers } = require('./steamIpc.cjs');
 
 registerSteamIpcHandlers(ipcMain, { steamClient: createSteamClient() });
 
+const GAME_CONTENT_WIDTH = 450;
+const GAME_CONTENT_HEIGHT = 800;
+
 function createWindow() {
   const win = new BrowserWindow({
-    width: 900,
-    height: 680,
-    minWidth: 900,
-    minHeight: 680,
+    width: GAME_CONTENT_WIDTH,
+    height: GAME_CONTENT_HEIGHT,
+    minWidth: GAME_CONTENT_WIDTH,
+    minHeight: GAME_CONTENT_HEIGHT,
+    useContentSize: true,
     title: 'Chess of Dark',
     backgroundColor: '#1a1a2e',
+    resizable: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

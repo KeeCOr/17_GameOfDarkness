@@ -80,6 +80,23 @@ describe('SteamService', () => {
     expect(uploads).toEqual([{ leaderboardName: 'RANK_POINTS', score: 1234 }]);
   });
 
+  it('downloads rank leaderboard entries through the Steam adapter when available', () => {
+    const downloads = [];
+    const steamClient = {
+      isReady: () => true,
+      downloadLeaderboardEntries: (leaderboardName, limit) => {
+        downloads.push({ leaderboardName, limit });
+        return { ok: true, entries: [{ rank: 1, name: 'Alice', score: 1234 }] };
+      },
+    };
+    const service = createSteamService({ storage: createMemoryStorage(), steamClient });
+
+    const result = service.downloadRankLeaderboard(3);
+
+    expect(result).toEqual({ ok: true, entries: [{ rank: 1, name: 'Alice', score: 1234 }] });
+    expect(downloads).toEqual([{ leaderboardName: 'RANK_POINTS', limit: 3 }]);
+  });
+
   it('does not unlock player-only achievements from AI-side events', () => {
     const service = createSteamService({ storage: createMemoryStorage() });
 

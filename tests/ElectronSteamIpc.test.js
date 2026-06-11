@@ -17,6 +17,11 @@ describe('Electron Steam IPC handlers', () => {
       ok: false,
       reason: 'steam-unavailable',
     });
+    expect(await handlers.get('steam:download-leaderboard-entries')(null, { leaderboardName: 'RANK_POINTS', limit: 5 })).toEqual({
+      ok: false,
+      reason: 'steam-unavailable',
+      entries: [],
+    });
   });
 
   it('delegates Steam calls to the injected client adapter', async () => {
@@ -29,6 +34,7 @@ describe('Electron Steam IPC handlers', () => {
       setStat: (apiName, value) => calls.push(['stat', apiName, value]),
       storeStats: () => calls.push(['store']),
       uploadLeaderboardScore: (leaderboardName, score) => ({ ok: true, leaderboardName, score }),
+      downloadLeaderboardEntries: (leaderboardName, limit) => ({ ok: true, leaderboardName, limit, entries: [] }),
     };
 
     registerSteamIpcHandlers(ipcMain, { steamClient });
@@ -36,6 +42,7 @@ describe('Electron Steam IPC handlers', () => {
     await handlers.get('steam:set-stat')(null, { apiName: 'STAT_GAMES_WON', value: 3 });
     await handlers.get('steam:store-stats')();
     const upload = await handlers.get('steam:upload-leaderboard-score')(null, { leaderboardName: 'RANK_POINTS', score: 1200 });
+    const download = await handlers.get('steam:download-leaderboard-entries')(null, { leaderboardName: 'RANK_POINTS', limit: 3 });
 
     expect(await handlers.get('steam:is-ready')()).toBe(true);
     expect(calls).toEqual([
@@ -44,5 +51,6 @@ describe('Electron Steam IPC handlers', () => {
       ['store'],
     ]);
     expect(upload).toEqual({ ok: true, leaderboardName: 'RANK_POINTS', score: 1200 });
+    expect(download).toEqual({ ok: true, leaderboardName: 'RANK_POINTS', limit: 3, entries: [] });
   });
 });

@@ -17,6 +17,7 @@ describe('Electron Steam preload bridge', () => {
     await api.setStat('STAT_GAMES_WON', 3);
     await api.storeStats();
     await api.uploadLeaderboardScore('RANK_POINTS', 1234);
+    await api.downloadLeaderboardEntries('RANK_POINTS', 5);
 
     expect(calls).toEqual([
       { channel: 'steam:is-ready', payload: undefined },
@@ -24,6 +25,7 @@ describe('Electron Steam preload bridge', () => {
       { channel: 'steam:set-stat', payload: { apiName: 'STAT_GAMES_WON', value: 3 } },
       { channel: 'steam:store-stats', payload: undefined },
       { channel: 'steam:upload-leaderboard-score', payload: { leaderboardName: 'RANK_POINTS', score: 1234 } },
+      { channel: 'steam:download-leaderboard-entries', payload: { leaderboardName: 'RANK_POINTS', limit: 5 } },
     ]);
   });
 });

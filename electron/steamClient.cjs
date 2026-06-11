@@ -37,6 +37,10 @@ function createSdkClient(sdk) {
       if (sdk.uploadLeaderboardScore) return sdk.uploadLeaderboardScore(leaderboardName, score);
       return { ok: false, reason: 'leaderboard-unavailable' };
     },
+    downloadLeaderboardEntries(leaderboardName, limit = 5) {
+      if (sdk.downloadLeaderboardEntries) return sdk.downloadLeaderboardEntries(leaderboardName, limit);
+      return { ok: false, reason: 'leaderboard-unavailable', entries: [] };
+    },
   };
 }
 
@@ -47,6 +51,7 @@ function createUnavailableClient() {
     setStat: () => STEAM_UNAVAILABLE,
     storeStats: () => STEAM_UNAVAILABLE,
     uploadLeaderboardScore: () => STEAM_UNAVAILABLE,
+    downloadLeaderboardEntries: () => ({ ...STEAM_UNAVAILABLE, entries: [] }),
   };
 }
 
@@ -64,6 +69,8 @@ function normalizeSteamworksClient(client) {
     storeStats: () => client.stats?.store?.(),
     uploadLeaderboardScore: (leaderboardName, score) =>
       client.leaderboard?.uploadScore?.(leaderboardName, score) || { ok: false, reason: 'leaderboard-unavailable' },
+    downloadLeaderboardEntries: (leaderboardName, limit = 5) =>
+      client.leaderboard?.downloadScores?.(leaderboardName, limit) || { ok: false, reason: 'leaderboard-unavailable', entries: [] },
   };
 }
 
