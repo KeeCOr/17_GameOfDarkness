@@ -19,6 +19,7 @@ describe('brand, rank, and bot presentation', () => {
   it('ships logo and one icon asset for each MMR tier', () => {
     expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.svg'))).toBe(true);
     expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'))).toBe(true);
+    expect(fs.existsSync(path.join('public', 'assets', 'brand', 'title-logo-ornament.png'))).toBe(true);
     for (const tier of RANK_TIERS)
       expect(fs.existsSync(tier.icon)).toBe(true);
   });
@@ -29,8 +30,10 @@ describe('brand, rank, and bot presentation', () => {
 
     expect(logo).toContain('CHESS');
     expect(logo).toContain('OF DARK');
-    expect(logo).toContain('logoGold');
-    expect(logo).toContain('Trajan Pro, Cinzel, Georgia');
+    expect(logo).toContain('darkGold');
+    expect(logo).toContain('brightEdge');
+    expect(logo).toContain('cyanGem');
+    expect(logo).toContain('Cinzel, Trajan Pro, Georgia');
     expect(logo).not.toContain('#6fffe0');
     expect(mark).toContain('#fff0b8');
     expect(mark).not.toContain('#6fffe0');

@@ -116,6 +116,16 @@ describe('visual theme helpers', () => {
       key: 'ui_stage_background',
       path: 'assets/ui/stage-background.svg',
     });
+    expect(UI_ASSETS.titleBackground).toEqual({
+      key: 'ui_title_background',
+      path: 'assets/ui/title-background.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.titleButtonFrame).toEqual({
+      key: 'ui_title_button_frame',
+      path: 'assets/ui/title-button-frame.png',
+      type: 'image',
+    });
     expect(UI_ASSETS.buttonPrimary).toEqual({
       key: 'ui_button_primary',
       path: 'assets/ui/button-primary.svg',
@@ -146,6 +156,10 @@ describe('visual theme helpers', () => {
   });
 
   it('uses high-contrast metal button artwork for readability', () => {
+    const logo = readFileSync(new URL('../public/assets/brand/chesssummon-logo.svg', import.meta.url), 'utf8');
+    const titleBackground = readFileSync(new URL('../public/assets/ui/title-background.png', import.meta.url));
+    const titleButton = readFileSync(new URL('../public/assets/ui/title-button-frame.png', import.meta.url));
+    const logoOrnament = readFileSync(new URL('../public/assets/brand/title-logo-ornament.png', import.meta.url));
     const primary = readFileSync(new URL('../public/assets/ui/button-primary.svg', import.meta.url), 'utf8');
     const danger = readFileSync(new URL('../public/assets/ui/button-danger.svg', import.meta.url), 'utf8');
     const stage = readFileSync(new URL('../public/assets/ui/stage-background.svg', import.meta.url), 'utf8');
@@ -153,6 +167,13 @@ describe('visual theme helpers', () => {
     const summon = readFileSync(new URL('../public/assets/ui/frame-summon-card.svg', import.meta.url), 'utf8');
     const mana = readFileSync(new URL('../public/assets/ui/frame-mana.svg', import.meta.url), 'utf8');
 
+    expect(logo).toContain('CHESS');
+    expect(logo).toContain('OF DARK');
+    expect(logo).toContain('darkGold');
+    expect(logo).toContain('cyanGem');
+    expect(titleBackground.length).toBeGreaterThan(100000);
+    expect(titleButton.length).toBeGreaterThan(100000);
+    expect(logoOrnament.length).toBeGreaterThan(100000);
     expect(primary).toContain('primaryBody');
     expect(primary).toContain('primaryEdge');
     expect(primary).toContain('#080D18');
@@ -172,7 +193,10 @@ describe('visual theme helpers', () => {
     const { BootScene } = await import('../src/scenes/BootScene.js');
     const scene = Object.create(BootScene.prototype);
     const loaded = [];
-    scene.load = { svg: (key, path) => loaded.push({ key, path }) };
+    scene.load = {
+      svg: (key, path) => loaded.push({ key, path }),
+      image: (key, path) => loaded.push({ key, path, type: 'image' }),
+    };
 
     scene.preload();
 
@@ -180,6 +204,9 @@ describe('visual theme helpers', () => {
     expect(loaded).toContainEqual(UI_ASSETS.buttonDanger);
     expect(loaded).toContainEqual(UI_ASSETS.frameHudPanel);
     expect(loaded).toContainEqual(UI_ASSETS.stageBackground);
+    expect(loaded).toContainEqual(UI_ASSETS.titleBackground);
+    expect(loaded).toContainEqual(UI_ASSETS.titleButtonFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.titleLogoOrnament);
     expect(loaded).toContainEqual(UI_ASSETS.frameTopHud);
     expect(loaded).toContainEqual(UI_ASSETS.frameSummonCard);
     expect(loaded).toContainEqual(UI_ASSETS.frameMana);
@@ -252,9 +279,13 @@ describe('visual theme helpers', () => {
   it('applies sliced/generated UI frames to the stage and gameplay HUD', () => {
     const visualsSource = readFileSync(new URL('../src/ui/visuals.js', import.meta.url), 'utf8');
     const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+    const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
 
     expect(visualsSource).toContain('ui_stage_background');
+    expect(visualsSource).toContain('ui_title_background');
+    expect(visualsSource).toContain('ui_title_button_frame');
     expect(visualsSource).toContain('addFramedImage');
+    expect(gameSceneSource).toContain('UI_ASSETS.stageBackground.key');
     expect(uiSceneSource).toContain('UI_ASSETS.frameTopHud.key');
     expect(uiSceneSource).toContain('UI_ASSETS.frameSummonCard.key');
     expect(uiSceneSource).toContain('UI_ASSETS.frameMana.key');

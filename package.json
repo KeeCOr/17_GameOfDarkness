@@ -1,6 +1,6 @@
 {
   "name": "chess-summon",
-  "version": "0.1.73",
+  "version": "0.1.76",
   "description": "A 5x5 dark tactical chess game built for single-player Steam release candidates.",
   "author": "Jinwoo Oh",
   "license": "UNLICENSED",
@@ -36,7 +36,7 @@
       "icon": "icon.ico"
     },
     "portable": {
-      "artifactName": "ChessSummon_v0.1.73_portable.exe"
+      "artifactName": "ChessSummon_v0.1.76_portable.exe"
     },
     "files": [
       "electron/**/*",

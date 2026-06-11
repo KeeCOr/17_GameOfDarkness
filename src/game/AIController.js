@@ -63,6 +63,8 @@ export class AIController {
       case Difficulty.HARD: {
         const safeMoves = allMoves.filter(m => this._safeMove(board, m));
         const candidates = safeMoves.length > 0 ? safeMoves : allMoves;
+        const mateMove = this._findImmediateCheckmateMove(board, candidates, Owner.PLAYER);
+        if (mateMove) return { type: 'move', ...mateMove };
         return this._searchBestMove(board, candidates);
       }
       case Difficulty.VERY_HARD: {
@@ -172,7 +174,8 @@ export class AIController {
     const actions = this._orderActions(board, this._generateActions(board, Owner.AI), Owner.AI);
     for (const action of actions) {
       const clone = this._applyAction(board.clone(), action, Owner.AI);
-      if (this.difficulty === Difficulty.VERY_HARD && this.detector.isCheckmate(clone, Owner.PLAYER)) {
+      if ((this.difficulty === Difficulty.HARD || this.difficulty === Difficulty.VERY_HARD)
+          && this.detector.isCheckmate(clone, Owner.PLAYER)) {
         return action;
       }
       const score = this._minimax(clone, depth - 1, -Infinity, Infinity, false);
@@ -294,9 +297,11 @@ export class AIController {
       const resolvesCheck = !this.detector.isInCheck(clone, owner);
       if (inCheck && !resolvesCheck) continue;
       const opponent = owner === Owner.AI ? Owner.PLAYER : Owner.AI;
+      const checkPressureBonus = this.difficulty === Difficulty.VERY_HARD ? 12 : 8;
       const score = this._evaluate(clone)
         + (inCheck && resolvesCheck ? 50 : 0)
-        + (this.detector.isInCheck(clone, opponent) ? 4 : 0);
+        + (this.detector.isInCheck(clone, opponent) ? checkPressureBonus : 0)
+        + (this.detector.isCheckmate(clone, opponent) ? 10000 : 0);
       if (score > bestScore) {
         bestScore = score;
         best = option;

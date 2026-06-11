@@ -12,7 +12,7 @@ import {
   PieceType, Owner, COLORS, LAYOUT, MANA_PER_TURN, TURN_TIME_LIMIT,
   BOARD_SIZE, Difficulty,
 } from '../config.js';
-import { getTurnHint, UI_COPY } from '../ui/visuals.js';
+import { getTurnHint, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 import { playCaptureEffect, playCheckAlert, playCheckmateAlert, playPromotionEffect } from '../ui/effects.js';
 
 const State = {
@@ -98,9 +98,16 @@ export class GameScene extends Phaser.Scene {
   }
 
   _drawStage() {
-    this.add.rectangle(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, COLORS.BACKDROP);
+    const stageKey = UI_ASSETS.stageBackground.key;
+    if (this.textures.exists(stageKey)) {
+      this.add.image(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, stageKey)
+        .setDisplaySize(LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT)
+        .setDepth(-10);
+    } else {
+      this.add.rectangle(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, COLORS.BACKDROP);
+    }
     const g = this.add.graphics();
-    g.fillStyle(COLORS.PANEL_BG, 0.86);
+    g.fillStyle(COLORS.PANEL_BG, 0.36);
     g.fillRect(0, 0, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT);
     g.fillStyle(COLORS.PANEL_DEEP, 0.78);
     g.fillRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,

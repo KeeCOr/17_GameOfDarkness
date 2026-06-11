@@ -2,7 +2,10 @@ import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } f
 
 export const UI_ASSETS = Object.freeze({
   brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.svg' }),
+  titleLogoOrnament: Object.freeze({ key: 'brand_title_logo_ornament', path: 'assets/brand/title-logo-ornament.png', type: 'image' }),
   stageBackground: Object.freeze({ key: 'ui_stage_background', path: 'assets/ui/stage-background.svg' }),
+  titleBackground: Object.freeze({ key: 'ui_title_background', path: 'assets/ui/title-background.png', type: 'image' }),
+  titleButtonFrame: Object.freeze({ key: 'ui_title_button_frame', path: 'assets/ui/title-button-frame.png', type: 'image' }),
   buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/button-primary.svg' }),
   buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/button-danger.svg' }),
   frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/frame-hud-panel.svg' }),
@@ -19,6 +22,7 @@ export const UI_COPY = Object.freeze({
     multiplayer: '멀티 플레이',
     back: '뒤로',
     subtitle: '난이도를 선택하세요',
+    veryHardLocked: '어려움 승리 후 해금',
     difficulties: {
       VERY_HARD: '매우 어려움',
       EASY: '쉬움',
@@ -195,7 +199,8 @@ function hasTexture(scene, key) {
 
 export function addStageBackground(scene, title = '') {
   const { GAME_WIDTH: w, GAME_HEIGHT: h } = LAYOUT;
-  const stageKey = UI_ASSETS.stageBackground.key;
+  const useTitleArt = title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.titleBackground.key);
+  const stageKey = useTitleArt ? UI_ASSETS.titleBackground.key : UI_ASSETS.stageBackground.key;
   if (hasTexture(scene, stageKey)) {
     scene.add.image(w / 2, h / 2, stageKey)
       .setDisplaySize(w, h)
@@ -227,8 +232,14 @@ export function addStageBackground(scene, title = '') {
 
   if (title) {
     if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
+      if (hasTexture(scene, UI_ASSETS.titleLogoOrnament.key)) {
+        scene.add.image(w / 2, 94, UI_ASSETS.titleLogoOrnament.key)
+          .setDisplaySize(360, 170)
+          .setAlpha(0.94)
+          .setDepth(0.8);
+      }
       return scene.add.image(w / 2, 118, UI_ASSETS.brandLogo.key)
-        .setDisplaySize(348, 101)
+        .setDisplaySize(360, 142)
         .setDepth(1);
     }
     const titleText = scene.add.text(w / 2, 88, title, {
@@ -294,7 +305,7 @@ export function addReleaseBadge(scene, label, depth = 0) {
 export function addTextButton(scene, x, y, width, height, label, options = {}) {
   const state = getButtonColors(options);
   const depth = options.depth ?? 0;
-  const assetKey = getButtonAssetKey(options);
+  const assetKey = options.assetKey || getButtonAssetKey(options);
   const bg = hasTexture(scene, assetKey)
     ? scene.add.image(x, y, assetKey)
       .setDisplaySize(width, height)

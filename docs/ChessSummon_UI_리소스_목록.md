@@ -14,7 +14,9 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | --- | --- | --- | --- |
 | `button-primary` | Button frame | `public/assets/ui/button-primary.svg` | High-contrast dark metal frame for primary actions, menu choices, confirmation buttons |
 | `button-danger` | Button frame | `public/assets/ui/button-danger.svg` | High-contrast dark crimson frame for surrender/destructive action buttons |
-| `stage-background` | Stage background | `public/assets/ui/stage-background.svg` | Generated dark stone/gold/cyan background for title and stage screens |
+| `stage-background` | Stage background | `public/assets/ui/stage-background.svg` | Dark stone/gold/cyan background shared by title and gameplay stages |
+| `title-background` | Title bitmap | `public/assets/ui/title-background.png` | Generated 9:16 gothic chess hall background for the start screen |
+| `title-button-frame` | Title button bitmap | `public/assets/ui/title-button-frame.png` | Generated dark metal/gold/cyan button frame for start and difficulty buttons |
 | `frame-top-hud` | HUD frame | `public/assets/ui/frame-top-hud.svg` | Generated top clock HUD frame based on the approved play-screen direction |
 | `frame-hud-panel` | Panel frame | `public/assets/ui/frame-hud-panel.svg` | Right HUD and modal frame reference |
 | `frame-summon-card` | Summon frame | `public/assets/ui/frame-summon-card.svg` | Generated summon-row frame for in-game piece recruitment controls |
@@ -23,8 +25,9 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
 | `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
 | `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
-| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Full logo for title, store, and promotional layouts |
+| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Metallic Chess of Dark wordmark with king mark and cyan jewel accent |
 | `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.svg` | Compact crown/summon mark for app icons and capsules |
+| `title-logo-ornament` | Brand bitmap | `public/assets/brand/title-logo-ornament.png` | Generated gold king ornament behind the title logo |
 | `ingame-entry-mockup` | Concept mockup | `docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png` | 9:16 battle-entry mood reference for first-turn presentation and store screenshot direction |
 | `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.svg` | Bronze MMR tier badge |
 | `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.svg` | Silver MMR tier badge |
@@ -41,6 +44,9 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.76 adds generated PNG title background, button frame, and logo ornament assets and wires them into the menu screen.
+- v0.1.75 replaces the boxed logo with a larger metallic wordmark and connects gameplay staging to the shared dark stone background.
+- v0.1.74 strengthens Hard AI checkmate/check-pressure choices and locks Very Hard until the Hard clear achievement is unlocked.
 - v0.1.73 renames the visible game brand to Chess of Dark and adds generated/cropped stage, HUD, summon-card, mana, and battle-entry resources from the approved screen direction.
 - v0.1.72 adds the Very Hard difficulty option to menu/replay/placement flows and connects high-rank AI fallback matches to it.
 - v0.1.71 adds a dedicated checkmate flash, burst, camera shake, CHECKMATE label, and result copy.

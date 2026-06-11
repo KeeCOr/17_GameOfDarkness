@@ -1,10 +1,12 @@
 ﻿// src/scenes/MenuScene.js
 import { LAYOUT, Difficulty, TEXT_COLORS } from '../config.js';
+import { createSteamService } from '../services/SteamService.js';
 import { RELEASE_CHANNELS, RELEASE_INFO } from '../releaseInfo.js';
 import {
   addReleaseBadge,
   addStageBackground,
   addTextButton,
+  UI_ASSETS,
   UI_COPY,
 } from '../ui/visuals.js';
 
@@ -13,6 +15,7 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     this.buttons = [];
+    this.steamService ||= createSteamService();
     if (shouldShowModeSelect(RELEASE_INFO)) {
       this.mode = 'mode';
       this._showModeSelect();
@@ -45,10 +48,10 @@ export class MenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
-    const single = addTextButton(this, cx, 365, 264, 62, UI_COPY.menu.single, { fontSize: '22px', active: true });
+    const single = addTextButton(this, cx, 365, 286, 70, UI_COPY.menu.single, { fontSize: '22px', active: true, assetKey: UI_ASSETS.titleButtonFrame.key });
     single.rect.on('pointerdown', () => this._showDifficultySelect());
 
-    const multi = addTextButton(this, cx, 455, 264, 62, UI_COPY.menu.multiplayer, { fontSize: '22px' });
+    const multi = addTextButton(this, cx, 455, 286, 70, UI_COPY.menu.multiplayer, { fontSize: '22px', assetKey: UI_ASSETS.titleButtonFrame.key });
     multi.rect.on('pointerdown', () => this.scene.start('MultiplayerLobby'));
   }
 
@@ -77,18 +80,19 @@ export class MenuScene extends Phaser.Scene {
     ];
 
     for (const { value, y } of difficulties) {
+      const locked = value === Difficulty.VERY_HARD && !this._isVeryHardUnlocked();
       const label = UI_COPY.menu.difficulties[value];
-      const hint = UI_COPY.menu.difficultyHints[value];
-      const button = addTextButton(this, cx, y, 264, 58, label, { fontSize: '21px' });
+      const hint = locked ? UI_COPY.menu.veryHardLocked : UI_COPY.menu.difficultyHints[value];
+      const button = addTextButton(this, cx, y, 286, 66, label, { fontSize: '21px', enabled: !locked, assetKey: UI_ASSETS.titleButtonFrame.key });
       this.add.text(cx, y + 36, hint, {
         fontSize: '12px',
-        color: TEXT_COLORS.MUTED,
+        color: locked ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.MUTED,
       }).setOrigin(0.5);
-      this._wireDifficultyOption(button, cx, y, value);
+      if (!locked) this._wireDifficultyOption(button, cx, y, value);
     }
 
     if (showBack) {
-      const back = addTextButton(this, cx, 632, 158, 42, UI_COPY.menu.back, { fontSize: '15px' });
+      const back = addTextButton(this, cx, 632, 178, 48, UI_COPY.menu.back, { fontSize: '15px', assetKey: UI_ASSETS.titleButtonFrame.key });
       back.rect.on('pointerdown', () => this._showModeSelect());
     }
   }
@@ -106,6 +110,10 @@ export class MenuScene extends Phaser.Scene {
     hitArea.on('pointerover', () => button.rect.setFillStyle(0x394779));
     hitArea.on('pointerout', () => button.rect.setFillStyle(0x263155));
     hitArea.on('pointerdown', startPlacement);
+  }
+
+  _isVeryHardUnlocked() {
+    return Boolean(this.steamService?.isUnlocked?.('hard_win'));
   }
 }
 

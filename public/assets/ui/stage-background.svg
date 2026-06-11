@@ -1,42 +1,63 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="450" height="800" viewBox="0 0 450 800" fill="none">
   <defs>
     <linearGradient id="stageStone" x1="225" y1="0" x2="225" y2="800" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#111A2B"/>
-      <stop offset="0.42" stop-color="#07101E"/>
-      <stop offset="1" stop-color="#03060C"/>
+      <stop offset="0" stop-color="#101927"/>
+      <stop offset=".32" stop-color="#070E19"/>
+      <stop offset=".76" stop-color="#040811"/>
+      <stop offset="1" stop-color="#010308"/>
     </linearGradient>
-    <radialGradient id="stageCyan" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(225 430) rotate(90) scale(310 160)">
-      <stop offset="0" stop-color="#37D9FF" stop-opacity=".22"/>
-      <stop offset=".45" stop-color="#37D9FF" stop-opacity=".07"/>
-      <stop offset="1" stop-color="#37D9FF" stop-opacity="0"/>
+    <linearGradient id="stageGold" x1="34" y1="24" x2="416" y2="776" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff0b8"/>
+      <stop offset=".28" stop-color="#c5943d"/>
+      <stop offset=".62" stop-color="#654014"/>
+      <stop offset="1" stop-color="#f4ca73"/>
+    </linearGradient>
+    <linearGradient id="stageSteel" x1="225" y1="0" x2="225" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2d384b" stop-opacity=".42"/>
+      <stop offset=".5" stop-color="#0a101c" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#455168" stop-opacity=".2"/>
+    </linearGradient>
+    <radialGradient id="stageCyan" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(225 488) rotate(90) scale(312 176)">
+      <stop stop-color="#39e8ff" stop-opacity=".22"/>
+      <stop offset=".5" stop-color="#1ccde6" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#1ccde6" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="stageGold" x1="46" y1="42" x2="404" y2="758" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFF0B8"/>
-      <stop offset=".44" stop-color="#B7893D"/>
-      <stop offset="1" stop-color="#4A2A0A"/>
-    </linearGradient>
+    <filter id="recess" x="-6%" y="-4%" width="112%" height="108%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity=".68"/>
+    </filter>
   </defs>
+
   <rect width="450" height="800" fill="url(#stageStone)"/>
   <rect width="450" height="800" fill="url(#stageCyan)"/>
-  <g opacity=".24" stroke="#26334C" stroke-width="1">
-    <path d="M42 0v800M408 0v800M95 0v800M355 0v800"/>
-    <path d="M0 80h450M0 156h450M0 235h450M0 318h450M0 404h450M0 493h450M0 586h450M0 681h450"/>
-    <path d="M95 0l260 800M355 0 95 800"/>
+  <g opacity=".18" stroke="#566073" stroke-width="1">
+    <path d="M0 82h450M0 158h450M0 236h450M0 318h450M0 402h450M0 490h450M0 584h450M0 681h450"/>
+    <path d="M44 0v800M94 0v800M355 0v800M406 0v800"/>
+    <path d="M94 0l262 800M356 0 94 800"/>
   </g>
-  <g opacity=".9">
-    <path d="M18 28h414v744H18z" fill="#050A13" fill-opacity=".3" stroke="#050812" stroke-width="10"/>
-    <path d="M32 42h386v716H32z" fill="none" stroke="url(#stageGold)" stroke-width="2" stroke-opacity=".65"/>
-    <path d="M53 70h344v660H53z" fill="none" stroke="#26334C" stroke-width="2" stroke-opacity=".72"/>
-    <path d="M77 110h296v82l-35 35v346l35 35v82H77v-82l35-35V227l-35-35z" fill="#070D18" fill-opacity=".35" stroke="#B7893D" stroke-opacity=".28" stroke-width="2"/>
+
+  <g filter="url(#recess)">
+    <path d="M16 24h418v752H16z" fill="#02050b" fill-opacity=".46" stroke="#02050b" stroke-width="9"/>
+    <path d="M29 38h392v724H29z" fill="#090f1a" fill-opacity=".28" stroke="url(#stageGold)" stroke-width="2.5" stroke-opacity=".72"/>
+    <path d="M48 60h354v680H48z" fill="none" stroke="#26334c" stroke-width="2" stroke-opacity=".78"/>
+    <path d="M74 96h302v84l-35 36v368l35 36v84H74v-84l35-36V216l-35-36z" fill="#040913" fill-opacity=".55" stroke="#b7893d" stroke-opacity=".33" stroke-width="2"/>
   </g>
-  <g opacity=".65" stroke="url(#stageGold)" stroke-width="2" fill="none">
-    <path d="M225 22l34 34-34 34-34-34 34-34z"/>
-    <path d="M225 710l34 34-34 34-34-34 34-34z"/>
-    <path d="M33 398l26-26 26 26-26 26-26-26z"/>
-    <path d="M365 398l26-26 26 26-26 26-26-26z"/>
+
+  <g opacity=".5" stroke="url(#stageGold)" stroke-width="2" fill="none">
+    <path d="M225 18 262 55 225 92 188 55z"/>
+    <path d="M225 704 262 741 225 778 188 741z"/>
+    <path d="M31 398 60 369 89 398 60 427z"/>
+    <path d="M361 398 390 369 419 398 390 427z"/>
   </g>
-  <g opacity=".28" fill="#FFF0B8">
-    <path d="M207 620h36l-5-48 14-18-19 7-8-20-8 20-19-7 14 18z"/>
-    <path d="M200 638h50l8 13h-66z"/>
+
+  <g opacity=".38" fill="#fff0b8">
+    <path d="M205 626h40l-6-52 16-19-21 8-9-24-9 24-21-8 16 19z"/>
+    <path d="M197 646h56l9 14h-74z"/>
+  </g>
+
+  <g opacity=".2" fill="url(#stageSteel)">
+    <path d="M0 0h450v68H0z"/>
+    <path d="M0 732h450v68H0z"/>
+    <path d="M0 0h54v800H0z"/>
+    <path d="M396 0h54v800h-54z"/>
   </g>
 </svg>

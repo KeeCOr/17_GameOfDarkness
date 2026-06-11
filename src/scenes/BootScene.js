@@ -6,7 +6,11 @@ export class BootScene extends Phaser.Scene {
 
   preload() {
     Object.values(UI_ASSETS).forEach(asset => {
-      this.load.svg(asset.key, asset.path);
+      if (asset.type === 'image') {
+        this.load.image(asset.key, asset.path);
+      } else {
+        this.load.svg(asset.key, asset.path);
+      }
     });
   }
 
