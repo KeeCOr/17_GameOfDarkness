@@ -1,8 +1,8 @@
 # Chess of Dark 기획서
 
-**버전:** 0.1.87  
+**버전:** 0.1.90  
 **작성일:** 2026-05-12  
-**최종 수정:** 2026-06-11  
+**최종 수정:** 2026-06-12  
 **장르:** 디지털 전략 / 체스 변형
 
 ---
@@ -70,6 +70,20 @@ Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.90 난이도 선택 버튼 내부 설명 배치
+- 싱글 플레이 선택 후 난이도 선택 화면에서 상단의 `싱글 플레이`, `난이도를 선택하세요` 문구를 삭제해 로고 아래 시선을 버튼으로 바로 보내도록 정리했다.
+- 난이도 버튼 높이를 74px에서 92px로 키우고 각 난이도 설명/해금 문구를 버튼 내부 두 번째 줄로 배치했다.
+- 난이도 선택 히트 영역을 100px 높이로 확장해 커진 버튼과 터치 영역이 일치하도록 조정했다.
+
+### v0.1.89 시작 화면 모드 버튼 가독성 조정
+- 시작 화면에서 로고와 버튼 사이에 있던 `5x5 어둠의 전장에서 말을 소환해 왕을 무너뜨리세요` 보조 문구를 삭제해 첫 화면을 더 단순하게 정리했다.
+- `싱글 플레이`, `멀티 플레이` 버튼 텍스트 크기를 24px에서 22px로 줄여 타이틀 버튼 프레임 안에서 글자가 더 안정적으로 보이게 했다.
+
+### v0.1.88 시작 화면 로고 PNG 재제작
+- `public/assets/brand/chesssummon-logo.png`를 예시 시작 화면과 가까운 3D 금속 타이포, 왕 말 문장, 청록 보석 포인트가 결합된 투명 PNG 워드마크로 새로 생성했다.
+- 메뉴 로고 로딩 경로를 SVG에서 PNG 이미지 자산으로 교체해 배경/버튼 비트맵 리소스와 같은 렌더링 톤을 사용하게 했다.
+- 시작 화면 로고 표시 크기를 410x205로 조정해 가로로 눌려 보이던 느낌을 줄이고 상단 타이틀의 무게감을 키웠다.
 
 ### v0.1.87 Steam 리더보드 조회 경로 추가
 - Steam 브릿지에 `downloadLeaderboardEntries` 경로를 추가해 `RANK_POINTS` 리더보드 업로드뿐 아니라 조회도 요청할 수 있게 했다.
@@ -665,9 +679,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.87.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.87_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.87_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.90.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.90_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.90_portable.exe` |
 
 ---
 
@@ -694,7 +708,7 @@ AI 턴 생각 시간:
 
 > 자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.
 
-- 이미지/스프라이트: `public/assets/brand/chesssummon-logo.svg`, `public/assets/brand/chesssummon-mark.svg`, `public/assets/pieces/bishop_d.png`, `public/assets/pieces/bishop_w.png`, `public/assets/pieces/king_d.png`, `public/assets/pieces/king_w.png`, `public/assets/pieces/knight_d.png`, `public/assets/pieces/knight_w.png`, `public/assets/pieces/pawn_d.png`, `public/assets/pieces/pawn_w.png`, `public/assets/pieces/queen_d.png`, `public/assets/pieces/queen_w.png` 외 14개
+- 이미지/스프라이트: `public/assets/brand/chesssummon-logo.png`, `public/assets/brand/chesssummon-mark.svg`, `public/assets/pieces/bishop_d.png`, `public/assets/pieces/bishop_w.png`, `public/assets/pieces/king_d.png`, `public/assets/pieces/king_w.png`, `public/assets/pieces/knight_d.png`, `public/assets/pieces/knight_w.png`, `public/assets/pieces/pawn_d.png`, `public/assets/pieces/pawn_w.png`, `public/assets/pieces/queen_d.png`, `public/assets/pieces/queen_w.png` 외 14개
 <!-- APPLIED_RESOURCES_END -->
 
 <!-- RESOURCE_PREVIEWS_START -->
@@ -702,8 +716,8 @@ AI 턴 생각 시간:
 
 > 자동 갱신: 2026-06-04. 공유 시 문서와 함께 아래 이미지 경로가 포함되어야 합니다.
 
-![17_DC chesssummon-logo](../public/assets/brand/chesssummon-logo.svg)
-- `public/assets/brand/chesssummon-logo.svg`
+![17_DC chesssummon-logo](../public/assets/brand/chesssummon-logo.png)
+- `public/assets/brand/chesssummon-logo.png`
 
 ![17_DC chesssummon-mark](../public/assets/brand/chesssummon-mark.svg)
 - `public/assets/brand/chesssummon-mark.svg`

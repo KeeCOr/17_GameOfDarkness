@@ -31,7 +31,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
 | `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
 | `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
-| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.svg` | Integrated metallic Chess of Dark wordmark with crown, summon jewel, and ornament lines built into the lettering |
+| `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.png` | Generated 3D metallic Chess of Dark bitmap wordmark with a crown crest, gold lettering, and cyan jewel accents |
 | `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.svg` | Compact crown/summon mark for app icons and capsules |
 | `title-logo-ornament` | Brand bitmap | `public/assets/brand/title-logo-ornament.png` | Generated gold king ornament behind the title logo |
 | `ingame-entry-mockup` | Concept mockup | `docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png` | 9:16 battle-entry mood reference for first-turn presentation and store screenshot direction |
@@ -50,6 +50,8 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.89 removes the start-screen subtitle copy and reduces single/multiplayer button text from 24px to 22px so the labels fit the title button frame more comfortably.
+- v0.1.88 replaces the flat title SVG with a generated transparent 3D metallic PNG logo and displays it at 410x205 so the start screen matches the approved rendered art direction.
 - v0.1.87 adds a Steam leaderboard summary slot to the multiplayer lobby so the release build has an in-game surface for `RANK_POINTS` lookup results.
 - v0.1.86 aligns the Electron portable window content area to the 450x800 game canvas so desktop launches no longer start with wide empty space around the portrait layout.
 - v0.1.85 restyles the defeat/result screen as a dark metal result plate with a cracked crown motif, stronger defeat-state contrast, and larger bottom action buttons.

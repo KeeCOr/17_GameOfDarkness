@@ -142,13 +142,16 @@ describe('menu flow', () => {
 
     scene._showModeSelect();
 
-    expect(texts.some(text => text.value === '5x5 어둠의 전장에서 말을 소환해 왕을 무너뜨리세요')).toBe(true);
+    expect(texts.some(text => text.value === '5x5 어둠의 전장에서 말을 소환해 왕을 무너뜨리세요')).toBe(false);
     expect(texts.some(text => text.value === UI_COPY.menu.modeTitle)).toBe(false);
+    expect(texts.find(text => text.value === UI_COPY.menu.single)?.style.fontSize).toBe('22px');
+    expect(texts.find(text => text.value === UI_COPY.menu.multiplayer)?.style.fontSize).toBe('22px');
     expect(texts.some(text => /[�]|\\?꾩|硫|筌|諭/.test(String(text.value)))).toBe(false);
   }, 10000);
 
   it('locks very hard until hard mode is cleared', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { UI_COPY } = await import('../src/ui/visuals.js');
     const { scene, rectangles, texts, starts } = makeMenuScene();
     Object.setPrototypeOf(scene, MenuScene.prototype);
     scene.steamService = { isUnlocked: () => false };
@@ -156,8 +159,28 @@ describe('menu flow', () => {
     scene._showDifficultySelect();
 
     expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD)).toBe(false);
-    expect(texts.some(text => String(text.value).includes('어려움 승리'))).toBe(true);
+    expect(texts.some(text => text.value === UI_COPY.menu.veryHardLocked)).toBe(true);
     expect(starts).toEqual([]);
+  }, 10000);
+
+  it('moves difficulty selection copy into taller buttons', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { UI_ASSETS, UI_COPY } = await import('../src/ui/visuals.js');
+    const { scene, images, texts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+
+    scene._showDifficultySelect({ showBack: false });
+
+    expect(texts.some(text => text.value === UI_COPY.menu.single && text.y === 266)).toBe(false);
+    expect(texts.some(text => text.value === UI_COPY.menu.subtitle)).toBe(false);
+    expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.EASY)).toBe(true);
+    expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.MEDIUM)).toBe(true);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(313);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(346);
+
+    const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
+    expect(titleButtonFrames.some(image => image.y === 326 && image.width === 322 && image.height === 92)).toBe(true);
+    expect(titleButtonFrames.some(image => image.y === 632 && image.width === 322 && image.height === 92)).toBe(true);
   }, 10000);
 
   it('keeps title button art on the locked very hard option', async () => {
@@ -171,7 +194,7 @@ describe('menu flow', () => {
 
     const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
     expect(titleButtonFrames).toHaveLength(4);
-    expect(titleButtonFrames.some(image => image.y === 622 && image.width === 322 && image.height === 74)).toBe(true);
+    expect(titleButtonFrames.some(image => image.y === 632 && image.width === 322 && image.height === 92)).toBe(true);
   }, 10000);
 
   it('uses taller mode buttons with more touch padding', async () => {

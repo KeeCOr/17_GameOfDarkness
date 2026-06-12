@@ -17,7 +17,7 @@ describe('brand, rank, and bot presentation', () => {
   });
 
   it('ships logo and one icon asset for each MMR tier', () => {
-    expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.svg'))).toBe(true);
+    expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.png'))).toBe(true);
     expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'))).toBe(true);
     expect(fs.existsSync(path.join('public', 'assets', 'brand', 'title-logo-ornament.png'))).toBe(true);
     for (const tier of RANK_TIERS)
@@ -25,20 +25,11 @@ describe('brand, rank, and bot presentation', () => {
   });
 
   it('keeps brand art aligned with the dark metal button palette', () => {
-    const logo = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.svg'), 'utf8');
+    const logo = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.png'));
     const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'), 'utf8');
 
-    expect(logo).toContain('CHESS');
-    expect(logo).toContain('DARK');
-    expect(logo).toContain('darkGold');
-    expect(logo).toContain('brightEdge');
-    expect(logo).toContain('cyanGem');
-    expect(logo).toContain('integratedSummonWordmark');
-    expect(logo).toContain('letterSummonCrown');
-    expect(logo).not.toContain('heraldicSummonMark');
-    expect(logo).toContain('cyanGlow');
-    expect(logo).toContain('Cinzel, Trajan Pro, Georgia');
-    expect(logo).not.toContain('#6fffe0');
+    expect(logo.length).toBeGreaterThan(500000);
+    expect(logo.subarray(1, 4).toString()).toBe('PNG');
     expect(mark).toContain('#fff0b8');
     expect(mark).not.toContain('#6fffe0');
   });

@@ -1,7 +1,7 @@
 import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
 
 export const UI_ASSETS = Object.freeze({
-  brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.svg' }),
+  brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.png', type: 'image' }),
   titleLogoOrnament: Object.freeze({ key: 'brand_title_logo_ornament', path: 'assets/brand/title-logo-ornament.png', type: 'image' }),
   stageBackground: Object.freeze({ key: 'ui_stage_background', path: 'assets/ui/stage-background.svg' }),
   titleBackground: Object.freeze({ key: 'ui_title_background', path: 'assets/ui/title-background.png', type: 'image' }),
@@ -238,8 +238,8 @@ export function addStageBackground(scene, title = '') {
 
   if (title) {
     if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
-      return scene.add.image(w / 2, 144, UI_ASSETS.brandLogo.key)
-        .setDisplaySize(392, 155)
+      return scene.add.image(w / 2, 150, UI_ASSETS.brandLogo.key)
+        .setDisplaySize(410, 205)
         .setDepth(1);
     }
     const titleText = scene.add.text(w / 2, 88, title, {

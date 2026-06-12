@@ -70,8 +70,8 @@ export const UI_RESOURCE_LIST = Object.freeze([
   {
     id: 'brand-logo',
     type: 'brand',
-    purpose: 'Full Chess of Dark logo for title, store, and promotional use.',
-    file: 'public/assets/brand/chesssummon-logo.svg',
+    purpose: 'Generated 3D metallic Chess of Dark bitmap logo for title, store, and promotional use.',
+    file: 'public/assets/brand/chesssummon-logo.png',
   },
   {
     id: 'brand-mark',

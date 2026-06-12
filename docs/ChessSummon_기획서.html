@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <title>Chess of Dark 기획서 v0.1.87</title>
+  <title>Chess of Dark 기획서 v0.1.89</title>
   <style>
     body { margin: 0; background: #111426; color: #eef2ff; font-family: Arial, "Malgun Gothic", sans-serif; line-height: 1.6; }
     main { max-width: 920px; margin: 0 auto; padding: 40px 28px 72px; }
@@ -36,7 +36,7 @@
     <li>소환 카드 행 높이를 키워 말 이름, 등급, 사용 조건, 마나 비용을 한눈에 읽을 수 있게 했다.</li>
   </ul>
   <h1>Chess of Dark 기획서</h1>
-  <p class="meta"><strong>버전:</strong> 0.1.87<br><strong>최종 수정:</strong> 2026-06-11<br><strong>장르:</strong> 디지털 전략 / 체스 변형</p>
+  <p class="meta"><strong>버전:</strong> 0.1.89<br><strong>최종 수정:</strong> 2026-06-12<br><strong>장르:</strong> 디지털 전략 / 체스 변형</p>
 
   <h2>1. 게임 개요</h2>
   <p>Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을 소환하는 전술 게임이다. 플레이어는 제한된 시야와 3분 체스 시계 안에서 이동 1번, 소환 1번을 선택하고, 소환 위치를 확보해 전세를 뒤집어야 한다.</p>
@@ -71,6 +71,17 @@
   <p>같은 종류를 반복 소환할수록 비용은 2씩 증가한다. 소환은 아군 말 주변 8칸의 빈 칸에만 가능하며, 소환된 말은 해당 턴에 이동할 수 없다.</p>
 
   <h2>4. UI / UX 변경 이력</h2>
+  <h3>v0.1.89 시작 화면 모드 버튼 가독성 조정</h3>
+  <ul>
+    <li>시작 화면에서 로고와 버튼 사이에 있던 <code>5x5 어둠의 전장에서 말을 소환해 왕을 무너뜨리세요</code> 보조 문구를 삭제해 첫 화면을 더 단순하게 정리했다.</li>
+    <li><code>싱글 플레이</code>, <code>멀티 플레이</code> 버튼 텍스트 크기를 24px에서 22px로 줄여 타이틀 버튼 프레임 안에서 글자가 더 안정적으로 보이게 했다.</li>
+  </ul>
+  <h3>v0.1.88 시작 화면 로고 PNG 재제작</h3>
+  <ul>
+    <li><code>public/assets/brand/chesssummon-logo.png</code>를 예시 시작 화면과 가까운 3D 금속 타이포, 왕 말 문장, 청록 보석 포인트가 결합된 투명 PNG 워드마크로 새로 생성했다.</li>
+    <li>메뉴 로고 로딩 경로를 SVG에서 PNG 이미지 자산으로 교체해 배경/버튼 비트맵 리소스와 같은 렌더링 톤을 사용하게 했다.</li>
+    <li>시작 화면 로고 표시 크기를 410x205로 조정해 가로로 눌려 보이던 느낌을 줄이고 상단 타이틀의 무게감을 키웠다.</li>
+  </ul>
   <h3>v0.1.87 Steam 리더보드 조회 경로 추가</h3>
   <ul>
     <li>Steam 브릿지에 <code>downloadLeaderboardEntries</code> 경로를 추가해 <code>RANK_POINTS</code> 리더보드 업로드뿐 아니라 조회도 요청할 수 있게 했다.</li>
@@ -586,16 +597,16 @@
   </table>
 
   <h2>7. 배포</h2>
-  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.1.87.html</code></p>
-  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.1.87_portable.exe</code></p>
-  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.1.87_portable.exe</code></p>
+  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.1.89.html</code></p>
+  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.1.89_portable.exe</code></p>
+  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.1.89_portable.exe</code></p>
 </main>
 <!-- APPLIED_RESOURCES_START -->
 <section class="applied-resources">
   <h2>적용 리소스</h2>
   <p>자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.</p>
   <ul>
-    <li><strong>이미지/스프라이트</strong>: <code>public/assets/brand/chesssummon-logo.svg</code>, <code>public/assets/brand/chesssummon-mark.svg</code>, <code>public/assets/pieces/bishop_d.png</code>, <code>public/assets/pieces/bishop_w.png</code>, <code>public/assets/pieces/king_d.png</code>, <code>public/assets/pieces/king_w.png</code>, <code>public/assets/pieces/knight_d.png</code>, <code>public/assets/pieces/knight_w.png</code>, <code>public/assets/pieces/pawn_d.png</code>, <code>public/assets/pieces/pawn_w.png</code>, <code>public/assets/pieces/queen_d.png</code>, <code>public/assets/pieces/queen_w.png</code> 외 14개</li>
+    <li><strong>이미지/스프라이트</strong>: <code>public/assets/brand/chesssummon-logo.png</code>, <code>public/assets/brand/chesssummon-mark.svg</code>, <code>public/assets/pieces/bishop_d.png</code>, <code>public/assets/pieces/bishop_w.png</code>, <code>public/assets/pieces/king_d.png</code>, <code>public/assets/pieces/king_w.png</code>, <code>public/assets/pieces/knight_d.png</code>, <code>public/assets/pieces/knight_w.png</code>, <code>public/assets/pieces/pawn_d.png</code>, <code>public/assets/pieces/pawn_w.png</code>, <code>public/assets/pieces/queen_d.png</code>, <code>public/assets/pieces/queen_w.png</code> 외 14개</li>
   </ul>
   
 </section>
@@ -607,8 +618,8 @@
   <p>자동 갱신: 2026-06-04. 공유 시 문서와 함께 아래 이미지 경로가 포함되어야 합니다.</p>
   <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;">
 <figure style="margin:12px 0;padding:12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;">
-  <img src="../public/assets/brand/chesssummon-logo.svg" alt="17_DC chesssummon-logo" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
-  <figcaption style="margin-top:8px;font-size:13px;color:#4b5563;"><code>public/assets/brand/chesssummon-logo.svg</code></figcaption>
+  <img src="../public/assets/brand/chesssummon-logo.png" alt="17_DC chesssummon-logo" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
+  <figcaption style="margin-top:8px;font-size:13px;color:#4b5563;"><code>public/assets/brand/chesssummon-logo.png</code></figcaption>
 </figure>
 <figure style="margin:12px 0;padding:12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;">
   <img src="../public/assets/brand/chesssummon-mark.svg" alt="17_DC chesssummon-mark" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />

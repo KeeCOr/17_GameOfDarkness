@@ -112,6 +112,11 @@ describe('visual theme helpers', () => {
   });
 
   it('maps reusable SVG assets to shared UI controls', () => {
+    expect(UI_ASSETS.brandLogo).toEqual({
+      key: 'brand_logo',
+      path: 'assets/brand/chesssummon-logo.png',
+      type: 'image',
+    });
     expect(UI_ASSETS.stageBackground).toEqual({
       key: 'ui_stage_background',
       path: 'assets/ui/stage-background.svg',
@@ -186,7 +191,7 @@ describe('visual theme helpers', () => {
   });
 
   it('uses high-contrast metal button artwork for readability', () => {
-    const logo = readFileSync(new URL('../public/assets/brand/chesssummon-logo.svg', import.meta.url), 'utf8');
+    const logo = readFileSync(new URL('../public/assets/brand/chesssummon-logo.png', import.meta.url));
     const titleBackground = readFileSync(new URL('../public/assets/ui/title-background.png', import.meta.url));
     const titleButton = readFileSync(new URL('../public/assets/ui/title-button-frame.png', import.meta.url));
     const logoOrnament = readFileSync(new URL('../public/assets/brand/title-logo-ornament.png', import.meta.url));
@@ -203,11 +208,8 @@ describe('visual theme helpers', () => {
     const summon = readFileSync(new URL('../public/assets/ui/frame-summon-card.svg', import.meta.url), 'utf8');
     const mana = readFileSync(new URL('../public/assets/ui/frame-mana.svg', import.meta.url), 'utf8');
 
-    expect(logo).toContain('CHESS');
-    expect(logo).toContain('DARK');
-    expect(logo).toContain('darkGold');
-    expect(logo).toContain('cyanGem');
-    expect(logo).toContain('integratedSummonWordmark');
+    expect(logo.length).toBeGreaterThan(500000);
+    expect(logo.subarray(1, 4).toString()).toBe('PNG');
     expect(titleBackground.length).toBeGreaterThan(100000);
     expect(titleButton.length).toBeGreaterThan(100000);
     expect(logoOrnament.length).toBeGreaterThan(100000);
@@ -244,6 +246,7 @@ describe('visual theme helpers', () => {
     scene.preload();
 
     expect(loaded).toContainEqual(UI_ASSETS.buttonPrimary);
+    expect(loaded).toContainEqual(UI_ASSETS.brandLogo);
     expect(loaded).toContainEqual(UI_ASSETS.buttonDanger);
     expect(loaded).toContainEqual(UI_ASSETS.frameHudPanel);
     expect(loaded).toContainEqual(UI_ASSETS.stageBackground);
@@ -334,8 +337,8 @@ describe('visual theme helpers', () => {
     expect(visualsSource).toContain('ui_stage_background');
     expect(visualsSource).toContain('ui_title_background');
     expect(visualsSource).toContain('ui_title_button_frame');
-    expect(visualsSource).toContain('w / 2, 144, UI_ASSETS.brandLogo.key');
-    expect(visualsSource).toContain('setDisplaySize(392, 155)');
+    expect(visualsSource).toContain('w / 2, 150, UI_ASSETS.brandLogo.key');
+    expect(visualsSource).toContain('setDisplaySize(410, 205)');
     expect(visualsSource).toContain('ui_game_background');
     expect(visualsSource).toContain('ui_game_top_hud_frame');
     expect(visualsSource).not.toContain('scene.add.image(w / 2, 94, UI_ASSETS.titleLogoOrnament.key)');
