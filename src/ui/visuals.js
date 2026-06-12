@@ -238,7 +238,7 @@ export function addStageBackground(scene, title = '') {
 
   if (title) {
     if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
-      return scene.add.image(w / 2, 150, UI_ASSETS.brandLogo.key)
+      return scene.add.image(w / 2, 165, UI_ASSETS.brandLogo.key)
         .setDisplaySize(410, 205)
         .setDepth(1);
     }

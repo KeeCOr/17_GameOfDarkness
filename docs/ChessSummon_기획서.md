@@ -1,6 +1,6 @@
 # Chess of Dark 기획서
 
-**버전:** 0.1.94  
+**버전:** 0.1.95  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-12  
 **장르:** 디지털 전략 / 체스 변형
@@ -70,6 +70,10 @@ Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.95 시작 화면 로고 위치 조정
+- 시작/난이도 화면의 공통 브랜드 로고 중심 y좌표를 150에서 165로 낮춰 상단에 붙어 보이는 느낌을 줄였다.
+- 기존 410x205 로고 크기와 버튼 배치는 유지해 버튼 영역의 가독성과 터치 여백은 흔들리지 않게 했다.
 
 ### v0.1.94 Multiplayer/MMR 출시 판단 정리
 - `src/multiplayer/releaseReadiness.js`를 추가해 AI 대체 매칭, 로컬 MMR 저장, Steam `RANK_POINTS` 업로드 어댑터와 실제 공개 PvP 랭크의 차이를 테스트 가능한 기준으로 분리했다.
@@ -698,9 +702,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.94.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.94_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.94_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.95.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.95_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.95_portable.exe` |
 
 ---
 

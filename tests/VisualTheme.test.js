@@ -337,7 +337,7 @@ describe('visual theme helpers', () => {
     expect(visualsSource).toContain('ui_stage_background');
     expect(visualsSource).toContain('ui_title_background');
     expect(visualsSource).toContain('ui_title_button_frame');
-    expect(visualsSource).toContain('w / 2, 150, UI_ASSETS.brandLogo.key');
+    expect(visualsSource).toContain('w / 2, 165, UI_ASSETS.brandLogo.key');
     expect(visualsSource).toContain('setDisplaySize(410, 205)');
     expect(visualsSource).toContain('ui_game_background');
     expect(visualsSource).toContain('ui_game_top_hud_frame');
