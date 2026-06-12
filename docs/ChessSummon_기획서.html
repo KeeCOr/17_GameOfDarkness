@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <title>Chess of Dark 기획서 v0.1.89</title>
+  <title>Chess of Dark 기획서 v0.1.92</title>
   <style>
     body { margin: 0; background: #111426; color: #eef2ff; font-family: Arial, "Malgun Gothic", sans-serif; line-height: 1.6; }
     main { max-width: 920px; margin: 0 auto; padding: 40px 28px 72px; }
@@ -36,7 +36,7 @@
     <li>소환 카드 행 높이를 키워 말 이름, 등급, 사용 조건, 마나 비용을 한눈에 읽을 수 있게 했다.</li>
   </ul>
   <h1>Chess of Dark 기획서</h1>
-  <p class="meta"><strong>버전:</strong> 0.1.89<br><strong>최종 수정:</strong> 2026-06-12<br><strong>장르:</strong> 디지털 전략 / 체스 변형</p>
+  <p class="meta"><strong>버전:</strong> 0.1.92<br><strong>최종 수정:</strong> 2026-06-12<br><strong>장르:</strong> 디지털 전략 / 체스 변형</p>
 
   <h2>1. 게임 개요</h2>
   <p>Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을 소환하는 전술 게임이다. 플레이어는 제한된 시야와 3분 체스 시계 안에서 이동 1번, 소환 1번을 선택하고, 소환 위치를 확보해 전세를 뒤집어야 한다.</p>
@@ -71,6 +71,23 @@
   <p>같은 종류를 반복 소환할수록 비용은 2씩 증가한다. 소환은 아군 말 주변 8칸의 빈 칸에만 가능하며, 소환된 말은 해당 턴에 이동할 수 없다.</p>
 
   <h2>4. UI / UX 변경 이력</h2>
+  <h3>v0.1.92 Steam 제출 준비 체크리스트 자동화</h3>
+  <ul>
+    <li><code>src/steam/releaseReadiness.js</code>를 추가해 현재 버전 산출물명, 업적/스탯/리더보드 카탈로그, Steamworks/스토어/수동 QA blocker를 한 번에 계산하게 했다.</li>
+    <li><code>docs/Steam_제출_QA_체크리스트.md</code>를 추가해 Steam 제출 직전 확인할 빌드 산출물, 외부 Steamworks 설정, 스토어 자료, 수동 QA 항목을 정리했다.</li>
+    <li>Steam 출시 프로세스를 눈대중이 아니라 테스트 가능한 체크리스트로 이어갈 수 있도록 회귀 테스트를 추가했다.</li>
+  </ul>
+  <h3>v0.1.91 매우 어려움 잠금 버튼 양식 통일</h3>
+  <ul>
+    <li>잠금 상태의 <code>매우 어려움</code>도 다른 난이도와 동일한 92px 타이틀 버튼 프레임/흰색 난이도명/버튼 내부 안내 문구 양식으로 보이게 했다.</li>
+    <li>해금 전에는 여전히 배치 화면으로 진입하지 않지만, 회색 반투명 버튼처럼 분리되어 보이지 않도록 시각 상태만 통일했다.</li>
+  </ul>
+  <h3>v0.1.90 난이도 선택 버튼 내부 설명 배치</h3>
+  <ul>
+    <li>싱글 플레이 선택 후 난이도 선택 화면에서 상단의 <code>싱글 플레이</code>, <code>난이도를 선택하세요</code> 문구를 삭제해 로고 아래 시선을 버튼으로 바로 보내도록 정리했다.</li>
+    <li>난이도 버튼 높이를 74px에서 92px로 키우고 각 난이도 설명/해금 문구를 버튼 내부 두 번째 줄로 배치했다.</li>
+    <li>난이도 선택 히트 영역을 100px 높이로 확장해 커진 버튼과 터치 영역이 일치하도록 조정했다.</li>
+  </ul>
   <h3>v0.1.89 시작 화면 모드 버튼 가독성 조정</h3>
   <ul>
     <li>시작 화면에서 로고와 버튼 사이에 있던 <code>5x5 어둠의 전장에서 말을 소환해 왕을 무너뜨리세요</code> 보조 문구를 삭제해 첫 화면을 더 단순하게 정리했다.</li>
@@ -597,9 +614,9 @@
   </table>
 
   <h2>7. 배포</h2>
-  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.1.89.html</code></p>
-  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.1.89_portable.exe</code></p>
-  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.1.89_portable.exe</code></p>
+  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.1.92.html</code></p>
+  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.1.92_portable.exe</code></p>
+  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.1.92_portable.exe</code></p>
 </main>
 <!-- APPLIED_RESOURCES_START -->
 <section class="applied-resources">

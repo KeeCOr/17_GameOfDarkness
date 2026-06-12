@@ -183,18 +183,26 @@ describe('menu flow', () => {
     expect(titleButtonFrames.some(image => image.y === 632 && image.width === 322 && image.height === 92)).toBe(true);
   }, 10000);
 
-  it('keeps title button art on the locked very hard option', async () => {
+  it('keeps the locked very hard option in the same full button format', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
-    const { UI_ASSETS } = await import('../src/ui/visuals.js');
-    const { scene, images } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    const { UI_ASSETS, UI_COPY } = await import('../src/ui/visuals.js');
+    const { scene, images, texts, starts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
     Object.setPrototypeOf(scene, MenuScene.prototype);
     scene.steamService = { isUnlocked: () => false };
 
     scene._showDifficultySelect({ showBack: false });
 
     const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
+    const lockedFrame = titleButtonFrames.find(image => image.y === 632);
+    const lockedLabel = texts.find(text => text.value === UI_COPY.menu.difficulties.VERY_HARD);
+    const lockedHint = texts.find(text => text.value === UI_COPY.menu.veryHardLocked);
+
     expect(titleButtonFrames).toHaveLength(4);
-    expect(titleButtonFrames.some(image => image.y === 632 && image.width === 322 && image.height === 92)).toBe(true);
+    expect(lockedFrame).toMatchObject({ width: 322, height: 92, alpha: 1 });
+    expect(lockedLabel).toMatchObject({ y: 619 });
+    expect(lockedLabel.style.color).toBe('#ffffff');
+    expect(lockedHint).toMatchObject({ y: 652 });
+    expect(starts).toEqual([]);
   }, 10000);
 
   it('uses taller mode buttons with more touch padding', async () => {
