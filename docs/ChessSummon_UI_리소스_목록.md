@@ -50,6 +50,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.1.93 adds a Steam store asset requirement catalog and a store submission package document covering capsules, screenshots, trailers, and store copy.
 - v0.1.92 adds a testable Steam release readiness checklist module and a submission QA checklist document for build, store, Steamworks, and manual QA blockers.
 - v0.1.91 keeps the locked Very Hard option in the same full-bright 92px title-button format as the other difficulties while preserving the locked start behavior.
 - v0.1.90 removes the separate single-player/difficulty-select headings and moves difficulty hint copy into taller 92px buttons with 100px hit areas.

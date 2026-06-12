@@ -1,6 +1,6 @@
 # Chess of Dark 기획서
 
-**버전:** 0.1.92  
+**버전:** 0.1.94  
 **작성일:** 2026-05-12  
 **최종 수정:** 2026-06-12  
 **장르:** 디지털 전략 / 체스 변형
@@ -70,6 +70,16 @@ Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.1.94 Multiplayer/MMR 출시 판단 정리
+- `src/multiplayer/releaseReadiness.js`를 추가해 AI 대체 매칭, 로컬 MMR 저장, Steam `RANK_POINTS` 업로드 어댑터와 실제 공개 PvP 랭크의 차이를 테스트 가능한 기준으로 분리했다.
+- 현재 1차 Steam 출시 범위는 싱글 플레이와 AI 대체 매칭/랭킹 프리뷰까지가 안전하며, 두 유저가 실제로 보드를 동기화하는 공개 랭크 PvP는 서버 권위 보드 상태, Steam ID 계정 매핑, 서버 검증 결과 처리가 추가될 때까지 보류한다.
+- `docs/Multiplayer_MMR_출시_판단.md`에 현재 가능한 범위, 남은 blocker, 추천 출시 범위를 별도 문서로 정리했다.
+
+### v0.1.93 Steam 스토어 자산 패키지 기준 정리
+- Steamworks 공식 그래픽 자산 기준에 맞춰 `src/steam/storeAssets.js`에 필수 캡슐/스크린샷/라이브러리 자산 크기 카탈로그를 추가했다.
+- `docs/Steam_스토어_제출_패키지.md`를 추가해 캡슐 제작 방향, 16:9 스크린샷 샷 리스트, 15-30초 트레일러 구성, 한국어/영어 스토어 문구 초안을 정리했다.
+- Steam 스토어 자산 크기가 바뀌어도 회귀 테스트로 필수 크기 기준을 확인할 수 있게 했다.
 
 ### v0.1.92 Steam 제출 준비 체크리스트 자동화
 - `src/steam/releaseReadiness.js`를 추가해 현재 버전 산출물명, 업적/스탯/리더보드 카탈로그, Steamworks/스토어/수동 QA blocker를 한 번에 계산하게 했다.
@@ -688,9 +698,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.92.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.92_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.92_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.94.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.1.94_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.1.94_portable.exe` |
 
 ---
 
