@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { Difficulty, LAYOUT } from '../src/config.js';
+import { Difficulty, LAYOUT, Owner } from '../src/config.js';
 import { UI_COPY } from '../src/ui/visuals.js';
 
 beforeAll(() => {
@@ -7,26 +7,48 @@ beforeAll(() => {
 });
 
 describe('tutorial and replay flow', () => {
-  it('uses clear timeout result copy', async () => {
-    const { getResultDetailText } = await import('../src/scenes/ResultScene.js');
+  it('keeps the result screen focused on MMR movement instead of outcome copy', async () => {
+    const { ResultScene } = await import('../src/scenes/ResultScene.js');
+    const scene = Object.create(ResultScene.prototype);
+    const texts = [];
 
-    expect(getResultDetailText('AI', 'timeout')).toBe(UI_COPY.result.timeoutLose);
-    expect(getResultDetailText('PLAYER', 'timeout')).toBe(UI_COPY.result.timeoutWin);
-  });
+    globalThis.localStorage = {
+      getItem: key => (key === 'chesssummon.singleMmr' ? '1000' : null),
+      setItem() {},
+    };
+    scene.winner = Owner.AI;
+    scene.resultReason = null;
+    scene.difficulty = Difficulty.EASY;
+    scene.aiProfile = null;
+    scene.multiplayerMode = null;
+    scene.textures = { exists: () => false };
+    scene.add = {
+      image: () => ({ setDisplaySize() { return this; }, setDepth() { return this; }, setAlpha() { return this; }, setTint() { return this; } }),
+      rectangle: () => ({ setDepth() { return this; }, setAlpha() { return this; }, setStrokeStyle() { return this; }, setInteractive() { return this; }, on() { return this; }, setData() { return this; }, getData() { return true; } }),
+      circle: () => ({ setDepth() { return this; } }),
+      graphics: () => ({ lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; } }),
+      text: (x, y, value) => {
+        const text = {
+          x, y, value,
+          setOrigin() { return this; },
+          setDepth() { return this; },
+          setStroke() { return this; },
+          setShadow() { return this; },
+          setColor() { return this; },
+        };
+        texts.push(text);
+        return text;
+      },
+    };
+    scene.tweens = { add: cfg => { cfg.onComplete?.(); } };
 
-  it('uses clear checkmate result copy', async () => {
-    const { getResultDetailText } = await import('../src/scenes/ResultScene.js');
+    scene.create();
 
-    expect(getResultDetailText('AI', 'checkmate')).toBe(UI_COPY.result.checkmateLose);
-    expect(getResultDetailText('PLAYER', 'checkmate')).toBe(UI_COPY.result.checkmateWin);
-  });
-
-  it('uses readable result reason labels for the result plate', async () => {
-    const { getResultReasonLabel } = await import('../src/scenes/ResultScene.js');
-
-    expect(getResultReasonLabel('timeout')).toBe('TIME OUT');
-    expect(getResultReasonLabel('checkmate')).toBe('CHECKMATE');
-    expect(getResultReasonLabel(null)).toBe('KING CAPTURED');
+    expect(texts.map(text => text.value)).not.toContain('CHESS OF DARK');
+    expect(texts.map(text => text.value)).not.toContain(UI_COPY.result.lose);
+    expect(texts.map(text => text.value).some(value => String(value).includes('KING CAPTURED'))).toBe(false);
+    expect(texts.map(text => text.value).some(value => String(value).includes('MMR'))).toBe(true);
+    expect(texts.map(text => text.value)).toContain('-10');
   });
 
   it('keeps every tutorial copy step in the tutorial sequence', async () => {

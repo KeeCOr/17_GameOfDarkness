@@ -6,6 +6,7 @@ import {
   UI_ASSETS,
   UI_COPY,
 } from '../ui/visuals.js';
+import { updateSinglePlayerRating } from '../game/singlePlayerRating.js';
 import { createDefaultPawnPlacements, requiresManualPlacement } from './PlacementScene.js';
 
 export class ResultScene extends Phaser.Scene {
@@ -16,6 +17,7 @@ export class ResultScene extends Phaser.Scene {
     this.resultReason = data.resultReason || null;
     this.difficulty = data.difficulty || Difficulty.EASY;
     this.aiProfile = data.aiProfile || null;
+    this.multiplayerMode = data.multiplayerMode || null;
     this.replaying = false;
   }
 
@@ -24,40 +26,7 @@ export class ResultScene extends Phaser.Scene {
     const playerWon = this.winner === Owner.PLAYER;
     addStageBackground(this, '', { preferTitleArt: true });
     this._drawResultPresentation(playerWon);
-
-    this.add.text(cx, 84, 'CHESS OF DARK', {
-      fontSize: '16px',
-      color: TEXT_COLORS.GOLD,
-      fontStyle: 'bold',
-      fontFamily: 'Georgia, "Times New Roman", serif',
-    }).setOrigin(0.5).setDepth(4).setStroke('#050812', 4);
-
-    const title = this.add.text(cx, 226, playerWon ? UI_COPY.result.win : UI_COPY.result.lose, {
-      fontSize: playerWon ? '52px' : '50px',
-      color: playerWon ? '#fff1b8' : '#ffb3a9',
-      fontStyle: 'bold',
-      align: 'center',
-      fontFamily: 'Georgia, "Times New Roman", serif',
-    }).setOrigin(0.5).setDepth(5);
-    title.setStroke('#050812', 8);
-    title.setShadow(0, 4, '#000000', 8, true, true);
-
-    const detail = this.add.text(cx, 304, getResultDetailText(this.winner, this.resultReason), {
-      fontSize: '21px',
-      color: playerWon ? TEXT_COLORS.SUCCESS : '#ffcbc6',
-      fontStyle: 'bold',
-      align: 'center',
-      wordWrap: { width: 330 },
-      lineSpacing: 6,
-    }).setOrigin(0.5).setDepth(5);
-    detail.setStroke('#050812', 5);
-
-    this.add.text(cx, 368, getResultReasonLabel(this.resultReason), {
-      fontSize: '14px',
-      color: playerWon ? '#bfffe0' : '#ffc1ba',
-      fontStyle: 'bold',
-      align: 'center',
-    }).setOrigin(0.5).setDepth(5).setStroke('#050812', 4);
+    this._showSinglePlayerRatingChange(playerWon);
 
     const replay = addTextButton(this, cx, 590, 322, 70, UI_COPY.result.replay, {
       fontSize: '22px',
@@ -77,6 +46,61 @@ export class ResultScene extends Phaser.Scene {
       this.scene.stop('UI');
       this.scene.start('Menu');
     });
+  }
+
+  _showSinglePlayerRatingChange(playerWon) {
+    const cx = LAYOUT.GAME_WIDTH / 2;
+    const rating = updateSinglePlayerRating({
+      winner: this.winner,
+      multiplayerMode: this.multiplayerMode,
+    });
+    const deltaLabel = rating.delta > 0 ? `+${rating.delta}` : String(rating.delta);
+    const deltaColor = rating.delta >= 0 ? TEXT_COLORS.SUCCESS : '#ff8f86';
+
+    const label = this.add.text(cx, 220, 'SINGLE MMR', {
+      fontSize: '20px',
+      color: TEXT_COLORS.GOLD,
+      fontStyle: 'bold',
+      align: 'center',
+    }).setOrigin(0.5).setDepth(5);
+    label.setStroke?.('#050812', 5);
+
+    const score = this.add.text(cx, 286, String(rating.current), {
+      fontSize: '58px',
+      color: playerWon ? '#fff1b8' : '#ffcbc6',
+      fontStyle: 'bold',
+      align: 'center',
+      fontFamily: 'Georgia, "Times New Roman", serif',
+    }).setOrigin(0.5).setDepth(5);
+    score.setStroke?.('#050812', 8);
+    score.setShadow?.(0, 4, '#000000', 8, true, true);
+
+    const delta = this.add.text(cx, 360, deltaLabel, {
+      fontSize: '30px',
+      color: deltaColor,
+      fontStyle: 'bold',
+      align: 'center',
+    }).setOrigin(0.5).setDepth(5);
+    delta.setStroke?.('#050812', 6);
+
+    const progress = this.add.text(cx, 402, `${rating.previous} -> ${rating.current}${rating.capped ? '  CAP' : ''}`, {
+      fontSize: '14px',
+      color: TEXT_COLORS.MUTED,
+      fontStyle: 'bold',
+      align: 'center',
+    }).setOrigin(0.5).setDepth(5);
+    progress.setStroke?.('#050812', 4);
+
+    if (rating.delta < 0 && this.tweens?.add) {
+      this.tweens.add({
+        targets: delta,
+        y: delta.y + 18,
+        alpha: 0.72,
+        duration: 520,
+        ease: 'Cubic.easeIn',
+        yoyo: true,
+      });
+    }
   }
 
   _drawResultPresentation(playerWon) {
@@ -152,5 +176,5 @@ export function getResultDetailText(winner, resultReason) {
 export function getResultReasonLabel(resultReason) {
   if (resultReason === 'timeout') return 'TIME OUT';
   if (resultReason === 'checkmate') return 'CHECKMATE';
-  return 'KING CAPTURED';
+  return '';
 }

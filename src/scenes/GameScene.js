@@ -945,7 +945,13 @@ export class GameScene extends Phaser.Scene {
       this.gameOverTransitionTimer = null;
       this.scene.stop('UI');
       if (this.tutorialMode) this.scene.stop('Tutorial');
-      this.scene.start('Result', { winner, difficulty: this.difficulty, aiProfile: this.aiProfile, resultReason });
+      this.scene.start('Result', {
+        winner,
+        difficulty: this.difficulty,
+        aiProfile: this.aiProfile,
+        resultReason,
+        multiplayerMode: this.multiplayerMode,
+      });
     });
   }
 

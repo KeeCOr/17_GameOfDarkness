@@ -394,6 +394,8 @@ describe('visual theme helpers', () => {
   });
 
   it('reserves non-overlapping summon panel zones', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
     expect(LAYOUT.HUD_TOP_Y + LAYOUT.HUD_TOP_HEIGHT).toBeLessThan(LAYOUT.BOARD_OFFSET_Y - 8);
     expect(LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH).toBeLessThanOrEqual(LAYOUT.GAME_WIDTH - 12);
     const boardBottom = LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 5 + 22;
@@ -407,10 +409,13 @@ describe('visual theme helpers', () => {
     const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
     const manaGaugeBottom = LAYOUT.HUD_MANA_Y + 11;
-    const footerButtonTop = LAYOUT.HUD_FOOTER_Y - 19;
-    const footerButtonBottom = LAYOUT.HUD_FOOTER_Y + 19;
-    expect(manaGaugeBottom).toBeLessThanOrEqual(footerButtonTop - 14);
+    const footerButtonTop = LAYOUT.HUD_FOOTER_Y - 30;
+    const footerButtonBottom = LAYOUT.HUD_FOOTER_Y + 30;
+    expect(manaGaugeBottom).toBeLessThanOrEqual(footerButtonTop - 12);
     expect(footerButtonBottom).toBeLessThanOrEqual(LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT - 6);
+    expect(uiSceneSource).toContain('238, 60, UI_COPY.game.endTurn');
+    expect(uiSceneSource).toContain('112, 60, UI_COPY.game.surrender');
+    expect(uiSceneSource).toContain('textOffsetY: 1');
   });
 
   it('sizes the board to match the summon panel width', () => {

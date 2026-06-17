@@ -118,16 +118,18 @@ export class UIScene extends Phaser.Scene {
       align: 'center',
     }).setOrigin(0.5).setVisible(false);
 
-    this.endButton = addTextButton(this, PANEL_X + 116, LAYOUT.HUD_FOOTER_Y, 220, 38, UI_COPY.game.endTurn, {
+    this.endButton = addTextButton(this, PANEL_X + 122, LAYOUT.HUD_FOOTER_Y, 238, 60, UI_COPY.game.endTurn, {
       danger: true,
-      fontSize: '15px',
+      fontSize: '18px',
       assetKey: UI_ASSETS.gameActionButtonFrame.key,
+      textOffsetY: 1,
     });
     this.endButton.rect.on('pointerdown', () => this.gameScene.endTurnManually());
 
-    this.surrenderButton = addTextButton(this, PANEL_X + 298, LAYOUT.HUD_FOOTER_Y, 104, 38, UI_COPY.game.surrender, {
-      fontSize: '13px',
+    this.surrenderButton = addTextButton(this, PANEL_X + 303, LAYOUT.HUD_FOOTER_Y, 112, 60, UI_COPY.game.surrender, {
+      fontSize: '14px',
       assetKey: UI_ASSETS.gameActionButtonFrame.key,
+      textOffsetY: 1,
     });
     this.surrenderButton.rect.setFillStyle(0x171a22);
     this.surrenderButton.text.setColor(TEXT_COLORS.MUTED);
