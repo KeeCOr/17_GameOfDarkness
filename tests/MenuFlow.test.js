@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+﻿import { describe, it, expect, beforeAll } from 'vitest';
 import { Difficulty } from '../src/config.js';
 
 beforeAll(() => {
@@ -112,25 +112,25 @@ function makeMenuScene(options = {}) {
 }
 
 describe('menu flow', () => {
-  it('uses the full mode select flow on Steam release builds', async () => {
+  it('uses the full mode select flow on all release builds', async () => {
     const { shouldShowModeSelect } = await import('../src/scenes/MenuScene.js');
 
     expect(shouldShowModeSelect({ channel: 'steam' })).toBe(true);
-    expect(shouldShowModeSelect({ channel: 'desktop' })).toBe(false);
-    expect(shouldShowModeSelect({ channel: 'html' })).toBe(false);
-  });
+    expect(shouldShowModeSelect({ channel: 'desktop' })).toBe(true);
+    expect(shouldShowModeSelect({ channel: 'html' })).toBe(true);
+    expect(shouldShowModeSelect({ channel: 'dev' })).toBe(true);
+  }, 10000);
 
-  it('opens directly on difficulty select during test distribution', async () => {
+  it('opens on mode select during test distribution', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { scene, rectangles, texts } = makeMenuScene();
     Object.setPrototypeOf(scene, MenuScene.prototype);
 
     scene.create();
 
-    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.EASY)).toBe(true);
-    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.MEDIUM)).toBe(true);
-    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.HARD)).toBe(true);
-    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.VERY_HARD)).toBe(false);
+    expect(texts.some(text => text.value === '싱글 플레이')).toBe(true);
+    expect(texts.some(text => text.value === '멀티 플레이')).toBe(true);
+    expect(rectangles.some(rect => rect.getData('difficultyHitArea') === Difficulty.EASY)).toBe(false);
     expect(texts.some(text => text.value === '?뚮젅??紐⑤뱶 ?좏깮')).toBe(false);
   }, 10000);
 
@@ -146,6 +146,8 @@ describe('menu flow', () => {
     expect(texts.some(text => text.value === UI_COPY.menu.modeTitle)).toBe(false);
     expect(texts.find(text => text.value === UI_COPY.menu.single)?.style.fontSize).toBe('22px');
     expect(texts.find(text => text.value === UI_COPY.menu.multiplayer)?.style.fontSize).toBe('22px');
+    expect(texts.find(text => text.value === UI_COPY.menu.single)?.y).toBe(440);
+    expect(texts.find(text => text.value === UI_COPY.menu.multiplayer)?.y).toBe(548);
     expect(texts.some(text => /[�]|\\?꾩|硫|筌|諭/.test(String(text.value)))).toBe(false);
   }, 10000);
 
@@ -175,8 +177,8 @@ describe('menu flow', () => {
     expect(texts.some(text => text.value === UI_COPY.menu.subtitle)).toBe(false);
     expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.EASY)).toBe(true);
     expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.MEDIUM)).toBe(true);
-    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(313);
-    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(346);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(318);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(348);
 
     const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
     expect(titleButtonFrames.some(image => image.y === 326 && image.width === 322 && image.height === 92)).toBe(true);
@@ -199,9 +201,9 @@ describe('menu flow', () => {
 
     expect(titleButtonFrames).toHaveLength(4);
     expect(lockedFrame).toMatchObject({ width: 322, height: 92, alpha: 1 });
-    expect(lockedLabel).toMatchObject({ y: 619 });
+    expect(lockedLabel).toMatchObject({ y: 624 });
     expect(lockedLabel.style.color).toBe('#ffffff');
-    expect(lockedHint).toMatchObject({ y: 652 });
+    expect(lockedHint).toMatchObject({ y: 654 });
     expect(starts).toEqual([]);
   }, 10000);
 
@@ -260,3 +262,4 @@ describe('menu flow', () => {
     expect(texts.some(text => text.value === RELEASE_INFO.displayLabel)).toBe(true);
   });
 });
+

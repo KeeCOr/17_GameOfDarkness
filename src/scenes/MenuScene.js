@@ -1,7 +1,7 @@
 ﻿// src/scenes/MenuScene.js
 import { LAYOUT, Difficulty, TEXT_COLORS } from '../config.js';
 import { createSteamService } from '../services/SteamService.js';
-import { RELEASE_CHANNELS, RELEASE_INFO } from '../releaseInfo.js';
+import { RELEASE_INFO } from '../releaseInfo.js';
 import {
   addReleaseBadge,
   addStageBackground,
@@ -38,10 +38,10 @@ export class MenuScene extends Phaser.Scene {
 
     addReleaseBadge(this, RELEASE_INFO.displayLabel);
 
-    const single = addTextButton(this, cx, 440, 322, 90, UI_COPY.menu.single, { fontSize: '22px', active: true, assetKey: UI_ASSETS.titleButtonFrame.key });
+    const single = addTextButton(this, cx, 440, 322, 90, UI_COPY.menu.single, { fontSize: '22px', active: true, assetKey: UI_ASSETS.titleButtonFrame.key, textOffsetY: 0 });
     single.rect.on('pointerdown', () => this._showDifficultySelect());
 
-    const multi = addTextButton(this, cx, 548, 322, 90, UI_COPY.menu.multiplayer, { fontSize: '22px', assetKey: UI_ASSETS.titleButtonFrame.key });
+    const multi = addTextButton(this, cx, 548, 322, 90, UI_COPY.menu.multiplayer, { fontSize: '22px', assetKey: UI_ASSETS.titleButtonFrame.key, textOffsetY: 0 });
     multi.rect.on('pointerdown', () => this.scene.start('MultiplayerLobby'));
   }
 
@@ -64,8 +64,8 @@ export class MenuScene extends Phaser.Scene {
       const label = UI_COPY.menu.difficulties[value];
       const hint = locked ? UI_COPY.menu.veryHardLocked : UI_COPY.menu.difficultyHints[value];
       const button = addTextButton(this, cx, y, 322, 92, label, { fontSize: '20px', assetKey: UI_ASSETS.titleButtonFrame.key });
-      button.text.y = y - 13;
-      this.add.text(cx, y + 20, hint, {
+      button.text.y = y - 8;
+      this.add.text(cx, y + 22, hint, {
         fontSize: '11px',
         color: locked ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.MUTED,
         fontStyle: 'bold',
@@ -101,6 +101,7 @@ export class MenuScene extends Phaser.Scene {
 }
 
 export function shouldShowModeSelect(releaseInfo = RELEASE_INFO) {
-  return releaseInfo?.channel === RELEASE_CHANNELS.STEAM;
+  return Boolean(releaseInfo);
 }
+
 

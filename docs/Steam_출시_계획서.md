@@ -214,6 +214,9 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.2.3: 시작 화면의 `싱글 플레이`, `멀티 플레이` 텍스트를 타이틀 버튼 프레임 중심선에 맞춰 4px 아래로 내리고, 난이도 버튼 텍스트 보정과 분리된 회귀 테스트를 갱신했다.
+- v0.2.2: 타이틀 프레임 버튼의 공통 텍스트 y 보정을 추가하고, 난이도 버튼의 2줄 텍스트 배치를 재조정해 버튼 장식과 글자 중심이 어긋나 보이는 문제를 수정했다.
+- v0.2.1: 시작 메뉴가 Steam 채널에서만 싱글/멀티 선택을 보여주던 분기를 제거하고, Desktop/HTML/Dev/Steam 모든 빌드에서 항상 싱글 플레이/멀티 플레이 선택 화면을 먼저 보여주게 수정했다.
 - v0.2.0: 공개 인간 PvP의 최소 서버 권위 경로를 추가했다. server/pvpSession.cjs가 보드/턴/마나/결과를 소유하고, multiplayerCore는 legacy matchResult를 무시하며 서버 생성 결과로만 랭크를 반영한다. Electron Steam ID bridge, WebSocket steamId query, 로비 pvpState 진입, GameScene pvpCommand 송신/스냅샷 복원을 추가해 public PvP code readiness blocker를 해소했다.
 - v0.1.95: 시작/난이도 화면의 공통 브랜드 로고 중심 y좌표를 150에서 165로 낮춰 로고가 상단에 붙어 보이는 느낌을 완화했다.
 - v0.1.94: 멀티플레이와 MMR 출시 판단을 `src/multiplayer/releaseReadiness.js`와 `docs/Multiplayer_MMR_출시_판단.md`로 분리했다. AI 대체 매칭과 로컬/Steam 어댑터 기반 랭킹 프리뷰는 1차 출시 가능 범위로 두고, 공개 인간 PvP 랭크는 Steam ID 매핑, 서버 권위 보드 동기화, 서버 검증 결과 처리 전까지 blocker로 유지한다.
@@ -356,4 +359,6 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - Steam Matchmaking & Lobbies: https://partner.steamgames.com/doc/features/multiplayer/matchmaking
 - ISteamUserStats: https://partner.steamgames.com/doc/api/ISteamUserStats
 - Steam Stats and Achievements: https://partner.steamgames.com/doc/features/achievements
+
+
 

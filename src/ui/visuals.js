@@ -306,6 +306,7 @@ export function addTextButton(scene, x, y, width, height, label, options = {}) {
   const state = getButtonColors(options);
   const depth = options.depth ?? 0;
   const assetKey = options.assetKey || getButtonAssetKey(options);
+  const textOffsetY = options.textOffsetY ?? (assetKey === UI_ASSETS.titleButtonFrame.key ? -4 : -1);
   const bg = hasTexture(scene, assetKey)
     ? scene.add.image(x, y, assetKey)
       .setDisplaySize(width, height)
@@ -318,7 +319,7 @@ export function addTextButton(scene, x, y, width, height, label, options = {}) {
     .setDepth(bg ? depth + 0.2 : depth);
   rect.setStrokeStyle(1, state.stroke, 0.85);
 
-  const text = scene.add.text(x, y, label, {
+  const text = scene.add.text(x, y + textOffsetY, label, {
     fontSize: options.fontSize || '18px',
     color: `#${state.text.toString(16).padStart(6, '0')}`,
     fontStyle: 'bold',
