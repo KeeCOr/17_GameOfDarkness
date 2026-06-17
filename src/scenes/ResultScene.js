@@ -1,9 +1,9 @@
 // src/scenes/ResultScene.js
 import { COLORS, Difficulty, LAYOUT, TEXT_COLORS, Owner } from '../config.js';
 import {
-  addPanel,
   addStageBackground,
   addTextButton,
+  UI_ASSETS,
   UI_COPY,
 } from '../ui/visuals.js';
 import { createDefaultPawnPlacements, requiresManualPlacement } from './PlacementScene.js';
@@ -22,7 +22,7 @@ export class ResultScene extends Phaser.Scene {
   create() {
     const cx = LAYOUT.GAME_WIDTH / 2;
     const playerWon = this.winner === Owner.PLAYER;
-    addStageBackground(this);
+    addStageBackground(this, '', { preferTitleArt: true });
     this._drawResultPresentation(playerWon);
 
     this.add.text(cx, 84, 'CHESS OF DARK', {
@@ -59,16 +59,18 @@ export class ResultScene extends Phaser.Scene {
       align: 'center',
     }).setOrigin(0.5).setDepth(5).setStroke('#050812', 4);
 
-    const replay = addTextButton(this, cx, 590, 292, 70, UI_COPY.result.replay, {
+    const replay = addTextButton(this, cx, 590, 322, 70, UI_COPY.result.replay, {
       fontSize: '22px',
       active: true,
+      assetKey: UI_ASSETS.titleButtonFrame.key,
       depth: 6,
     });
     replay.rect.on('pointerdown', () => this._replay());
 
-    const menu = addTextButton(this, cx, 682, 292, 70, UI_COPY.result.menu, {
+    const menu = addTextButton(this, cx, 682, 322, 70, UI_COPY.result.menu, {
       fontSize: '20px',
       danger: !playerWon,
+      assetKey: UI_ASSETS.titleButtonFrame.key,
       depth: 6,
     });
     menu.rect.on('pointerdown', () => {
@@ -84,72 +86,23 @@ export class ResultScene extends Phaser.Scene {
 
     this.add.rectangle(cx, LAYOUT.GAME_HEIGHT / 2, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, 0x030711, 0.34)
       .setDepth(0);
-    this.add.circle(cx, 256, 156, glow, playerWon ? 0.1 : 0.14).setDepth(1);
-    this.add.circle(cx, 256, 96, glow, playerWon ? 0.08 : 0.1).setDepth(1);
+    this.add.circle(cx, 252, 164, glow, playerWon ? 0.12 : 0.16).setDepth(1);
+    this.add.circle(cx, 252, 104, glow, playerWon ? 0.08 : 0.1).setDepth(1);
 
-    addPanel(this, 35, 150, 380, 336, {
-      depth: 2,
-      alpha: 0.93,
-      fill: COLORS.PANEL_DEEP,
-      stroke: accent,
-      strokeAlpha: playerWon ? 0.8 : 0.92,
-      lineWidth: 3,
-      radius: 8,
-    });
-
-    const g = this.add.graphics().setDepth(3);
-    g.lineStyle(2, accent, playerWon ? 0.72 : 0.85);
-    g.strokeRoundedRect(55, 171, 340, 294, 6);
-    g.lineStyle(1, COLORS.GOLD, 0.35);
-    g.lineBetween(82, 408, 368, 408);
-    g.lineStyle(1, accent, playerWon ? 0.5 : 0.72);
-    g.beginPath();
-    g.moveTo(cx - 122, 168);
-    g.lineTo(cx - 80, 188);
-    g.lineTo(cx + 80, 188);
-    g.lineTo(cx + 122, 168);
-    g.strokePath();
-
-    if (!playerWon) {
-      g.lineStyle(3, 0xff5349, 0.74);
-      g.beginPath();
-      g.moveTo(cx - 4, 178);
-      g.lineTo(cx - 28, 238);
-      g.lineTo(cx + 12, 292);
-      g.lineTo(cx - 18, 378);
-      g.strokePath();
-      g.lineStyle(2, 0xff9a8e, 0.48);
-      g.lineBetween(cx - 28, 238, cx - 80, 288);
-      g.lineBetween(cx + 12, 292, cx + 70, 338);
+    if (this.textures?.exists?.(UI_ASSETS.titleButtonFrame.key)) {
+      this.add.image(cx, 294, UI_ASSETS.titleButtonFrame.key)
+        .setDisplaySize(374, 282)
+        .setAlpha(0.88)
+        .setTint(playerWon ? 0xffffff : 0xffd8d4)
+        .setDepth(2);
+    } else {
+      this.add.rectangle(cx, 294, 374, 282, COLORS.PANEL_DEEP, 0.9)
+        .setStrokeStyle(3, accent, playerWon ? 0.8 : 0.92)
+        .setDepth(2);
     }
 
-    this._drawResultCrown(cx, 154, playerWon);
-  }
-
-  _drawResultCrown(cx, y, playerWon) {
-    const g = this.add.graphics().setDepth(5);
-    const fill = playerWon ? 0xf0c46a : 0x3a1a1d;
-    const stroke = playerWon ? 0xffefac : 0xff6b5f;
-    const alpha = playerWon ? 0.95 : 0.86;
-    g.fillStyle(fill, alpha);
-    g.lineStyle(2, stroke, playerWon ? 0.86 : 0.68);
-    g.beginPath();
-    g.moveTo(cx - 48, y + 46);
-    g.lineTo(cx - 40, y + 4);
-    g.lineTo(cx - 18, y + 30);
-    g.lineTo(cx, y - 4);
-    g.lineTo(cx + 18, y + 30);
-    g.lineTo(cx + 40, y + 4);
-    g.lineTo(cx + 48, y + 46);
-    g.closePath();
-    g.fillPath();
-    g.strokePath();
-    g.fillRoundedRect(cx - 50, y + 42, 100, 18, 5);
-    g.strokeRoundedRect(cx - 50, y + 42, 100, 18, 5);
-    if (!playerWon) {
-      g.lineStyle(3, 0xff6b5f, 0.8);
-      g.lineBetween(cx - 20, y + 8, cx + 24, y + 56);
-    }
+    this.add.rectangle(cx, 410, 278, 1, accent, playerWon ? 0.58 : 0.76)
+      .setDepth(3);
   }
 
   _replay() {

@@ -1,6 +1,6 @@
 // src/scenes/PlacementScene.js
 import { LAYOUT, COLORS, PieceType, Owner, Difficulty, TEXT_COLORS } from '../config.js';
-import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
+import { addStageBackground, addTextButton, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 
 const KING_ROW = 4, KING_COL = 2;
 const PAWN_COUNT = 4;
@@ -48,7 +48,7 @@ export class PlacementScene extends Phaser.Scene {
     }
 
     const cx = LAYOUT.GAME_WIDTH / 2;
-    addStageBackground(this, UI_COPY.placement.title);
+    addStageBackground(this, UI_COPY.placement.title, { preferTitleArt: true });
 
     this.add.text(cx, 132, UI_COPY.placement.subtitle, {
       fontSize: '16px',
@@ -63,7 +63,11 @@ export class PlacementScene extends Phaser.Scene {
 
     this._drawBoard();
 
-    this.readyButton = addTextButton(this, cx, 618, 190, 48, UI_COPY.placement.ready, { enabled: false });
+    this.readyButton = addTextButton(this, cx, 648, 248, 64, UI_COPY.placement.ready, {
+      enabled: false,
+      assetKey: UI_ASSETS.titleButtonFrame.key,
+      fontSize: '20px',
+    });
     this.readyButton.rect.on('pointerdown', () => {
       if (this.pawnCount < PAWN_COUNT) return;
       this._startGame();
@@ -77,11 +81,18 @@ export class PlacementScene extends Phaser.Scene {
     const cellSize = LAYOUT.CELL_SIZE;
     const boardX = (LAYOUT.GAME_WIDTH - cellSize * 5) / 2;
     const boardY = 220;
-    const frame = this.add.graphics();
-    frame.fillStyle(COLORS.BOARD_FRAME, 1);
-    frame.fillRoundedRect(boardX - 12, boardY - 12, cellSize * 5 + 24, cellSize * 5 + 24, 8);
-    frame.lineStyle(2, COLORS.PANEL_EDGE, 0.8);
-    frame.strokeRoundedRect(boardX - 12, boardY - 12, cellSize * 5 + 24, cellSize * 5 + 24, 8);
+    const frameSize = cellSize * 5 + 44;
+    if (this.textures?.exists?.(UI_ASSETS.gameBoardFrame.key)) {
+      this.add.image(boardX + cellSize * 2.5, boardY + cellSize * 2.5, UI_ASSETS.gameBoardFrame.key)
+        .setDisplaySize(frameSize, frameSize)
+        .setDepth(-1);
+    } else {
+      const frame = this.add.graphics();
+      frame.fillStyle(COLORS.BOARD_FRAME, 1);
+      frame.fillRoundedRect(boardX - 22, boardY - 22, frameSize, frameSize, 8);
+      frame.lineStyle(2, COLORS.PANEL_EDGE, 0.8);
+      frame.strokeRoundedRect(boardX - 22, boardY - 22, frameSize, frameSize, 8);
+    }
 
     for (let r = 0; r < 5; r++) {
       for (let c = 0; c < 5; c++) {
@@ -158,7 +169,7 @@ export class PlacementScene extends Phaser.Scene {
 
   _showTutorialPrompt(placements) {
     const cx = LAYOUT.GAME_WIDTH / 2, cy = LAYOUT.GAME_HEIGHT / 2;
-    addStageBackground(this, '');
+    addStageBackground(this, '', { preferTitleArt: true });
 
     this.add.text(cx, cy - 62, UI_COPY.tutorialPrompt.title, {
       fontSize: '28px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
@@ -167,8 +178,13 @@ export class PlacementScene extends Phaser.Scene {
       fontSize: '16px', color: TEXT_COLORS.MUTED,
     }).setOrigin(0.5);
 
-    const yes = addTextButton(this, cx - 78, cy + 42, 130, 46, UI_COPY.tutorialPrompt.yes, { active: true });
-    const no = addTextButton(this, cx + 78, cy + 42, 130, 46, UI_COPY.tutorialPrompt.no);
+    const yes = addTextButton(this, cx - 86, cy + 48, 144, 54, UI_COPY.tutorialPrompt.yes, {
+      active: true,
+      assetKey: UI_ASSETS.titleButtonFrame.key,
+    });
+    const no = addTextButton(this, cx + 86, cy + 48, 144, 54, UI_COPY.tutorialPrompt.no, {
+      assetKey: UI_ASSETS.titleButtonFrame.key,
+    });
 
     yes.rect.on('pointerdown', () =>
       this.scene.start('Game', { difficulty: this.difficulty, playerPlacements: placements, tutorialMode: true, aiProfile: this.aiProfile }));

@@ -8,6 +8,7 @@ export const UI_ASSETS = Object.freeze({
   titleButtonFrame: Object.freeze({ key: 'ui_title_button_frame', path: 'assets/ui/title-button-frame.png', type: 'image' }),
   gameBackground: Object.freeze({ key: 'ui_game_background', path: 'assets/ui/game-background.png', type: 'image' }),
   gameTopHudFrame: Object.freeze({ key: 'ui_game_top_hud_frame', path: 'assets/ui/game-top-hud-frame.png', type: 'image' }),
+  gameBoardFrame: Object.freeze({ key: 'ui_game_board_frame', path: 'assets/ui/game-board-frame.png', type: 'image' }),
   gameSummonCardFrame: Object.freeze({ key: 'ui_game_summon_card_frame', path: 'assets/ui/game-summon-card-frame.png', type: 'image' }),
   gameSummonTileFrame: Object.freeze({ key: 'ui_game_summon_tile_frame', path: 'assets/ui/game-summon-tile-frame.png', type: 'image' }),
   gameManaFrame: Object.freeze({ key: 'ui_game_mana_frame', path: 'assets/ui/game-mana-frame.png', type: 'image' }),
@@ -203,9 +204,9 @@ function hasTexture(scene, key) {
   return Boolean(scene?.textures?.exists?.(key));
 }
 
-export function addStageBackground(scene, title = '') {
+export function addStageBackground(scene, title = '', options = {}) {
   const { GAME_WIDTH: w, GAME_HEIGHT: h } = LAYOUT;
-  const useTitleArt = title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.titleBackground.key);
+  const useTitleArt = (options.preferTitleArt || title === UI_COPY.menu.title) && hasTexture(scene, UI_ASSETS.titleBackground.key);
   const stageKey = useTitleArt ? UI_ASSETS.titleBackground.key : UI_ASSETS.stageBackground.key;
   if (hasTexture(scene, stageKey)) {
     scene.add.image(w / 2, h / 2, stageKey)
@@ -237,7 +238,7 @@ export function addStageBackground(scene, title = '') {
   g.strokePath();
 
   if (title) {
-    if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
+  if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
       return scene.add.image(w / 2, 165, UI_ASSETS.brandLogo.key)
         .setDisplaySize(410, 205)
         .setDepth(1);

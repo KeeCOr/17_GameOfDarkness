@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { BOARD_SIZE, Difficulty, Owner, TURN_TIME_LIMIT } from '../src/config.js';
+import { BOARD_SIZE, Difficulty, LAYOUT, Owner, TURN_TIME_LIMIT } from '../src/config.js';
 import { Board } from '../src/game/Board.js';
 import { Piece } from '../src/game/Piece.js';
 import { PieceType } from '../src/config.js';
@@ -74,6 +74,43 @@ describe('GameScene manual turn ending', () => {
 
   it('uses a three minute chess clock', () => {
     expect(TURN_TIME_LIMIT).toBe(180);
+  });
+
+  it('aligns rendered board pieces by their bottom edge within a cell', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const images = [];
+
+    scene.pieceObjects = {};
+    scene.add = {
+      ellipse: () => ({
+        setDepth() { return this; },
+        destroy() {},
+        setVisible() {},
+      }),
+      image: (x, y, key) => {
+        const image = {
+          x, y, key, width: 0, height: 0,
+          setDisplaySize(width, height) { this.width = width; this.height = height; return this; },
+          setDepth() { return this; },
+          destroy() {},
+          setVisible() {},
+        };
+        images.push(image);
+        return image;
+      },
+    };
+
+    scene._renderPiece(4, 0, new Piece(PieceType.PAWN, Owner.PLAYER));
+    scene._renderPiece(4, 1, new Piece(PieceType.QUEEN, Owner.PLAYER));
+
+    const [pawn, queen] = images;
+    const pawnBottom = pawn.y + pawn.height / 2;
+    const queenBottom = queen.y + queen.height / 2;
+
+    expect(pawn.height).toBe(LAYOUT.PIECE_SIZE);
+    expect(queen.height).toBe(LAYOUT.NON_PAWN_PIECE_SIZE);
+    expect(pawnBottom).toBe(queenBottom);
   });
 
   it('keeps each side chess clock instead of resetting every turn', async () => {

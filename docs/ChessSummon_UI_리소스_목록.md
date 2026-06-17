@@ -19,6 +19,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `title-button-frame` | Title button bitmap | `public/assets/ui/title-button-frame.png` | Generated dark metal/gold/cyan button frame for start and difficulty buttons |
 | `game-background` | Gameplay bitmap | `public/assets/ui/game-background.png` | Dark gothic gameplay backdrop derived for the active play screen |
 | `game-top-hud-frame` | Gameplay HUD bitmap | `public/assets/ui/game-top-hud-frame.png` | Wide top clock HUD frame for player/opponent timers and hint text |
+| `game-board-frame` | Gameplay board bitmap | `public/assets/ui/game-board-frame.png` | Generated dark metal/gold/cyan frame used behind the active 5x5 board |
 | `game-summon-card-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-card-frame.png` | Wide dark metal summon-card frame for each recruit row |
 | `game-summon-tile-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-tile-frame.png` | Vertical summon tile frame for the horizontal recruit-card layout |
 | `game-mana-frame` | Gameplay mana bitmap | `public/assets/ui/game-mana-frame.png` | Thin dark metal frame for the mana gauge |
@@ -50,6 +51,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.2.5 reintroduces the gameplay board frame as a generated project PNG that matches the current dark metal/gold/cyan UI tone and replaces the active runtime graphics frame when the texture is available.
 - v0.1.93 adds a Steam store asset requirement catalog and a store submission package document covering capsules, screenshots, trailers, and store copy.
 - v0.1.92 adds a testable Steam release readiness checklist module and a submission QA checklist document for build, store, Steamworks, and manual QA blockers.
 - v0.1.91 keeps the locked Very Hard option in the same full-bright 92px title-button format as the other difficulties while preserving the locked start behavior.

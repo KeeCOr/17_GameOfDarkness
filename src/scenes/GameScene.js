@@ -114,18 +114,24 @@ export class GameScene extends Phaser.Scene {
     } else {
       this.add.rectangle(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, COLORS.BACKDROP);
     }
-    const g = this.add.graphics();
-    g.fillStyle(COLORS.PANEL_BG, 0.2);
-    g.fillRect(0, 0, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT);
-    g.fillStyle(COLORS.PANEL_DEEP, 0.78);
-    g.fillRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
-      BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
-    g.lineStyle(3, COLORS.PANEL_EDGE, 0.74);
-    g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 22, LAYOUT.BOARD_OFFSET_Y - 22,
-      BOARD_SIZE * LAYOUT.CELL_SIZE + 44, BOARD_SIZE * LAYOUT.CELL_SIZE + 44, 10);
-    g.lineStyle(1, COLORS.GOLD, 0.25);
-    g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
-      BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
+    this.add.rectangle(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2, LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT, COLORS.PANEL_BG, 0.2);
+    const boardFrameW = BOARD_SIZE * LAYOUT.CELL_SIZE + 44;
+    const boardFrameX = LAYOUT.BOARD_OFFSET_X - 22;
+    const boardFrameY = LAYOUT.BOARD_OFFSET_Y - 22;
+    if (this.textures.exists(UI_ASSETS.gameBoardFrame.key)) {
+      this.add.image(boardFrameX + boardFrameW / 2, boardFrameY + boardFrameW / 2, UI_ASSETS.gameBoardFrame.key)
+        .setDisplaySize(boardFrameW, boardFrameW)
+        .setDepth(-1);
+    } else {
+      const g = this.add.graphics();
+      g.fillStyle(COLORS.PANEL_DEEP, 0.78);
+      g.fillRoundedRect(boardFrameX, boardFrameY, boardFrameW, boardFrameW, 10);
+      g.lineStyle(3, COLORS.PANEL_EDGE, 0.74);
+      g.strokeRoundedRect(boardFrameX, boardFrameY, boardFrameW, boardFrameW, 10);
+      g.lineStyle(1, COLORS.GOLD, 0.25);
+      g.strokeRoundedRect(LAYOUT.BOARD_OFFSET_X - 11, LAYOUT.BOARD_OFFSET_Y - 11,
+        BOARD_SIZE * LAYOUT.CELL_SIZE + 22, BOARD_SIZE * LAYOUT.CELL_SIZE + 22, 4);
+    }
   }
 
   _setupBoard() {
@@ -227,20 +233,20 @@ export class GameScene extends Phaser.Scene {
   }
 
   _renderPiece(r, c, piece) {
-    const x = LAYOUT.BOARD_OFFSET_X + c * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
-    const y = LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    const { x, y: cellCenterY } = this._getCellCenter(r, c);
+    const renderPos = this._getPieceRenderPosition(r, c, piece);
     const key = `${piece.type.toLowerCase()}_${piece.owner === Owner.PLAYER ? 'w' : 'd'}`;
     const displaySize = this._getPieceDisplaySize(piece);
     const shadowWidth = piece.type === PieceType.PAWN ? LAYOUT.PIECE_SHADOW_WIDTH : LAYOUT.NON_PAWN_PIECE_SHADOW_WIDTH;
     const shadow = this.add.ellipse(
       x + 2,
-      y + LAYOUT.CELL_SIZE * 0.34,
+      cellCenterY + LAYOUT.CELL_SIZE * 0.34,
       shadowWidth,
       LAYOUT.PIECE_SHADOW_HEIGHT,
       0x000000,
       0.34,
     ).setDepth(3);
-    const obj = this.add.image(x, y, key)
+    const obj = this.add.image(renderPos.x, renderPos.y, key)
       .setDisplaySize(displaySize, displaySize)
       .setDepth(4);
     this.pieceObjects[`${r},${c}`] = {
@@ -251,6 +257,23 @@ export class GameScene extends Phaser.Scene {
 
   _getPieceDisplaySize(piece) {
     return piece?.type === PieceType.PAWN ? LAYOUT.PIECE_SIZE : LAYOUT.NON_PAWN_PIECE_SIZE;
+  }
+
+  _getCellCenter(r, c) {
+    return {
+      x: LAYOUT.BOARD_OFFSET_X + c * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2,
+      y: LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2,
+    };
+  }
+
+  _getPieceRenderPosition(r, c, piece) {
+    const center = this._getCellCenter(r, c);
+    const displaySize = this._getPieceDisplaySize(piece);
+    const bottomY = center.y + LAYOUT.NON_PAWN_PIECE_SIZE / 2;
+    return {
+      x: center.x,
+      y: bottomY - displaySize / 2,
+    };
   }
 
   _clearHighlights() {
@@ -443,14 +466,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   _animateMove(fr, fc, tr, tc, isCapture, callback) {
-    const fromX = LAYOUT.BOARD_OFFSET_X + fc * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
-    const fromY = LAYOUT.BOARD_OFFSET_Y + fr * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
-    const toX = LAYOUT.BOARD_OFFSET_X + tc * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
-    const toY = LAYOUT.BOARD_OFFSET_Y + tr * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    const fromCenter = this._getCellCenter(fr, fc);
+    const toCenter = this._getCellCenter(tr, tc);
     const piece = this.board.getPiece(fr, fc);
 
     if (isCapture)
-      playCaptureEffect(this, toX, toY, { owner: this.board.getPiece(tr, tc)?.owner });
+      playCaptureEffect(this, toCenter.x, toCenter.y, { owner: this.board.getPiece(tr, tc)?.owner });
 
     if (!piece) { callback(); return; }
     const origObj = this.pieceObjects[`${fr},${fc}`];
@@ -458,14 +479,16 @@ export class GameScene extends Phaser.Scene {
 
     const key = `${piece.type.toLowerCase()}_${piece.owner === Owner.PLAYER ? 'w' : 'd'}`;
     const displaySize = this._getPieceDisplaySize(piece);
-    const animPiece = this.add.image(fromX, fromY, key)
+    const fromPos = this._getPieceRenderPosition(fr, fc, piece);
+    const toPos = this._getPieceRenderPosition(tr, tc, piece);
+    const animPiece = this.add.image(fromPos.x, fromPos.y, key)
       .setDisplaySize(displaySize, displaySize)
       .setDepth(6);
 
     this.tweens.add({
       targets: animPiece,
-      x: toX,
-      y: toY,
+      x: toPos.x,
+      y: toPos.y,
       duration: 200,
       ease: 'Power2',
       onComplete: () => {

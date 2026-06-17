@@ -141,6 +141,11 @@ describe('visual theme helpers', () => {
       path: 'assets/ui/game-top-hud-frame.png',
       type: 'image',
     });
+    expect(UI_ASSETS.gameBoardFrame).toEqual({
+      key: 'ui_game_board_frame',
+      path: 'assets/ui/game-board-frame.png',
+      type: 'image',
+    });
     expect(UI_ASSETS.gameSummonCardFrame).toEqual({
       key: 'ui_game_summon_card_frame',
       path: 'assets/ui/game-summon-card-frame.png',
@@ -197,6 +202,7 @@ describe('visual theme helpers', () => {
     const logoOrnament = readFileSync(new URL('../public/assets/brand/title-logo-ornament.png', import.meta.url));
     const gameBackground = readFileSync(new URL('../public/assets/ui/game-background.png', import.meta.url));
     const gameTopHud = readFileSync(new URL('../public/assets/ui/game-top-hud-frame.png', import.meta.url));
+    const gameBoard = readFileSync(new URL('../public/assets/ui/game-board-frame.png', import.meta.url));
     const gameSummon = readFileSync(new URL('../public/assets/ui/game-summon-card-frame.png', import.meta.url));
     const gameSummonTile = readFileSync(new URL('../public/assets/ui/game-summon-tile-frame.png', import.meta.url));
     const gameMana = readFileSync(new URL('../public/assets/ui/game-mana-frame.png', import.meta.url));
@@ -215,6 +221,7 @@ describe('visual theme helpers', () => {
     expect(logoOrnament.length).toBeGreaterThan(100000);
     expect(gameBackground.length).toBeGreaterThan(100000);
     expect(gameTopHud.length).toBeGreaterThan(30000);
+    expect(gameBoard.length).toBeGreaterThan(10000);
     expect(gameSummon.length).toBeGreaterThan(15000);
     expect(gameSummonTile.length).toBeGreaterThan(10000);
     expect(gameMana.length).toBeGreaterThan(15000);
@@ -255,6 +262,7 @@ describe('visual theme helpers', () => {
     expect(loaded).toContainEqual(UI_ASSETS.titleLogoOrnament);
     expect(loaded).toContainEqual(UI_ASSETS.gameBackground);
     expect(loaded).toContainEqual(UI_ASSETS.gameTopHudFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameBoardFrame);
     expect(loaded).toContainEqual(UI_ASSETS.gameSummonCardFrame);
     expect(loaded).toContainEqual(UI_ASSETS.gameSummonTileFrame);
     expect(loaded).toContainEqual(UI_ASSETS.gameManaFrame);
@@ -332,6 +340,7 @@ describe('visual theme helpers', () => {
     const visualsSource = readFileSync(new URL('../src/ui/visuals.js', import.meta.url), 'utf8');
     const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
     const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+    const placementSceneSource = readFileSync(new URL('../src/scenes/PlacementScene.js', import.meta.url), 'utf8');
     const resultSceneSource = readFileSync(new URL('../src/scenes/ResultScene.js', import.meta.url), 'utf8');
 
     expect(visualsSource).toContain('ui_stage_background');
@@ -341,18 +350,23 @@ describe('visual theme helpers', () => {
     expect(visualsSource).toContain('setDisplaySize(410, 205)');
     expect(visualsSource).toContain('ui_game_background');
     expect(visualsSource).toContain('ui_game_top_hud_frame');
+    expect(visualsSource).toContain('ui_game_board_frame');
     expect(visualsSource).not.toContain('scene.add.image(w / 2, 94, UI_ASSETS.titleLogoOrnament.key)');
     expect(visualsSource).toContain('addFramedImage');
     expect(gameSceneSource).toContain('UI_ASSETS.gameBackground.key');
-    expect(gameSceneSource).not.toContain('UI_ASSETS.gameBoardFrame.key');
+    expect(gameSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
     expect(gameSceneSource).toContain('UI_ASSETS.stageBackground.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameTopHudFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameSummonTileFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameManaFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameActionButtonFrame.key');
-    expect(resultSceneSource).toContain('addStageBackground(this)');
-    expect(resultSceneSource).toContain('addPanel(this, 35, 150, 380, 336');
-    expect(resultSceneSource).toContain('addTextButton(this, cx, 590, 292, 70');
+    expect(placementSceneSource).toContain('preferTitleArt: true');
+    expect(placementSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
+    expect(placementSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
+    expect(resultSceneSource).toContain('preferTitleArt: true');
+    expect(resultSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
+    expect(resultSceneSource).not.toContain('_drawResultCrown');
+    expect(resultSceneSource).toContain('addTextButton(this, cx, 590, 322, 70');
     expect(resultSceneSource).toContain('danger: !playerWon');
   });
 
