@@ -1,8 +1,8 @@
-# Chess of Dark 기획서
+﻿# Chess of Dark 기획서
 
-**버전:** 0.1.95  
+**버전:** 0.2.0  
 **작성일:** 2026-05-12  
-**최종 수정:** 2026-06-12  
+**최종 수정:** 2026-06-17  
 **장르:** 디지털 전략 / 체스 변형
 
 ---
@@ -70,6 +70,12 @@ Chess of Dark는 5x5 체스판에서 말을 지키며 마나로 새로운 말을
 ---
 
 ## 4. UI / UX 변경 이력
+
+### v0.2.0 서버 권위 PvP 매칭 경로 추가
+- 두 명의 대기열 유저가 매칭되면 서버가 pvpSession을 생성하고 보드 상태, 턴, 마나, 결과를 소유한다.
+- 클라이언트가 임의 승자를 보내는 기존 matchResult 경로를 막고, 서버가 생성한 resign/disconnect/king capture 결과로만 랭크 점수를 갱신한다.
+- Electron Steam ID bridge와 WebSocket steamId query를 추가해 Steam 계정 기반 매칭/랭크 식별 경로를 마련했다.
+- 로비는 pvpState를 받으면 Game 씬으로 진입하고, GameScene은 이동/소환/턴 종료를 pvpCommand로 서버에 보내며 서버 스냅샷으로 보드를 복원한다.
 
 ### v0.1.95 시작 화면 로고 위치 조정
 - 시작/난이도 화면의 공통 브랜드 로고 중심 y좌표를 150에서 165로 낮춰 상단에 붙어 보이는 느낌을 줄였다.
@@ -758,3 +764,4 @@ AI 턴 생각 시간:
 - `public/assets/pieces/king_w.png`
 
 <!-- RESOURCE_PREVIEWS_END -->
+

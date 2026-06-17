@@ -414,3 +414,78 @@ describe('GameScene manual turn ending', () => {
     expect(promotedOwners).toEqual([Owner.PLAYER]);
   });
 });
+
+describe('GameScene PvP session setup', () => {
+  it('restores the server-authoritative board snapshot instead of requiring local placements', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+
+    scene.init({
+      multiplayerMode: 'pvp',
+      pvpSide: 'PLAYER',
+      pvpRoomId: 'room-a',
+      pvpSession: {
+        currentTurn: 'AI',
+        mana: { PLAYER: 2, AI: 4 },
+        board: [
+          [null, null, { type: 'KING', owner: 'AI' }, null, null],
+          [null, null, null, null, null],
+          [null, null, null, null, null],
+          [null, null, { type: 'PAWN', owner: 'PLAYER' }, null, null],
+          [null, null, { type: 'KING', owner: 'PLAYER' }, null, null],
+        ],
+      },
+    });
+    scene.board = new Board();
+
+    scene._setupBoard();
+
+    expect(scene.multiplayerMode).toBe('pvp');
+    expect(scene.board.currentTurn).toBe(Owner.AI);
+    expect(scene.board.mana).toEqual({ [Owner.PLAYER]: 2, [Owner.AI]: 4 });
+    expect(scene.board.getPiece(3, 2)).toEqual(new Piece(PieceType.PAWN, Owner.PLAYER));
+    expect(scene.board.getPiece(0, 2)).toEqual(new Piece(PieceType.KING, Owner.AI));
+  });
+});
+
+describe('GameScene PvP command sync', () => {
+  it('sends move, summon, and end-turn commands to the server instead of resolving them locally', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const sent = [];
+
+    scene.multiplayerMode = 'pvp';
+    scene.pvpSocket = { send: payload => sent.push(JSON.parse(payload)) };
+    scene.pvpSide = Owner.PLAYER;
+    scene.board = new Board();
+    scene.board.setPiece(4, 2, new Piece(PieceType.KING, Owner.PLAYER));
+    scene.state = 'SELECTED';
+    scene.selectedCell = { row: 4, col: 2 };
+    scene.animating = false;
+    scene.tutorialLocked = false;
+    scene.hasMoved = false;
+    scene.hasSummoned = false;
+    scene.summonedCells = new Set();
+    scene.calc = { getMoves: () => [{ row: 3, col: 2 }] };
+    scene._recordPlayerInput = () => {};
+    scene._clearHighlights = () => {};
+
+    scene._onCellClick(3, 2);
+
+    scene.state = 'SUMMON_MODE';
+    scene.pendingSummonType = PieceType.PAWN;
+    scene.summonSys = { getSummonableSquares: () => [{ row: 4, col: 1 }] };
+    scene._onCellClick(4, 1);
+
+    scene.state = 'WAITING';
+    scene.board.currentTurn = Owner.PLAYER;
+    scene.endTurnManually();
+
+    expect(sent).toEqual([
+      { type: 'pvpCommand', command: { type: 'move', from: { row: 4, col: 2 }, to: { row: 3, col: 2 } } },
+      { type: 'pvpCommand', command: { type: 'summon', pieceType: PieceType.PAWN, to: { row: 4, col: 1 } } },
+      { type: 'pvpCommand', command: { type: 'endTurn' } },
+    ]);
+    expect(scene.board.getPiece(4, 2)).toEqual(new Piece(PieceType.KING, Owner.PLAYER));
+  });
+});

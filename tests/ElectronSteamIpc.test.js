@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { registerSteamIpcHandlers } from '../electron/steamIpc.cjs';
 
 describe('Electron Steam IPC handlers', () => {
@@ -22,6 +22,10 @@ describe('Electron Steam IPC handlers', () => {
       reason: 'steam-unavailable',
       entries: [],
     });
+    expect(await handlers.get('steam:get-steam-id')()).toEqual({
+      ok: false,
+      reason: 'steam-unavailable',
+    });
   });
 
   it('delegates Steam calls to the injected client adapter', async () => {
@@ -35,6 +39,7 @@ describe('Electron Steam IPC handlers', () => {
       storeStats: () => calls.push(['store']),
       uploadLeaderboardScore: (leaderboardName, score) => ({ ok: true, leaderboardName, score }),
       downloadLeaderboardEntries: (leaderboardName, limit) => ({ ok: true, leaderboardName, limit, entries: [] }),
+      getSteamId: () => ({ ok: true, steamId: '76561198000000000' }),
     };
 
     registerSteamIpcHandlers(ipcMain, { steamClient });
@@ -43,6 +48,7 @@ describe('Electron Steam IPC handlers', () => {
     await handlers.get('steam:store-stats')();
     const upload = await handlers.get('steam:upload-leaderboard-score')(null, { leaderboardName: 'RANK_POINTS', score: 1200 });
     const download = await handlers.get('steam:download-leaderboard-entries')(null, { leaderboardName: 'RANK_POINTS', limit: 3 });
+    const steamId = await handlers.get('steam:get-steam-id')();
 
     expect(await handlers.get('steam:is-ready')()).toBe(true);
     expect(calls).toEqual([
@@ -52,5 +58,7 @@ describe('Electron Steam IPC handlers', () => {
     ]);
     expect(upload).toEqual({ ok: true, leaderboardName: 'RANK_POINTS', score: 1200 });
     expect(download).toEqual({ ok: true, leaderboardName: 'RANK_POINTS', limit: 3, entries: [] });
+    expect(steamId).toEqual({ ok: true, steamId: '76561198000000000' });
   });
 });
+

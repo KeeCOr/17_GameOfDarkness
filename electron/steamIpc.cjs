@@ -1,4 +1,4 @@
-const STEAM_UNAVAILABLE = Object.freeze({ ok: false, reason: 'steam-unavailable' });
+﻿const STEAM_UNAVAILABLE = Object.freeze({ ok: false, reason: 'steam-unavailable' });
 
 function registerSteamIpcHandlers(ipcMain, { steamClient = null } = {}) {
   ipcMain.handle('steam:is-ready', () => {
@@ -35,6 +35,10 @@ function registerSteamIpcHandlers(ipcMain, { steamClient = null } = {}) {
     }
     return steamClient.downloadLeaderboardEntries(leaderboardName, limit);
   });
+  ipcMain.handle('steam:get-steam-id', () => {
+    if (!isReady(steamClient) || !steamClient.getSteamId) return STEAM_UNAVAILABLE;
+    return steamClient.getSteamId();
+  });
 }
 
 function isReady(steamClient) {
@@ -45,3 +49,4 @@ module.exports = {
   STEAM_UNAVAILABLE,
   registerSteamIpcHandlers,
 };
+

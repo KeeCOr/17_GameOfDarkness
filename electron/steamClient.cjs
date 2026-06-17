@@ -1,4 +1,4 @@
-const STEAM_UNAVAILABLE = Object.freeze({ ok: false, reason: 'steam-unavailable' });
+﻿const STEAM_UNAVAILABLE = Object.freeze({ ok: false, reason: 'steam-unavailable' });
 
 function resolveSteamAppId(env = process.env) {
   const value = Number(env.STEAM_APP_ID);
@@ -41,6 +41,10 @@ function createSdkClient(sdk) {
       if (sdk.downloadLeaderboardEntries) return sdk.downloadLeaderboardEntries(leaderboardName, limit);
       return { ok: false, reason: 'leaderboard-unavailable', entries: [] };
     },
+    getSteamId() {
+      if (sdk.getSteamId) return sdk.getSteamId();
+      return { ok: false, reason: 'steam-id-unavailable' };
+    },
   };
 }
 
@@ -52,6 +56,7 @@ function createUnavailableClient() {
     storeStats: () => STEAM_UNAVAILABLE,
     uploadLeaderboardScore: () => STEAM_UNAVAILABLE,
     downloadLeaderboardEntries: () => ({ ...STEAM_UNAVAILABLE, entries: [] }),
+    getSteamId: () => STEAM_UNAVAILABLE,
   };
 }
 
@@ -71,6 +76,10 @@ function normalizeSteamworksClient(client) {
       client.leaderboard?.uploadScore?.(leaderboardName, score) || { ok: false, reason: 'leaderboard-unavailable' },
     downloadLeaderboardEntries: (leaderboardName, limit = 5) =>
       client.leaderboard?.downloadScores?.(leaderboardName, limit) || { ok: false, reason: 'leaderboard-unavailable', entries: [] },
+    getSteamId: () => {
+      const raw = client.localplayer?.getSteamId?.() || client.localplayer?.steamId || client.steamId;
+      return raw ? { ok: true, steamId: String(raw) } : { ok: false, reason: 'steam-id-unavailable' };
+    },
   };
 }
 
@@ -78,3 +87,4 @@ module.exports = {
   createSteamClient,
   resolveSteamAppId,
 };
+

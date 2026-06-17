@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+﻿const crypto = require('crypto');
 const http = require('http');
 const { createMultiplayerCore } = require('./multiplayerCore.cjs');
 const { getRankFilePath } = require('./savePaths.cjs');
@@ -66,7 +66,9 @@ server.on('upgrade', (req, socket) => {
   ].join('\r\n'));
 
   const url = new URL(req.url, `http://${req.headers.host}`);
-  const client = core.createClient(socket, url.searchParams.get('name'));
+  const client = core.createClient(socket, url.searchParams.get('name'), {
+    steamId: url.searchParams.get('steamId'),
+  });
 
   socket.on('data', chunk => {
     for (const raw of parseFrames(chunk)) {
@@ -81,3 +83,4 @@ server.listen(PORT, () => {
   console.log(`ChessSummon multiplayer server: ws://localhost:${PORT}`);
   console.log(`Rank file: ${RANK_FILE}`);
 });
+

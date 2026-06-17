@@ -1,4 +1,4 @@
-function createSteamRendererApi(ipcRenderer) {
+﻿function createSteamRendererApi(ipcRenderer) {
   return {
     isReady: () => ipcRenderer.invoke('steam:is-ready'),
     setAchievement: apiName => ipcRenderer.invoke('steam:set-achievement', { apiName }),
@@ -8,6 +8,7 @@ function createSteamRendererApi(ipcRenderer) {
       ipcRenderer.invoke('steam:upload-leaderboard-score', { leaderboardName, score }),
     downloadLeaderboardEntries: (leaderboardName, limit = 5) =>
       ipcRenderer.invoke('steam:download-leaderboard-entries', { leaderboardName, limit }),
+    getSteamId: () => ipcRenderer.invoke('steam:get-steam-id'),
   };
 }
 
@@ -19,3 +20,4 @@ try {
 }
 
 module.exports = { createSteamRendererApi };
+

@@ -1,4 +1,4 @@
-import { STEAM_ACHIEVEMENTS, ACHIEVEMENT_STATS } from '../game/achievements.js';
+﻿import { STEAM_ACHIEVEMENTS, ACHIEVEMENT_STATS } from '../game/achievements.js';
 import { AchievementProgress } from '../game/achievementProgress.js';
 import { getLeaderboardById } from '../game/leaderboards.js';
 
@@ -63,6 +63,13 @@ export class SteamService {
     return this.steamClient.uploadLeaderboardScore(getLeaderboardById('rank_points').apiName, score);
   }
 
+  getSteamId() {
+    if (!this.isSteamAvailable() || typeof this.steamClient.getSteamId !== 'function') {
+      return { ok: false, reason: 'steam-unavailable' };
+    }
+    return this.steamClient.getSteamId();
+  }
+
   downloadRankLeaderboard(limit = 5) {
     if (!this.isSteamAvailable() || typeof this.steamClient.downloadLeaderboardEntries !== 'function') {
       return { ok: false, reason: 'steam-unavailable', entries: [] };
@@ -91,3 +98,4 @@ export function createSteamService(options) {
 function getDefaultSteamClient() {
   return globalThis.window?.chessSummonSteam || null;
 }
+

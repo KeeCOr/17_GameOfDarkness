@@ -1,4 +1,4 @@
-# ChessSummon Steam 출시 계획서
+﻿# ChessSummon Steam 출시 계획서
 
 작성일: 2026-06-01
 대상 버전: v0.1.18 이후 출시 준비 빌드
@@ -214,6 +214,7 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.2.0: 공개 인간 PvP의 최소 서버 권위 경로를 추가했다. server/pvpSession.cjs가 보드/턴/마나/결과를 소유하고, multiplayerCore는 legacy matchResult를 무시하며 서버 생성 결과로만 랭크를 반영한다. Electron Steam ID bridge, WebSocket steamId query, 로비 pvpState 진입, GameScene pvpCommand 송신/스냅샷 복원을 추가해 public PvP code readiness blocker를 해소했다.
 - v0.1.95: 시작/난이도 화면의 공통 브랜드 로고 중심 y좌표를 150에서 165로 낮춰 로고가 상단에 붙어 보이는 느낌을 완화했다.
 - v0.1.94: 멀티플레이와 MMR 출시 판단을 `src/multiplayer/releaseReadiness.js`와 `docs/Multiplayer_MMR_출시_판단.md`로 분리했다. AI 대체 매칭과 로컬/Steam 어댑터 기반 랭킹 프리뷰는 1차 출시 가능 범위로 두고, 공개 인간 PvP 랭크는 Steam ID 매핑, 서버 권위 보드 동기화, 서버 검증 결과 처리 전까지 blocker로 유지한다.
 - v0.1.71: 체크메이트 종료를 일반 왕 포획과 구분하고, 전용 CHECKMATE 연출 및 결과 문구를 추가했다.
@@ -355,3 +356,4 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - Steam Matchmaking & Lobbies: https://partner.steamgames.com/doc/features/multiplayer/matchmaking
 - ISteamUserStats: https://partner.steamgames.com/doc/api/ISteamUserStats
 - Steam Stats and Achievements: https://partner.steamgames.com/doc/features/achievements
+

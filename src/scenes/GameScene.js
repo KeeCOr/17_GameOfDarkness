@@ -1,4 +1,4 @@
-// src/scenes/GameScene.js
+﻿// src/scenes/GameScene.js
 import { Board } from '../game/Board.js';
 import { Piece } from '../game/Piece.js';
 import { MoveCalculator } from '../game/MoveCalculator.js';
@@ -38,9 +38,14 @@ export class GameScene extends Phaser.Scene {
 
   init(data) {
     this.difficulty = data.difficulty;
-    this.playerPlacements = data.playerPlacements;
+    this.playerPlacements = data.playerPlacements || [];
     this.tutorialMode = data.tutorialMode || false;
     this.aiProfile = data.aiProfile || null;
+    this.multiplayerMode = data.multiplayerMode || 'single';
+    this.pvpSide = data.pvpSide || null;
+    this.pvpRoomId = data.pvpRoomId || null;
+    this.pvpSession = data.pvpSession || null;
+    this.pvpSocket = data.pvpSocket || null;
   }
 
   create() {
@@ -93,7 +98,8 @@ export class GameScene extends Phaser.Scene {
     this.scene.launch('UI');
     this.events.on('tutorial-complete', () => this.achievements.recordTutorialComplete());
     this.input.on('pointerdown', this._onPointerDown, this);
-    this._startTurn(Owner.PLAYER);
+    this._attachPvpSocket();
+    this._startTurn(this.pvpSession?.currentTurn || Owner.PLAYER);
     if (this.tutorialMode) this.scene.launch('Tutorial');
   }
 
@@ -123,6 +129,18 @@ export class GameScene extends Phaser.Scene {
   }
 
   _setupBoard() {
+    if (this.multiplayerMode === 'pvp' && this.pvpSession?.board) {
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          const piece = this.pvpSession.board[r]?.[c];
+          this.board.setPiece(r, c, piece ? new Piece(piece.type, piece.owner) : null);
+        }
+      }
+      this.board.currentTurn = this.pvpSession.currentTurn || Owner.PLAYER;
+      this.board.mana = { ...this.board.mana, ...(this.pvpSession.mana || {}) };
+      return;
+    }
+
     this.board.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
     this.board.setPiece(1, 0, new Piece(PieceType.PAWN, Owner.AI));
     this.board.setPiece(1, 1, new Piece(PieceType.PAWN, Owner.AI));
@@ -271,6 +289,53 @@ export class GameScene extends Phaser.Scene {
     this._updateHint('default');
   }
 
+  _isPvpMode() {
+    return this.multiplayerMode === 'pvp';
+  }
+
+  _localOwner() {
+    return this._isPvpMode() ? (this.pvpSide || Owner.PLAYER) : Owner.PLAYER;
+  }
+
+  _sendPvpCommand(command) {
+    if (!this._isPvpMode() || !this.pvpSocket) return false;
+    this.pvpSocket.send(JSON.stringify({ type: 'pvpCommand', command }));
+    return true;
+  }
+
+  _attachPvpSocket() {
+    if (!this._isPvpMode() || !this.pvpSocket?.addEventListener) return;
+    this.pvpSocket.addEventListener('message', event => {
+      const message = JSON.parse(event.data);
+      if (message.type === 'pvpState') this._applyPvpSnapshot(message.state);
+      if (message.type === 'pvpResult') {
+        const winner = message.result?.winnerSide || Owner.AI;
+        this._gameOver(winner, message.result?.reason || 'pvp');
+      }
+    });
+  }
+
+  _applyPvpSnapshot(state) {
+    if (!state?.board) return;
+    this.pvpSession = state;
+    for (let r = 0; r < BOARD_SIZE; r++) {
+      for (let c = 0; c < BOARD_SIZE; c++) {
+        const piece = state.board[r]?.[c];
+        this.board.setPiece(r, c, piece ? new Piece(piece.type, piece.owner) : null);
+      }
+    }
+    this.board.currentTurn = state.currentTurn || Owner.PLAYER;
+    this.board.mana = { ...this.board.mana, ...(state.mana || {}) };
+    this.hasMoved = false;
+    this.hasSummoned = false;
+    this.state = State.WAITING;
+    this.selectedCell = null;
+    this.pendingSummonType = null;
+    this._clearHighlights();
+    this._refreshBoard();
+    this._emitPlayerAction();
+  }
+
   _onCellClick(r, c) {
     if (this.state === State.AI_TURN || this.state === State.GAME_OVER) return;
     if (this.animating) return;
@@ -278,8 +343,14 @@ export class GameScene extends Phaser.Scene {
     this._recordPlayerInput();
 
     if (this.state === State.SUMMON_MODE) {
-      const squares = this.summonSys.getSummonableSquares(this.board, Owner.PLAYER);
+      const squares = this.summonSys.getSummonableSquares(this.board, this._localOwner());
       if (squares.some(s => s.row === r && s.col === c)) {
+        if (this._sendPvpCommand({ type: 'summon', pieceType: this.pendingSummonType, to: { row: r, col: c } })) {
+          this._clearHighlights();
+          this.state = State.WAITING;
+          this.pendingSummonType = null;
+          return;
+        }
         this.summonSys.summon(this.board, Owner.PLAYER, this.pendingSummonType, r, c);
         this.achievements.recordSummon(this.pendingSummonType);
         this.hasSummoned = true;
@@ -321,6 +392,12 @@ export class GameScene extends Phaser.Scene {
       if (moves.some(m => m.row === r && m.col === c)) {
         const isCapture = !!this.board.getPiece(r, c);
         const { row: fr, col: fc } = this.selectedCell;
+        if (this._sendPvpCommand({ type: 'move', from: { row: fr, col: fc }, to: { row: r, col: c } })) {
+          this._clearHighlights();
+          this.state = State.WAITING;
+          this.selectedCell = null;
+          return;
+        }
         this._clearHighlights();
         this.state = State.WAITING;
         this.selectedCell = null;
@@ -350,7 +427,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     const piece = this.board.getPiece(r, c);
-    if (piece && piece.owner === Owner.PLAYER) {
+    if (piece && piece.owner === this._localOwner()) {
       if (this.hasMoved) return;
       if (this.summonedCells.has(`${r},${c}`)) return;
       this.state = State.SELECTED;
@@ -872,11 +949,11 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     if (this.state !== State.WAITING && this.state !== State.SUMMON_MODE) return;
-    if (!this.summonSys.canSummon(this.board, Owner.PLAYER, pieceType)) return;
+    if (!this.summonSys.canSummon(this.board, this._localOwner(), pieceType)) return;
     this.pendingSummonType = pieceType;
     this.state = State.SUMMON_MODE;
     this._clearHighlights();
-    const squares = this.summonSys.getSummonableSquares(this.board, Owner.PLAYER);
+    const squares = this.summonSys.getSummonableSquares(this.board, this._localOwner());
     this._highlightCells(squares, COLORS.SUMMON_HIGHLIGHT);
     this._updateHint('summon');
     this.events.emit('summon-mode', { pieceType, hasMoved: this.hasMoved, hasSummoned: this.hasSummoned });
@@ -901,9 +978,10 @@ export class GameScene extends Phaser.Scene {
 
   endTurnManually() {
     const canEnd = [State.WAITING, State.SELECTED, State.SUMMON_MODE].includes(this.state);
-    if (canEnd && this.board.currentTurn === Owner.PLAYER && !this.animating) {
+    if (canEnd && this.board.currentTurn === this._localOwner() && !this.animating) {
       this._recordPlayerInput();
       if (this.tutorialMode) this.events.emit('tutorial-turn-ended');
+      if (this._sendPvpCommand({ type: 'endTurn' })) return;
       this._endTurn();
     }
   }
@@ -930,3 +1008,6 @@ export class GameScene extends Phaser.Scene {
     this._clearSceneTimers();
   }
 }
+
+
+

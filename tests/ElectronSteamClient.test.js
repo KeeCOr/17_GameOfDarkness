@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { createSteamClient, resolveSteamAppId } from '../electron/steamClient.cjs';
 
 describe('Electron Steam client adapter', () => {
@@ -28,6 +28,10 @@ describe('Electron Steam client adapter', () => {
         calls.push(['leaderboard-download', leaderboardName, limit]);
         return { ok: true, entries: [] };
       },
+      getSteamId: () => {
+        calls.push(['steam-id']);
+        return { ok: true, steamId: '76561198000000000' };
+      },
     };
 
     const client = createSteamClient({
@@ -44,6 +48,7 @@ describe('Electron Steam client adapter', () => {
     expect(client.storeStats()).toEqual({ ok: true });
     expect(client.uploadLeaderboardScore('RANK_POINTS', 1200)).toEqual({ ok: true });
     expect(client.downloadLeaderboardEntries('RANK_POINTS', 5)).toEqual({ ok: true, entries: [] });
+    expect(client.getSteamId()).toEqual({ ok: true, steamId: '76561198000000000' });
     expect(calls).toEqual([
       ['load', 123456],
       ['achievement', 'ACH_FIRST_WIN'],
@@ -51,6 +56,8 @@ describe('Electron Steam client adapter', () => {
       ['store'],
       ['leaderboard', 'RANK_POINTS', 1200],
       ['leaderboard-download', 'RANK_POINTS', 5],
+      ['steam-id'],
     ]);
   });
 });
+

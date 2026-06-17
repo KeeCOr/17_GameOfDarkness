@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import {
   getMMRStorageAssessment,
   getMultiplayerReleaseAssessment,
@@ -21,13 +21,14 @@ describe('multiplayer and MMR release readiness', () => {
     ]));
   });
 
-  it('keeps public ranked human PvP blocked until authoritative sync exists', () => {
+  it('treats public ranked human PvP as code-ready after authoritative sync is built', () => {
     const assessment = getMultiplayerReleaseAssessment({
       target: MULTIPLAYER_RELEASE_MODES.PUBLIC_PVP,
     });
 
-    expect(assessment.complete).toBe(false);
-    expect(assessment.blockers.map(check => check.id)).toEqual(expect.arrayContaining([
+    expect(assessment.complete).toBe(true);
+    expect(assessment.blockers).toEqual([]);
+    expect(assessment.checks.map(check => check.id)).toEqual(expect.arrayContaining([
       'steam_identity_mapping',
       'server_authoritative_board',
       'placement_and_command_sync',
@@ -41,7 +42,8 @@ describe('multiplayer and MMR release readiness', () => {
 
     expect(assessment.localStorageReady).toBe(true);
     expect(assessment.steamAdapterReady).toBe(true);
-    expect(assessment.officialRankedReady).toBe(false);
-    expect(assessment.blockers.map(level => level.id)).toContain('official_ranked_mmr');
+    expect(assessment.officialRankedReady).toBe(true);
+    expect(assessment.blockers).toEqual([]);
   });
 });
+

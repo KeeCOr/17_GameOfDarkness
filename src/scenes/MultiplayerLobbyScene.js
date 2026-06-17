@@ -1,4 +1,4 @@
-import { LAYOUT, TEXT_COLORS } from '../config.js';
+﻿import { LAYOUT, TEXT_COLORS } from '../config.js';
 import { formatBotLabel, getBotProfileForMatch } from '../game/botProfiles.js';
 import { AI_MATCH_TIMEOUT_MS, getAIMatchDifficulty } from '../game/matchmaking.js';
 import { createSteamService } from '../services/SteamService.js';
@@ -15,6 +15,9 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.rankText = null;
     this.leaderboardText = null;
     this.matchStarted = false;
+    this.pvpStarted = false;
+    this.pvpRoomId = null;
+    this.pvpSide = null;
     this.aiFallbackTimer = null;
     this.steamService = createSteamService();
     this.events.once('shutdown', this.shutdown, this);
@@ -49,13 +52,16 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this._connect();
   }
 
-  _connect() {
+  async _connect() {
     const savedName = localStorage.getItem('chesssummon.nickname') || '';
     const typed = window.prompt(UI_COPY.multiplayer.nicknamePrompt, savedName);
     const nickname = (typed || savedName || 'Player').trim().slice(0, 20) || 'Player';
     localStorage.setItem('chesssummon.nickname', nickname);
     try {
-      this.socket = new WebSocket(`${UI_COPY.multiplayer.server}?name=${encodeURIComponent(nickname)}`);
+      const query = new URLSearchParams({ name: nickname });
+      const identity = await Promise.resolve(this.steamService.getSteamId?.()).catch(() => null);
+      if (identity?.ok && identity.steamId) query.set('steamId', identity.steamId);
+      this.socket = new WebSocket(`${UI_COPY.multiplayer.server}?${query.toString()}`);
       this.socket.addEventListener('message', event => this._onSocketMessage(event));
       this.socket.addEventListener('open', () => this.statusText.setText('서버 연결됨'));
       this.socket.addEventListener('close', () => this.statusText.setText(UI_COPY.multiplayer.offline));
@@ -78,7 +84,13 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     } else if (message.type === 'matched') {
       this._clearAIFallbackTimer();
       this.matchStarted = true;
+      this.pvpRoomId = message.roomId || null;
+      this.pvpSide = message.side || null;
       this.statusText.setText(`${UI_COPY.multiplayer.matched}: ${message.opponent.name}`);
+    } else if (message.type === 'pvpState') {
+      this._startPvpGame(message.state);
+    } else if (message.type === 'pvpResult') {
+      this.statusText.setText(message.result?.reason || UI_COPY.multiplayer.matched);
     }
   }
 
@@ -90,6 +102,20 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.socket.send(JSON.stringify({ type: 'joinQueue' }));
     this.statusText.setText(UI_COPY.multiplayer.queued);
     this._startAIFallbackTimer();
+  }
+
+  _startPvpGame(state) {
+    if (this.pvpStarted || !state) return;
+    this.pvpStarted = true;
+    this._clearAIFallbackTimer();
+    this.scene.start('Game', {
+      multiplayerMode: 'pvp',
+      pvpSide: this.pvpSide,
+      pvpRoomId: this.pvpRoomId || state.roomId,
+      pvpSession: state,
+      pvpSocket: this.socket,
+      skipTutorialPrompt: true,
+    });
   }
 
   _refreshLeaderboard() {
@@ -137,7 +163,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
 
   shutdown() {
     this._clearAIFallbackTimer();
-    if (this.socket) this.socket.close();
+    if (this.socket && !this.pvpStarted) this.socket.close();
   }
 }
 
@@ -153,3 +179,5 @@ export function formatLeaderboardSummary(result = null) {
   });
   return `Steam 랭킹\n${rows.join('\n')}`;
 }
+
+
