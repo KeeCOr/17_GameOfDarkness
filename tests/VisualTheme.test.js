@@ -340,13 +340,14 @@ describe('visual theme helpers', () => {
     const visualsSource = readFileSync(new URL('../src/ui/visuals.js', import.meta.url), 'utf8');
     const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
     const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+    const multiplayerSceneSource = readFileSync(new URL('../src/scenes/MultiplayerLobbyScene.js', import.meta.url), 'utf8');
     const placementSceneSource = readFileSync(new URL('../src/scenes/PlacementScene.js', import.meta.url), 'utf8');
     const resultSceneSource = readFileSync(new URL('../src/scenes/ResultScene.js', import.meta.url), 'utf8');
 
     expect(visualsSource).toContain('ui_stage_background');
     expect(visualsSource).toContain('ui_title_background');
     expect(visualsSource).toContain('ui_title_button_frame');
-    expect(visualsSource).toContain('w / 2, 165, UI_ASSETS.brandLogo.key');
+    expect(visualsSource).toContain('w / 2, 180, UI_ASSETS.brandLogo.key');
     expect(visualsSource).toContain('setDisplaySize(410, 205)');
     expect(visualsSource).toContain('ui_game_background');
     expect(visualsSource).toContain('ui_game_top_hud_frame');
@@ -363,6 +364,9 @@ describe('visual theme helpers', () => {
     expect(placementSceneSource).toContain('preferTitleArt: true');
     expect(placementSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
     expect(placementSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
+    expect(multiplayerSceneSource).toContain('preferTitleArt: true');
+    expect(multiplayerSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
+    expect(multiplayerSceneSource).toContain('textOffsetY: 2');
     expect(resultSceneSource).toContain('preferTitleArt: true');
     expect(resultSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
     expect(resultSceneSource).not.toContain('_drawResultCrown');
@@ -378,6 +382,7 @@ describe('visual theme helpers', () => {
     expect(LAYOUT.NON_PAWN_PIECE_SIZE).toBeLessThanOrEqual(LAYOUT.CELL_SIZE + 20);
     expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeGreaterThanOrEqual(LAYOUT.CELL_SIZE - 14);
     expect(LAYOUT.PIECE_SHADOW_WIDTH).toBeLessThanOrEqual(LAYOUT.CELL_SIZE - 8);
+    expect(LAYOUT.PIECE_BOARD_LIFT).toBe(6);
   });
 
   it('uses a larger display size for non-pawn board pieces', () => {

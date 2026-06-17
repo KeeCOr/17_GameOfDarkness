@@ -317,6 +317,7 @@ describe('tutorial and replay flow', () => {
     expect(images).toHaveLength(1);
     expect(images[0]).toMatchObject({
       key: 'pawn_w',
+      y: 220 - LAYOUT.PIECE_BOARD_LIFT,
       width: LAYOUT.PIECE_SIZE,
       height: LAYOUT.PIECE_SIZE,
     });

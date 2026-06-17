@@ -129,7 +129,7 @@ export class PlacementScene extends Phaser.Scene {
       0x000000,
       0.34,
     ).setDepth(3);
-    const image = this.add.image(x, y, key)
+    const image = this.add.image(x, y - LAYOUT.PIECE_BOARD_LIFT, key)
       .setDisplaySize(LAYOUT.PIECE_SIZE, LAYOUT.PIECE_SIZE)
       .setDepth(4);
     return {

@@ -177,8 +177,8 @@ describe('menu flow', () => {
     expect(texts.some(text => text.value === UI_COPY.menu.subtitle)).toBe(false);
     expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.EASY)).toBe(true);
     expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.MEDIUM)).toBe(true);
-    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(318);
-    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(348);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(324);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(354);
 
     const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
     expect(titleButtonFrames.some(image => image.y === 326 && image.width === 322 && image.height === 92)).toBe(true);
@@ -201,9 +201,9 @@ describe('menu flow', () => {
 
     expect(titleButtonFrames).toHaveLength(4);
     expect(lockedFrame).toMatchObject({ width: 322, height: 92, alpha: 1 });
-    expect(lockedLabel).toMatchObject({ y: 624 });
+    expect(lockedLabel).toMatchObject({ y: 630 });
     expect(lockedLabel.style.color).toBe('#ffffff');
-    expect(lockedHint).toMatchObject({ y: 654 });
+    expect(lockedHint).toMatchObject({ y: 660 });
     expect(starts).toEqual([]);
   }, 10000);
 
@@ -236,6 +236,17 @@ describe('menu flow', () => {
     ]);
   }, 10000);
 
+  it('lowers title-frame back button text inside the frame', async () => {
+    const { MenuScene } = await import('../src/scenes/MenuScene.js');
+    const { UI_ASSETS, UI_COPY } = await import('../src/ui/visuals.js');
+    const { scene, texts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    Object.setPrototypeOf(scene, MenuScene.prototype);
+
+    scene._showDifficultySelect();
+
+    expect(texts.find(text => text.value === UI_COPY.menu.back)?.y).toBe(726);
+  }, 10000);
+
   it('lets the enlarged difficulty hit area start placement', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { scene, rectangles, starts } = makeMenuScene();
@@ -251,7 +262,7 @@ describe('menu flow', () => {
     ]);
   }, 10000);
 
-  it('shows release channel and version on menu screens', async () => {
+  it('shows only the release version at the bottom of menu screens', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { RELEASE_INFO } = await import('../src/releaseInfo.js');
     const { scene, texts } = makeMenuScene();
@@ -259,7 +270,8 @@ describe('menu flow', () => {
 
     scene._showModeSelect();
 
-    expect(texts.some(text => text.value === RELEASE_INFO.displayLabel)).toBe(true);
+    expect(texts.some(text => text.value === RELEASE_INFO.displayLabel)).toBe(false);
+    expect(texts.some(text => text.value === `v${RELEASE_INFO.version}` && text.y === 784)).toBe(true);
   });
 });
 

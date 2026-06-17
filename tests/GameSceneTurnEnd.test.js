@@ -107,10 +107,13 @@ describe('GameScene manual turn ending', () => {
     const [pawn, queen] = images;
     const pawnBottom = pawn.y + pawn.height / 2;
     const queenBottom = queen.y + queen.height / 2;
+    const cellCenterY = LAYOUT.BOARD_OFFSET_Y + 4 * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+    const liftedBottom = cellCenterY + LAYOUT.NON_PAWN_PIECE_SIZE / 2 - LAYOUT.PIECE_BOARD_LIFT;
 
     expect(pawn.height).toBe(LAYOUT.PIECE_SIZE);
     expect(queen.height).toBe(LAYOUT.NON_PAWN_PIECE_SIZE);
     expect(pawnBottom).toBe(queenBottom);
+    expect(queenBottom).toBe(liftedBottom);
   });
 
   it('keeps each side chess clock instead of resetting every turn', async () => {

@@ -51,6 +51,11 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.2.10 adds `LAYOUT.PIECE_BOARD_LIFT` and raises in-game/placement board piece sprites by 6px while preserving shared bottom-edge alignment.
+- v0.2.9 lowers the multiplayer lobby queue/back button labels and the difficulty-menu back label inside the title-frame artwork.
+- v0.2.8 lowers difficulty-button label/hint copy by 6px and changes the menu release badge to a bottom-only `vX.Y.Z` label without the Desktop channel word.
+- v0.2.7 lowers the start-screen brand logo center from y=165 to y=180 for better vertical balance above the mode buttons.
+- v0.2.6 aligns menu-adjacent screens (placement, tutorial prompt, multiplayer lobby, and result) with the start-screen title background and title button frame so the pre/post-game flow uses one visual language.
 - v0.2.5 reintroduces the gameplay board frame as a generated project PNG that matches the current dark metal/gold/cyan UI tone and replaces the active runtime graphics frame when the texture is available.
 - v0.1.93 adds a Steam store asset requirement catalog and a store submission package document covering capsules, screenshots, trailers, and store copy.
 - v0.1.92 adds a testable Steam release readiness checklist module and a submission QA checklist document for build, store, Steamworks, and manual QA blockers.

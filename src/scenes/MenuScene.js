@@ -36,7 +36,7 @@ export class MenuScene extends Phaser.Scene {
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.menu.title);
 
-    addReleaseBadge(this, RELEASE_INFO.displayLabel);
+    addReleaseBadge(this, `v${RELEASE_INFO.version}`);
 
     const single = addTextButton(this, cx, 440, 322, 90, UI_COPY.menu.single, { fontSize: '22px', active: true, assetKey: UI_ASSETS.titleButtonFrame.key, textOffsetY: 0 });
     single.rect.on('pointerdown', () => this._showDifficultySelect());
@@ -50,7 +50,7 @@ export class MenuScene extends Phaser.Scene {
     const cx = LAYOUT.GAME_WIDTH / 2;
     addStageBackground(this, UI_COPY.menu.title);
 
-    addReleaseBadge(this, RELEASE_INFO.displayLabel);
+    addReleaseBadge(this, `v${RELEASE_INFO.version}`);
 
     const difficulties = [
       { value: Difficulty.EASY, y: 326 },
@@ -64,8 +64,8 @@ export class MenuScene extends Phaser.Scene {
       const label = UI_COPY.menu.difficulties[value];
       const hint = locked ? UI_COPY.menu.veryHardLocked : UI_COPY.menu.difficultyHints[value];
       const button = addTextButton(this, cx, y, 322, 92, label, { fontSize: '20px', assetKey: UI_ASSETS.titleButtonFrame.key });
-      button.text.y = y - 8;
-      this.add.text(cx, y + 22, hint, {
+      button.text.y = y - 2;
+      this.add.text(cx, y + 28, hint, {
         fontSize: '11px',
         color: locked ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.MUTED,
         fontStyle: 'bold',
@@ -75,7 +75,11 @@ export class MenuScene extends Phaser.Scene {
     }
 
     if (showBack) {
-      const back = addTextButton(this, cx, 724, 198, 52, UI_COPY.menu.back, { fontSize: '15px', assetKey: UI_ASSETS.titleButtonFrame.key });
+      const back = addTextButton(this, cx, 724, 198, 52, UI_COPY.menu.back, {
+        fontSize: '15px',
+        assetKey: UI_ASSETS.titleButtonFrame.key,
+        textOffsetY: 2,
+      });
       back.rect.on('pointerdown', () => this._showModeSelect());
     }
   }

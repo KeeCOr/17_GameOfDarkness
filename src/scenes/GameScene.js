@@ -269,7 +269,7 @@ export class GameScene extends Phaser.Scene {
   _getPieceRenderPosition(r, c, piece) {
     const center = this._getCellCenter(r, c);
     const displaySize = this._getPieceDisplaySize(piece);
-    const bottomY = center.y + LAYOUT.NON_PAWN_PIECE_SIZE / 2;
+    const bottomY = center.y + LAYOUT.NON_PAWN_PIECE_SIZE / 2 - LAYOUT.PIECE_BOARD_LIFT;
     return {
       x: center.x,
       y: bottomY - displaySize / 2,

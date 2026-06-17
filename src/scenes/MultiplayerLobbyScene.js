@@ -2,7 +2,7 @@
 import { formatBotLabel, getBotProfileForMatch } from '../game/botProfiles.js';
 import { AI_MATCH_TIMEOUT_MS, getAIMatchDifficulty } from '../game/matchmaking.js';
 import { createSteamService } from '../services/SteamService.js';
-import { addStageBackground, addTextButton, UI_COPY } from '../ui/visuals.js';
+import { addStageBackground, addTextButton, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 
 export class MultiplayerLobbyScene extends Phaser.Scene {
   constructor() { super('MultiplayerLobby'); }
@@ -23,7 +23,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.events.once('shutdown', this.shutdown, this);
 
     const cx = LAYOUT.GAME_WIDTH / 2;
-    addStageBackground(this, UI_COPY.multiplayer.title);
+    addStageBackground(this, UI_COPY.multiplayer.title, { preferTitleArt: true });
 
     this.statusText = this.add.text(cx, 182, UI_COPY.multiplayer.connecting, {
       fontSize: '18px', color: TEXT_COLORS.MUTED, fontStyle: 'bold',
@@ -43,10 +43,19 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
       lineSpacing: 4,
     }).setOrigin(0.5);
 
-    const queue = addTextButton(this, cx, 405, 230, 54, UI_COPY.multiplayer.queue, { fontSize: '20px', active: true });
+    const queue = addTextButton(this, cx, 430, 286, 76, UI_COPY.multiplayer.queue, {
+      fontSize: '21px',
+      active: true,
+      assetKey: UI_ASSETS.titleButtonFrame.key,
+      textOffsetY: 2,
+    });
     queue.rect.on('pointerdown', () => this._joinQueue());
 
-    const back = addTextButton(this, cx, 480, 160, 44, UI_COPY.menu.back, { fontSize: '16px' });
+    const back = addTextButton(this, cx, 530, 198, 58, UI_COPY.menu.back, {
+      fontSize: '16px',
+      assetKey: UI_ASSETS.titleButtonFrame.key,
+      textOffsetY: 2,
+    });
     back.rect.on('pointerdown', () => this._backToMenu());
 
     this._connect();

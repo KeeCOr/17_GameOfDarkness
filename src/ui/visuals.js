@@ -239,7 +239,7 @@ export function addStageBackground(scene, title = '', options = {}) {
 
   if (title) {
   if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {
-      return scene.add.image(w / 2, 165, UI_ASSETS.brandLogo.key)
+      return scene.add.image(w / 2, 180, UI_ASSETS.brandLogo.key)
         .setDisplaySize(410, 205)
         .setDepth(1);
     }
@@ -296,7 +296,7 @@ export function addDivider(scene, x, y, width, depth = 0) {
 }
 
 export function addReleaseBadge(scene, label, depth = 0) {
-  return scene.add.text(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT - 28, label, {
+  return scene.add.text(LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT - 16, label, {
     fontSize: '11px',
     color: TEXT_COLORS.MUTED,
     fontStyle: 'bold',
