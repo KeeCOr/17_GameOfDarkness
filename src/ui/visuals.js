@@ -210,7 +210,8 @@ export function addStageBackground(scene, title = '', options = {}) {
   const { GAME_WIDTH: w, GAME_HEIGHT: h } = LAYOUT;
   const useTitleArt = (options.preferTitleArt || title === UI_COPY.menu.title) && hasTexture(scene, UI_ASSETS.titleBackground.key);
   const stageKey = useTitleArt ? UI_ASSETS.titleBackground.key : UI_ASSETS.stageBackground.key;
-  if (hasTexture(scene, stageKey)) {
+  const hasArtBackground = hasTexture(scene, stageKey);
+  if (hasArtBackground) {
     scene.add.image(w / 2, h / 2, stageKey)
       .setDisplaySize(w, h)
       .setDepth(-10);
@@ -218,26 +219,26 @@ export function addStageBackground(scene, title = '', options = {}) {
     scene.add.rectangle(w / 2, h / 2, w, h, COLORS.BACKDROP);
     scene.add.rectangle(w / 2, h / 2, w - 54, h - 42, COLORS.PANEL_DEEP).setAlpha(0.94);
     scene.add.rectangle(w / 2, h / 2, w - 86, h - 82, COLORS.PANEL_BG).setAlpha(0.32);
-  }
 
-  const g = scene.add.graphics();
-  g.lineStyle(2, COLORS.PANEL_EDGE, 0.58);
-  g.strokeRect(36, 30, w - 72, h - 60);
-  g.lineStyle(1, COLORS.GOLD, 0.22);
-  for (let i = 0; i < 5; i++) {
-    const inset = 60 + i * 25;
-    g.strokeRect(inset, 52 + i * 18, w - inset * 2, h - 104 - i * 36);
+    const g = scene.add.graphics();
+    g.lineStyle(2, COLORS.PANEL_EDGE, 0.58);
+    g.strokeRect(36, 30, w - 72, h - 60);
+    g.lineStyle(1, COLORS.GOLD, 0.22);
+    for (let i = 0; i < 5; i++) {
+      const inset = 60 + i * 25;
+      g.strokeRect(inset, 52 + i * 18, w - inset * 2, h - 104 - i * 36);
+    }
+    g.lineStyle(2, COLORS.GOLD, 0.24);
+    g.beginPath();
+    g.moveTo(72, 86);
+    g.lineTo(w / 2, 48);
+    g.lineTo(w - 72, 86);
+    g.moveTo(72, h - 86);
+    g.lineTo(w / 2, h - 48);
+    g.lineTo(w - 72, h - 86);
+    g.closePath();
+    g.strokePath();
   }
-  g.lineStyle(2, COLORS.GOLD, 0.24);
-  g.beginPath();
-  g.moveTo(72, 86);
-  g.lineTo(w / 2, 48);
-  g.lineTo(w - 72, 86);
-  g.moveTo(72, h - 86);
-  g.lineTo(w / 2, h - 48);
-  g.lineTo(w - 72, h - 86);
-  g.closePath();
-  g.strokePath();
 
   if (title) {
   if (title === UI_COPY.menu.title && hasTexture(scene, UI_ASSETS.brandLogo.key)) {

@@ -795,9 +795,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.1.95.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.1.95_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.1.95_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.2.18.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.2.18_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.2.18_portable.exe` |
 
 ---
 
@@ -816,6 +816,15 @@ AI 턴 생각 시간:
 - 탑: 제물 / ★★★
 - 여왕: 제물 / ★★★★★
 - 소환 카드 행 높이를 키워 말 이름, 등급, 사용 조건, 마나 비용을 한눈에 읽을 수 있게 했다.
+
+---
+
+## 2026-06-18 업데이트: 코드드로잉 그래픽 1차 정리
+
+- 버전: `v0.2.18`
+- 메뉴/스테이지 배경에 비트맵 배경 리소스가 있을 때 Phaser `Graphics` 장식선이 추가로 겹치지 않도록 정리했다.
+- 전투 시작 오버레이는 `battle-entry-plate.png`가 로드된 경우 코드 도형 장식선, 임시 텍스트 밴드, 점 스파크를 만들지 않고 승인된 플레이트 이미지를 우선 사용한다.
+- 다음 단계 후보: 소환/포획/체크 VFX를 `Graphics` 기반 효과에서 atlas 기반 효과로 교체한다.
 
 ---
 

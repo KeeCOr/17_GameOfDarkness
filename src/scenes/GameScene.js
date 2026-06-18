@@ -550,16 +550,16 @@ export class GameScene extends Phaser.Scene {
       0x02040a, 0.46,
     ).setDepth(12).setAlpha(0);
 
-    const rune = this.add.circle(cx, cy, 134, 0x37d9ff, 0.11).setDepth(13).setAlpha(0);
     const plate = this.textures?.exists?.('ui_battle_entry_plate')
       ? this.add.image(cx, cy, 'ui_battle_entry_plate').setDisplaySize(panelW + 24, panelH).setDepth(14).setAlpha(0)
       : null;
+    const rune = plate ? null : this.add.circle(cx, cy, 134, 0x37d9ff, 0.11).setDepth(13).setAlpha(0);
     const outer = plate || this.add.rectangle(cx, cy, panelW, panelH, COLORS.GOLD, 0.96).setDepth(14).setAlpha(0);
     const inner = plate ? null : this.add.rectangle(cx, cy, panelW - 10, panelH - 10, 0x101728, 0.95).setDepth(14).setAlpha(0);
-    const topLine = this.add.rectangle(cx, cy - 96, panelW - 38, 2, 0xf7c84b, 0.82).setDepth(15).setAlpha(0);
-    const bottomLine = this.add.rectangle(cx, cy + 96, panelW - 38, 2, 0x37d9ff, 0.5).setDepth(15).setAlpha(0);
-    const textBand = this.add.rectangle(cx, cy - 58, panelW - 54, 64, 0x050812, 0.42).setDepth(15).setAlpha(0);
-    const duelDivider = this.add.rectangle(cx, cy - 12, panelW - 82, 1, 0xf7c84b, 0.44).setDepth(15).setAlpha(0);
+    const topLine = plate ? null : this.add.rectangle(cx, cy - 96, panelW - 38, 2, 0xf7c84b, 0.82).setDepth(15).setAlpha(0);
+    const bottomLine = plate ? null : this.add.rectangle(cx, cy + 96, panelW - 38, 2, 0x37d9ff, 0.5).setDepth(15).setAlpha(0);
+    const textBand = plate ? null : this.add.rectangle(cx, cy - 58, panelW - 54, 64, 0x050812, 0.42).setDepth(15).setAlpha(0);
+    const duelDivider = plate ? null : this.add.rectangle(cx, cy - 12, panelW - 82, 1, 0xf7c84b, 0.44).setDepth(15).setAlpha(0);
 
     const title = this.add.text(cx, cy - 72, '전투 시작', {
       fontSize: '30px',
@@ -603,11 +603,13 @@ export class GameScene extends Phaser.Scene {
     }).setOrigin(0.5).setDepth(17).setAlpha(0);
 
     const sparks = [];
-    for (let i = 0; i < 10; i++) {
-      const offsetX = -144 + i * 32;
-      const offsetY = i % 2 === 0 ? -108 : 108;
-      sparks.push(this.add.circle(cx + offsetX, cy + offsetY, i % 3 === 0 ? 4 : 3,
-        i % 2 === 0 ? 0xf7c84b : 0x37d9ff, 0.8).setDepth(16).setAlpha(0));
+    if (!plate) {
+      for (let i = 0; i < 10; i++) {
+        const offsetX = -144 + i * 32;
+        const offsetY = i % 2 === 0 ? -108 : 108;
+        sparks.push(this.add.circle(cx + offsetX, cy + offsetY, i % 3 === 0 ? 4 : 3,
+          i % 2 === 0 ? 0xf7c84b : 0x37d9ff, 0.8).setDepth(16).setAlpha(0));
+      }
     }
 
     const targets = [
@@ -615,7 +617,7 @@ export class GameScene extends Phaser.Scene {
       playerKing, enemyKing, playerTag, enemyTag, versus, ...sparks,
     ].filter(Boolean);
 
-    rune.setScale(0.9);
+    rune?.setScale(0.9);
 
     this.tweens.add({
       targets,
@@ -623,14 +625,16 @@ export class GameScene extends Phaser.Scene {
       duration: 210,
       ease: 'Power2',
     });
-    this.tweens.add({
-      targets: [rune],
-      scaleX: 1.08,
-      scaleY: 1.08,
-      duration: 720,
-      ease: 'Sine.easeInOut',
-      yoyo: true,
-    });
+    if (rune) {
+      this.tweens.add({
+        targets: [rune],
+        scaleX: 1.08,
+        scaleY: 1.08,
+        duration: 720,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+      });
+    }
     this.tweens.add({
       targets: [playerKing, enemyKing],
       displayWidth: 68,
