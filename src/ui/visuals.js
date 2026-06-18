@@ -3,7 +3,7 @@ import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } f
 export const UI_ASSETS = Object.freeze({
   brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.png', type: 'image' }),
   titleLogoOrnament: Object.freeze({ key: 'brand_title_logo_ornament', path: 'assets/brand/title-logo-ornament.png', type: 'image' }),
-  stageBackground: Object.freeze({ key: 'ui_stage_background', path: 'assets/ui/stage-background.svg' }),
+  stageBackground: Object.freeze({ key: 'ui_stage_background', path: 'assets/ui/game-background.png', type: 'image' }),
   titleBackground: Object.freeze({ key: 'ui_title_background', path: 'assets/ui/title-background.png', type: 'image' }),
   titleButtonFrame: Object.freeze({ key: 'ui_title_button_frame', path: 'assets/ui/title-button-frame.png', type: 'image' }),
   resultTrophy: Object.freeze({ key: 'ui_result_trophy', path: 'assets/ui/result-trophy.png', type: 'image' }),
@@ -15,12 +15,12 @@ export const UI_ASSETS = Object.freeze({
   gameSummonTileFrame: Object.freeze({ key: 'ui_game_summon_tile_frame', path: 'assets/ui/game-summon-tile-frame.png', type: 'image' }),
   gameManaFrame: Object.freeze({ key: 'ui_game_mana_frame', path: 'assets/ui/game-mana-frame.png', type: 'image' }),
   gameActionButtonFrame: Object.freeze({ key: 'ui_game_action_button_frame', path: 'assets/ui/game-action-button-frame.png', type: 'image' }),
-  buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/button-primary.svg' }),
-  buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/button-danger.svg' }),
-  frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/frame-hud-panel.svg' }),
-  frameTopHud: Object.freeze({ key: 'ui_frame_top_hud', path: 'assets/ui/frame-top-hud.svg' }),
-  frameSummonCard: Object.freeze({ key: 'ui_frame_summon_card', path: 'assets/ui/frame-summon-card.svg' }),
-  frameMana: Object.freeze({ key: 'ui_frame_mana', path: 'assets/ui/frame-mana.svg' }),
+  buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/title-button-frame.png', type: 'image' }),
+  buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/game-action-button-frame.png', type: 'image' }),
+  frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/game-bottom-hud-frame.png', type: 'image' }),
+  frameTopHud: Object.freeze({ key: 'ui_frame_top_hud', path: 'assets/ui/game-top-hud-frame.png', type: 'image' }),
+  frameSummonCard: Object.freeze({ key: 'ui_frame_summon_card', path: 'assets/ui/game-summon-card-frame.png', type: 'image' }),
+  frameMana: Object.freeze({ key: 'ui_frame_mana', path: 'assets/ui/game-mana-frame.png', type: 'image' }),
 });
 
 export const UI_COPY = Object.freeze({

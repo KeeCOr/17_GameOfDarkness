@@ -111,7 +111,7 @@ describe('visual theme helpers', () => {
     expect(active.text).toBe(0xffffff);
   });
 
-  it('maps reusable SVG assets to shared UI controls', () => {
+  it('maps reusable bitmap assets to shared UI controls', () => {
     expect(UI_ASSETS.brandLogo).toEqual({
       key: 'brand_logo',
       path: 'assets/brand/chesssummon-logo.png',
@@ -119,7 +119,8 @@ describe('visual theme helpers', () => {
     });
     expect(UI_ASSETS.stageBackground).toEqual({
       key: 'ui_stage_background',
-      path: 'assets/ui/stage-background.svg',
+      path: 'assets/ui/game-background.png',
+      type: 'image',
     });
     expect(UI_ASSETS.titleBackground).toEqual({
       key: 'ui_title_background',
@@ -178,27 +179,33 @@ describe('visual theme helpers', () => {
     });
     expect(UI_ASSETS.buttonPrimary).toEqual({
       key: 'ui_button_primary',
-      path: 'assets/ui/button-primary.svg',
+      path: 'assets/ui/title-button-frame.png',
+      type: 'image',
     });
     expect(UI_ASSETS.buttonDanger).toEqual({
       key: 'ui_button_danger',
-      path: 'assets/ui/button-danger.svg',
+      path: 'assets/ui/game-action-button-frame.png',
+      type: 'image',
     });
     expect(UI_ASSETS.frameHudPanel).toEqual({
       key: 'ui_frame_hud_panel',
-      path: 'assets/ui/frame-hud-panel.svg',
+      path: 'assets/ui/game-bottom-hud-frame.png',
+      type: 'image',
     });
     expect(UI_ASSETS.frameTopHud).toEqual({
       key: 'ui_frame_top_hud',
-      path: 'assets/ui/frame-top-hud.svg',
+      path: 'assets/ui/game-top-hud-frame.png',
+      type: 'image',
     });
     expect(UI_ASSETS.frameSummonCard).toEqual({
       key: 'ui_frame_summon_card',
-      path: 'assets/ui/frame-summon-card.svg',
+      path: 'assets/ui/game-summon-card-frame.png',
+      type: 'image',
     });
     expect(UI_ASSETS.frameMana).toEqual({
       key: 'ui_frame_mana',
-      path: 'assets/ui/frame-mana.svg',
+      path: 'assets/ui/game-mana-frame.png',
+      type: 'image',
     });
     expect(getButtonAssetKey()).toBe(UI_ASSETS.buttonPrimary.key);
     expect(getButtonAssetKey({ danger: true })).toBe(UI_ASSETS.buttonDanger.key);
@@ -219,12 +226,12 @@ describe('visual theme helpers', () => {
     const gameSummonTile = readFileSync(new URL('../public/assets/ui/game-summon-tile-frame.png', import.meta.url));
     const gameMana = readFileSync(new URL('../public/assets/ui/game-mana-frame.png', import.meta.url));
     const gameAction = readFileSync(new URL('../public/assets/ui/game-action-button-frame.png', import.meta.url));
-    const primary = readFileSync(new URL('../public/assets/ui/button-primary.svg', import.meta.url), 'utf8');
-    const danger = readFileSync(new URL('../public/assets/ui/button-danger.svg', import.meta.url), 'utf8');
-    const stage = readFileSync(new URL('../public/assets/ui/stage-background.svg', import.meta.url), 'utf8');
-    const topHud = readFileSync(new URL('../public/assets/ui/frame-top-hud.svg', import.meta.url), 'utf8');
-    const summon = readFileSync(new URL('../public/assets/ui/frame-summon-card.svg', import.meta.url), 'utf8');
-    const mana = readFileSync(new URL('../public/assets/ui/frame-mana.svg', import.meta.url), 'utf8');
+    const primary = readFileSync(new URL('../public/assets/ui/title-button-frame.png', import.meta.url));
+    const danger = readFileSync(new URL('../public/assets/ui/game-action-button-frame.png', import.meta.url));
+    const stage = readFileSync(new URL('../public/assets/ui/game-background.png', import.meta.url));
+    const topHud = readFileSync(new URL('../public/assets/ui/game-top-hud-frame.png', import.meta.url));
+    const summon = readFileSync(new URL('../public/assets/ui/game-summon-card-frame.png', import.meta.url));
+    const mana = readFileSync(new URL('../public/assets/ui/game-mana-frame.png', import.meta.url));
 
     expect(logo.length).toBeGreaterThan(500000);
     expect(logo.subarray(1, 4).toString()).toBe('PNG');
@@ -240,18 +247,15 @@ describe('visual theme helpers', () => {
     expect(gameSummonTile.length).toBeGreaterThan(10000);
     expect(gameMana.length).toBeGreaterThan(15000);
     expect(gameAction.length).toBeGreaterThan(10000);
-    expect(primary).toContain('primaryBody');
-    expect(primary).toContain('primaryEdge');
-    expect(primary).toContain('#080D18');
-    expect(primary).toContain('#FFE39A');
-    expect(danger).toContain('dangerBody');
-    expect(danger).toContain('dangerEdge');
-    expect(danger).toContain('#14070B');
-    expect(danger).toContain('#FFD1C9');
-    expect(stage).toContain('stageStone');
-    expect(topHud).toContain('topHudEdge');
-    expect(summon).toContain('summonCardEdge');
-    expect(mana).toContain('manaVial');
+    for (const bitmap of [primary, danger, stage, topHud, summon, mana]) {
+      expect(bitmap.subarray(1, 4).toString()).toBe('PNG');
+    }
+    expect(primary.length).toBeGreaterThan(100000);
+    expect(danger.length).toBeGreaterThan(10000);
+    expect(stage.length).toBeGreaterThan(100000);
+    expect(topHud.length).toBeGreaterThan(30000);
+    expect(summon.length).toBeGreaterThan(15000);
+    expect(mana.length).toBeGreaterThan(15000);
   });
 
   it('preloads reusable UI art before the menu scene starts', async () => {

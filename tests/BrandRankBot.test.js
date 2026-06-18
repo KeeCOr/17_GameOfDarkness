@@ -18,7 +18,7 @@ describe('brand, rank, and bot presentation', () => {
 
   it('ships logo and one icon asset for each MMR tier', () => {
     expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.png'))).toBe(true);
-    expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'))).toBe(true);
+    expect(fs.existsSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.png'))).toBe(true);
     expect(fs.existsSync(path.join('public', 'assets', 'brand', 'title-logo-ornament.png'))).toBe(true);
     for (const tier of RANK_TIERS)
       expect(fs.existsSync(tier.icon)).toBe(true);
@@ -26,12 +26,12 @@ describe('brand, rank, and bot presentation', () => {
 
   it('keeps brand art aligned with the dark metal button palette', () => {
     const logo = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.png'));
-    const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.svg'), 'utf8');
+    const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.png'));
 
     expect(logo.length).toBeGreaterThan(500000);
     expect(logo.subarray(1, 4).toString()).toBe('PNG');
-    expect(mark).toContain('#fff0b8');
-    expect(mark).not.toContain('#6fffe0');
+    expect(mark.length).toBeGreaterThan(1000);
+    expect(mark.subarray(1, 4).toString()).toBe('PNG');
   });
 
   it('assigns deterministic international bot profiles', () => {

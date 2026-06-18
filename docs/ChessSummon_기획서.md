@@ -1,3 +1,12 @@
+## 2026-06-18 업데이트: SVG 런타임 리소스 PNG 교체
+
+- 버전: `v0.2.19`
+- 메뉴/게임 HUD/버튼/소환 카드/마나 프레임에서 남아 있던 SVG 참조를 기존 고품질 PNG 프레임으로 재매핑했다.
+- 브랜드 보조 마크와 MMR 티어 배지를 PNG 자산으로 생성하고 `rankTiers`, 리소스 목록, 검증 테스트를 함께 갱신했다.
+- Boot 프리로드는 UI 자산을 모두 이미지로 로드하도록 정리했다.
+
+---
+
 ﻿# Chess of Dark 기획서
 
 **버전:** 0.2.17  
@@ -795,9 +804,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.2.18.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.2.18_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.2.18_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.2.19.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.2.19_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.2.19_portable.exe` |
 
 ---
 
@@ -833,7 +842,7 @@ AI 턴 생각 시간:
 
 > 자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.
 
-- 이미지/스프라이트: `public/assets/brand/chesssummon-logo.png`, `public/assets/brand/chesssummon-mark.svg`, `public/assets/pieces/bishop_d.png`, `public/assets/pieces/bishop_w.png`, `public/assets/pieces/king_d.png`, `public/assets/pieces/king_w.png`, `public/assets/pieces/knight_d.png`, `public/assets/pieces/knight_w.png`, `public/assets/pieces/pawn_d.png`, `public/assets/pieces/pawn_w.png`, `public/assets/pieces/queen_d.png`, `public/assets/pieces/queen_w.png` 외 14개
+- 이미지/스프라이트: `public/assets/brand/chesssummon-logo.png`, `public/assets/brand/chesssummon-mark.png`, `public/assets/pieces/bishop_d.png`, `public/assets/pieces/bishop_w.png`, `public/assets/pieces/king_d.png`, `public/assets/pieces/king_w.png`, `public/assets/pieces/knight_d.png`, `public/assets/pieces/knight_w.png`, `public/assets/pieces/pawn_d.png`, `public/assets/pieces/pawn_w.png`, `public/assets/pieces/queen_d.png`, `public/assets/pieces/queen_w.png` 외 14개
 <!-- APPLIED_RESOURCES_END -->
 
 <!-- RESOURCE_PREVIEWS_START -->
@@ -844,8 +853,8 @@ AI 턴 생각 시간:
 ![17_DC chesssummon-logo](../public/assets/brand/chesssummon-logo.png)
 - `public/assets/brand/chesssummon-logo.png`
 
-![17_DC chesssummon-mark](../public/assets/brand/chesssummon-mark.svg)
-- `public/assets/brand/chesssummon-mark.svg`
+![17_DC chesssummon-mark](../public/assets/brand/chesssummon-mark.png)
+- `public/assets/brand/chesssummon-mark.png`
 
 ![17_DC bishop_d](../public/assets/pieces/bishop_d.png)
 - `public/assets/pieces/bishop_d.png`

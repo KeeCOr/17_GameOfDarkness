@@ -12,9 +12,9 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 
 | ID | Type | File | Purpose |
 | --- | --- | --- | --- |
-| `button-primary` | Button frame | `public/assets/ui/button-primary.svg` | High-contrast dark metal frame for primary actions, menu choices, confirmation buttons |
-| `button-danger` | Button frame | `public/assets/ui/button-danger.svg` | High-contrast dark crimson frame for surrender/destructive action buttons |
-| `stage-background` | Stage background | `public/assets/ui/stage-background.svg` | Dark stone/gold/cyan background shared by title and gameplay stages |
+| `button-primary` | Button frame | `public/assets/ui/title-button-frame.png` | High-contrast dark metal frame for primary actions, menu choices, confirmation buttons |
+| `button-danger` | Button frame | `public/assets/ui/game-action-button-frame.png` | High-contrast dark crimson frame for surrender/destructive action buttons |
+| `stage-background` | Stage background | `public/assets/ui/game-background.png` | Dark stone/gold/cyan background shared by title and gameplay stages |
 | `title-background` | Title bitmap | `public/assets/ui/title-background.png` | Generated 9:16 gothic chess hall background for the start screen |
 | `title-button-frame` | Title button bitmap | `public/assets/ui/title-button-frame.png` | Generated dark metal/gold/cyan button frame for start and difficulty buttons |
 | `game-background` | Gameplay bitmap | `public/assets/ui/game-background.png` | Dark gothic gameplay backdrop derived for the active play screen |
@@ -24,24 +24,24 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `game-summon-tile-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-tile-frame.png` | Vertical summon tile frame for the horizontal recruit-card layout |
 | `game-mana-frame` | Gameplay mana bitmap | `public/assets/ui/game-mana-frame.png` | Thin dark metal frame for the mana gauge |
 | `game-action-button-frame` | Gameplay button bitmap | `public/assets/ui/game-action-button-frame.png` | Dark metal action frame for turn-end and surrender buttons |
-| `frame-top-hud` | HUD frame | `public/assets/ui/frame-top-hud.svg` | Generated top clock HUD frame based on the approved play-screen direction |
-| `frame-hud-panel` | Panel frame | `public/assets/ui/frame-hud-panel.svg` | Right HUD and modal frame reference |
-| `frame-summon-card` | Summon frame | `public/assets/ui/frame-summon-card.svg` | Generated summon-row frame for in-game piece recruitment controls |
-| `frame-mana` | Mana frame | `public/assets/ui/frame-mana.svg` | Generated mana gauge frame with cyan/gold accents |
+| `frame-top-hud` | HUD frame | `public/assets/ui/game-top-hud-frame.png` | Generated top clock HUD frame based on the approved play-screen direction |
+| `frame-hud-panel` | Panel frame | `public/assets/ui/game-bottom-hud-frame.png` | Right HUD and modal frame reference |
+| `frame-summon-card` | Summon frame | `public/assets/ui/game-summon-card-frame.png` | Generated summon-row frame for in-game piece recruitment controls |
+| `frame-mana` | Mana frame | `public/assets/ui/game-mana-frame.png` | Generated mana gauge frame with cyan/gold accents |
 | `battle-entry-plate` | Cropped bitmap | `public/assets/ui/battle-entry-plate.png` | Cropped battle-start plate from the approved gameplay mockup for the in-game entry overlay |
-| `state-check-alert` | State indicator | `public/assets/ui/state-check-alert.svg` | Check warning visual language |
-| `fx-capture-impact` | Combat effect | `public/assets/ui/fx-capture-impact.svg` | Capture slash and impact reference |
-| `fx-promotion-burst` | Combat effect | `public/assets/ui/fx-promotion-burst.svg` | Promotion burst/crown reference |
+| `state-check-alert` | State indicator | `src/ui/effects.js` | Check warning visual language |
+| `fx-capture-impact` | Combat effect | `src/ui/effects.js` | Capture slash and impact reference |
+| `fx-promotion-burst` | Combat effect | `src/ui/effects.js` | Promotion burst/crown reference |
 | `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.png` | Generated 3D metallic Chess of Dark bitmap wordmark with a crown crest, gold lettering, and cyan jewel accents |
-| `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.svg` | Compact crown/summon mark for app icons and capsules |
+| `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.png` | Compact crown/summon mark for app icons and capsules |
 | `title-logo-ornament` | Brand bitmap | `public/assets/brand/title-logo-ornament.png` | Generated gold king ornament behind the title logo |
 | `ingame-entry-mockup` | Concept mockup | `docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png` | 9:16 battle-entry mood reference for first-turn presentation and store screenshot direction |
-| `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.svg` | Bronze MMR tier badge |
-| `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.svg` | Silver MMR tier badge |
-| `mmr-gold` | Rank icon | `public/assets/rank/mmr-gold.svg` | Gold MMR tier badge |
-| `mmr-platinum` | Rank icon | `public/assets/rank/mmr-platinum.svg` | Platinum MMR tier badge |
-| `mmr-diamond` | Rank icon | `public/assets/rank/mmr-diamond.svg` | Diamond MMR tier badge |
-| `mmr-master` | Rank icon | `public/assets/rank/mmr-master.svg` | Master MMR tier badge |
+| `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.png` | Bronze MMR tier badge |
+| `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.png` | Silver MMR tier badge |
+| `mmr-gold` | Rank icon | `public/assets/rank/mmr-gold.png` | Gold MMR tier badge |
+| `mmr-platinum` | Rank icon | `public/assets/rank/mmr-platinum.png` | Platinum MMR tier badge |
+| `mmr-diamond` | Rank icon | `public/assets/rank/mmr-diamond.png` | Diamond MMR tier badge |
+| `mmr-master` | Rank icon | `public/assets/rank/mmr-master.png` | Master MMR tier badge |
 
 ## Implementation Notes
 

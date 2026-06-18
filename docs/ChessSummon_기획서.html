@@ -19,6 +19,17 @@
   </style>
 </head>
 <body>
+<section>
+  <h2>2026-06-18 업데이트: SVG 런타임 리소스 PNG 교체</h2>
+  <ul>
+    <li>버전: <code>v0.2.19</code></li>
+    <li>메뉴/게임 HUD/버튼/소환 카드/마나 프레임에서 남아 있던 SVG 참조를 기존 고품질 PNG 프레임으로 재매핑했다.</li>
+    <li>브랜드 보조 마크와 MMR 티어 배지를 PNG 자산으로 생성하고 <code>rankTiers</code>, 리소스 목록, 검증 테스트를 함께 갱신했다.</li>
+    <li>Boot 프리로드는 UI 자산을 모두 이미지로 로드하도록 정리했다.</li>
+  </ul>
+</section>
+
+
 <main>
   <h2>플레이 미리보기</h2>
 
@@ -742,9 +753,9 @@
   </table>
 
   <h2>7. 배포</h2>
-  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.2.18.html</code></p>
-  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.2.18_portable.exe</code></p>
-  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.2.18_portable.exe</code></p>
+  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.2.19.html</code></p>
+  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.2.19_portable.exe</code></p>
+  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.2.19_portable.exe</code></p>
 </main>
 
 <section>
@@ -762,7 +773,7 @@
   <h2>적용 리소스</h2>
   <p>자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.</p>
   <ul>
-    <li><strong>이미지/스프라이트</strong>: <code>public/assets/brand/chesssummon-logo.png</code>, <code>public/assets/brand/chesssummon-mark.svg</code>, <code>public/assets/pieces/bishop_d.png</code>, <code>public/assets/pieces/bishop_w.png</code>, <code>public/assets/pieces/king_d.png</code>, <code>public/assets/pieces/king_w.png</code>, <code>public/assets/pieces/knight_d.png</code>, <code>public/assets/pieces/knight_w.png</code>, <code>public/assets/pieces/pawn_d.png</code>, <code>public/assets/pieces/pawn_w.png</code>, <code>public/assets/pieces/queen_d.png</code>, <code>public/assets/pieces/queen_w.png</code> 외 14개</li>
+    <li><strong>이미지/스프라이트</strong>: <code>public/assets/brand/chesssummon-logo.png</code>, <code>public/assets/brand/chesssummon-mark.png</code>, <code>public/assets/pieces/bishop_d.png</code>, <code>public/assets/pieces/bishop_w.png</code>, <code>public/assets/pieces/king_d.png</code>, <code>public/assets/pieces/king_w.png</code>, <code>public/assets/pieces/knight_d.png</code>, <code>public/assets/pieces/knight_w.png</code>, <code>public/assets/pieces/pawn_d.png</code>, <code>public/assets/pieces/pawn_w.png</code>, <code>public/assets/pieces/queen_d.png</code>, <code>public/assets/pieces/queen_w.png</code> 외 14개</li>
   </ul>
   
 </section>
@@ -778,8 +789,8 @@
   <figcaption style="margin-top:8px;font-size:13px;color:#4b5563;"><code>public/assets/brand/chesssummon-logo.png</code></figcaption>
 </figure>
 <figure style="margin:12px 0;padding:12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;">
-  <img src="../public/assets/brand/chesssummon-mark.svg" alt="17_DC chesssummon-mark" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
-  <figcaption style="margin-top:8px;font-size:13px;color:#4b5563;"><code>public/assets/brand/chesssummon-mark.svg</code></figcaption>
+  <img src="../public/assets/brand/chesssummon-mark.png" alt="17_DC chesssummon-mark" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
+  <figcaption style="margin-top:8px;font-size:13px;color:#4b5563;"><code>public/assets/brand/chesssummon-mark.png</code></figcaption>
 </figure>
 <figure style="margin:12px 0;padding:12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;">
   <img src="../public/assets/pieces/bishop_d.png" alt="17_DC bishop_d" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
