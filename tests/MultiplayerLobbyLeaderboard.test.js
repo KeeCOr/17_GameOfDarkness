@@ -116,3 +116,46 @@ describe('Multiplayer lobby Steam identity binding', () => {
     expect(urls[0]).toContain('steamId=76561198000000000');
   });
 });
+
+describe('Multiplayer lobby AI fallback', () => {
+  it('uses the title logo background instead of the online multiplayer text', async () => {
+    const source = await import('node:fs').then(fs =>
+      fs.readFileSync(new URL('../src/scenes/MultiplayerLobbyScene.js', import.meta.url), 'utf8'));
+
+    expect(source).toContain('addStageBackground(this, UI_COPY.menu.title');
+    expect(source).not.toContain('addStageBackground(this, UI_COPY.multiplayer.title');
+  });
+
+  it('starts an AI match immediately when queueing without a server connection', async () => {
+    const { MultiplayerLobbyScene } = await import('../src/scenes/MultiplayerLobbyScene.js');
+    const scene = Object.create(MultiplayerLobbyScene.prototype);
+    const statuses = [];
+    const started = [];
+
+    scene.socket = null;
+    scene.account = { name: 'Alice', rankPoints: 1000 };
+    scene.matchStarted = false;
+    scene.statusText = { setText: text => statuses.push(text) };
+    scene.scene = { start: (key, data) => started.push({ key, data }) };
+    scene.time = { delayedCall: (_delay, callback) => callback() };
+    scene._clearAIFallbackTimer = () => {};
+
+    globalThis.localStorage = {
+      getItem: () => null,
+      setItem() {},
+    };
+
+    scene._joinQueue();
+
+    expect(statuses.some(text => String(text).includes('AI'))).toBe(true);
+    expect(started).toHaveLength(1);
+    expect(started[0]).toMatchObject({
+      key: 'Placement',
+      data: {
+        difficulty: 'EASY',
+        skipTutorialPrompt: true,
+        matchedAI: true,
+      },
+    });
+  });
+});

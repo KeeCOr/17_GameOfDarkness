@@ -51,6 +51,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.2.14 replaces the multiplayer lobby text title with the shared title logo and moves the lobby copy/buttons below the logo stack.
 - v0.2.13 lowers difficulty label/hint copy inside the title button frame and dims the locked Very Hard button via the disabled button art state.
 - v0.2.12 simplifies the result screen into a single-player MMR movement plate and removes the old outcome/reason text stack from the rendered result view.
 - v0.2.11 enlarges the in-game footer action buttons to 60px height using the `chesssummon-ingame-entry-mockup-v0.1.53.png` bottom-button proportions as the reference.

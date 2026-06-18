@@ -1,6 +1,6 @@
 ﻿import { LAYOUT, TEXT_COLORS } from '../config.js';
 import { formatBotLabel, getBotProfileForMatch } from '../game/botProfiles.js';
-import { AI_MATCH_TIMEOUT_MS, getAIMatchDifficulty } from '../game/matchmaking.js';
+import { AI_MATCH_TIMEOUT_MS, getAIMatchDifficulty, reserveDailyAIMatchRankPoints } from '../game/matchmaking.js';
 import { createSteamService } from '../services/SteamService.js';
 import { addStageBackground, addTextButton, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 
@@ -23,18 +23,18 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.events.once('shutdown', this.shutdown, this);
 
     const cx = LAYOUT.GAME_WIDTH / 2;
-    addStageBackground(this, UI_COPY.multiplayer.title, { preferTitleArt: true });
+    addStageBackground(this, UI_COPY.menu.title);
 
-    this.statusText = this.add.text(cx, 182, UI_COPY.multiplayer.connecting, {
+    this.statusText = this.add.text(cx, 320, UI_COPY.multiplayer.connecting, {
       fontSize: '18px', color: TEXT_COLORS.MUTED, fontStyle: 'bold',
     }).setOrigin(0.5);
-    this.accountText = this.add.text(cx, 245, '', {
+    this.accountText = this.add.text(cx, 364, '', {
       fontSize: '18px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
     }).setOrigin(0.5);
-    this.rankText = this.add.text(cx, 280, '', {
+    this.rankText = this.add.text(cx, 398, '', {
       fontSize: '20px', color: TEXT_COLORS.GOLD, fontStyle: 'bold',
     }).setOrigin(0.5);
-    this.leaderboardText = this.add.text(cx, 326, formatLeaderboardSummary(), {
+    this.leaderboardText = this.add.text(cx, 442, formatLeaderboardSummary(), {
       fontSize: '13px',
       color: TEXT_COLORS.MUTED,
       fontStyle: 'bold',
@@ -43,7 +43,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
       lineSpacing: 4,
     }).setOrigin(0.5);
 
-    const queue = addTextButton(this, cx, 430, 286, 76, UI_COPY.multiplayer.queue, {
+    const queue = addTextButton(this, cx, 545, 286, 76, UI_COPY.multiplayer.queue, {
       fontSize: '21px',
       active: true,
       assetKey: UI_ASSETS.titleButtonFrame.key,
@@ -51,7 +51,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     });
     queue.rect.on('pointerdown', () => this._joinQueue());
 
-    const back = addTextButton(this, cx, 530, 198, 58, UI_COPY.menu.back, {
+    const back = addTextButton(this, cx, 642, 198, 58, UI_COPY.menu.back, {
       fontSize: '16px',
       assetKey: UI_ASSETS.titleButtonFrame.key,
       textOffsetY: 2,
@@ -106,6 +106,7 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
   _joinQueue() {
     if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
       this.statusText.setText(UI_COPY.multiplayer.offline);
+      this._startAIMatch();
       return;
     }
     this.socket.send(JSON.stringify({ type: 'joinQueue' }));
@@ -151,15 +152,22 @@ export class MultiplayerLobbyScene extends Phaser.Scene {
     this.matchStarted = true;
     this._clearAIFallbackTimer();
     if (this.socket) this.socket.close();
-    const difficulty = getAIMatchDifficulty(this.account?.rankPoints);
-    const botProfile = getBotProfileForMatch(this.account?.name, this.account?.rankPoints);
+    const aiMatch = reserveDailyAIMatchRankPoints({ rankPoints: this.account?.rankPoints });
+    const difficulty = getAIMatchDifficulty(aiMatch.rankPoints);
+    const botProfile = getBotProfileForMatch(this.account?.name, aiMatch.rankPoints);
     this.statusText.setText(`${UI_COPY.multiplayer.aiMatched}: ${formatBotLabel(botProfile)} / ${UI_COPY.menu.difficulties[difficulty]}`);
     this.time.delayedCall(550, () => {
       this.scene.start('Placement', {
         difficulty,
         skipTutorialPrompt: true,
         matchedAI: true,
-        aiProfile: botProfile,
+        aiProfile: {
+          ...botProfile,
+          rankPoints: aiMatch.rankPoints,
+          baseRankPoints: aiMatch.baseRankPoints,
+          dailyMatchNumber: aiMatch.matchNumber,
+          mmrModifier: aiMatch.modifier,
+        },
       });
     });
   }

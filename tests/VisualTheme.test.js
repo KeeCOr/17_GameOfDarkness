@@ -364,7 +364,8 @@ describe('visual theme helpers', () => {
     expect(placementSceneSource).toContain('preferTitleArt: true');
     expect(placementSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
     expect(placementSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
-    expect(multiplayerSceneSource).toContain('preferTitleArt: true');
+    expect(multiplayerSceneSource).toContain('addStageBackground(this, UI_COPY.menu.title');
+    expect(multiplayerSceneSource).not.toContain('addStageBackground(this, UI_COPY.multiplayer.title');
     expect(multiplayerSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
     expect(multiplayerSceneSource).toContain('textOffsetY: 2');
     expect(resultSceneSource).toContain('preferTitleArt: true');
