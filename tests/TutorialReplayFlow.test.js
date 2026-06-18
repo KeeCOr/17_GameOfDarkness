@@ -47,8 +47,104 @@ describe('tutorial and replay flow', () => {
     expect(texts.map(text => text.value)).not.toContain('CHESS OF DARK');
     expect(texts.map(text => text.value)).not.toContain(UI_COPY.result.lose);
     expect(texts.map(text => text.value).some(value => String(value).includes('KING CAPTURED'))).toBe(false);
-    expect(texts.map(text => text.value).some(value => String(value).includes('MMR'))).toBe(true);
+    expect(texts.map(text => text.value).some(value => String(value).includes('SINGLE MMR'))).toBe(false);
     expect(texts.map(text => text.value)).toContain('-10');
+  });
+
+  it('uses a trophy icon and keeps rating text inside a taller result frame', async () => {
+    const { ResultScene } = await import('../src/scenes/ResultScene.js');
+    const { UI_ASSETS } = await import('../src/ui/visuals.js');
+    const scene = Object.create(ResultScene.prototype);
+    const images = [];
+    const rectangles = [];
+    const texts = [];
+
+    globalThis.localStorage = {
+      getItem: key => (key === 'chesssummon.singleMmr' ? '1000' : null),
+      setItem() {},
+    };
+    scene.winner = Owner.PLAYER;
+    scene.resultReason = null;
+    scene.difficulty = Difficulty.EASY;
+    scene.aiProfile = null;
+    scene.multiplayerMode = null;
+    scene.textures = { exists: key => [UI_ASSETS.titleButtonFrame.key, UI_ASSETS.resultTrophy.key].includes(key) };
+    scene.add = {
+      image: (x, y, key) => {
+        const image = {
+          x, y, key, width: 0, height: 0,
+          setDisplaySize(width, height) { this.width = width; this.height = height; return this; },
+          setDepth() { return this; },
+          setAlpha() { return this; },
+          setTint() { return this; },
+        };
+        images.push(image);
+        return image;
+      },
+      rectangle: (x, y, width, height) => {
+        const rect = { x, y, width, height, setDepth() { return this; }, setAlpha() { return this; }, setStrokeStyle() { return this; }, setInteractive() { return this; }, on() { return this; }, setData() { return this; }, getData() { return true; } };
+        rectangles.push(rect);
+        return rect;
+      },
+      circle: () => ({ setDepth() { return this; } }),
+      graphics: () => ({ lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; } }),
+      text: (x, y, value) => {
+        const text = { x, y, value, setOrigin() { return this; }, setDepth() { return this; }, setStroke() { return this; }, setShadow() { return this; }, setColor() { return this; }, setAlpha() { return this; } };
+        texts.push(text);
+        return text;
+      },
+    };
+    scene.tweens = { add: cfg => { cfg.onComplete?.(); } };
+
+    scene.create();
+
+    expect(images.some(image => image.key === UI_ASSETS.resultTrophy.key && image.y === 214)).toBe(true);
+    expect(images.some(image => image.key === UI_ASSETS.titleButtonFrame.key && image.width === 388 && image.height === 316)).toBe(true);
+    expect(texts.map(text => text.value)).not.toContain('SINGLE MMR');
+    expect(texts.find(text => text.value === '1012')?.y).toBe(286);
+    expect(texts.find(text => String(text.value).includes('->'))?.y).toBe(416);
+  });
+
+  it('lowers the replay and main menu labels inside result buttons', async () => {
+    const { ResultScene } = await import('../src/scenes/ResultScene.js');
+    const scene = Object.create(ResultScene.prototype);
+    const texts = [];
+
+    globalThis.localStorage = {
+      getItem: key => (key === 'chesssummon.singleMmr' ? '1000' : null),
+      setItem() {},
+    };
+    scene.winner = Owner.PLAYER;
+    scene.resultReason = null;
+    scene.difficulty = Difficulty.EASY;
+    scene.aiProfile = null;
+    scene.multiplayerMode = null;
+    scene.textures = { exists: () => false };
+    scene.add = {
+      image: () => ({ setDisplaySize() { return this; }, setDepth() { return this; }, setAlpha() { return this; }, setTint() { return this; } }),
+      rectangle: () => ({ setDepth() { return this; }, setAlpha() { return this; }, setStrokeStyle() { return this; }, setInteractive() { return this; }, on() { return this; }, setData() { return this; }, getData() { return true; } }),
+      circle: () => ({ setDepth() { return this; } }),
+      graphics: () => ({ lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; } }),
+      text: (x, y, value) => {
+        const text = {
+          x, y, value,
+          setOrigin() { return this; },
+          setDepth() { return this; },
+          setStroke() { return this; },
+          setShadow() { return this; },
+          setColor() { return this; },
+          setAlpha() { return this; },
+        };
+        texts.push(text);
+        return text;
+      },
+    };
+    scene.tweens = { add: cfg => { cfg.onComplete?.(); } };
+
+    scene.create();
+
+    expect(texts.find(text => text.value === UI_COPY.result.replay)?.y).toBe(592);
+    expect(texts.find(text => text.value === UI_COPY.result.menu)?.y).toBe(684);
   });
 
   it('keeps every tutorial copy step in the tutorial sequence', async () => {

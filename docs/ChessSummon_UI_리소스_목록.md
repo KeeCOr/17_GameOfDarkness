@@ -51,6 +51,9 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 - `GameScene` now calls dedicated effects for capture, promotion, and check.
 - `src/game/rankTiers.js` maps MMR values to the rank icon set.
 - `src/game/botProfiles.js` gives AI fallback opponents international flag/name profiles.
+- v0.2.17 adds `result-trophy.png`, removes the `SINGLE MMR` text label from the result screen, and enlarges the rating frame so score text stays inside the frame.
+- v0.2.16 lowers the result screen `다시하기` and `메인 메뉴` labels inside the title button frames with a result-specific text offset.
+- v0.2.15 regenerates the in-game top HUD, bottom HUD, summon tile, mana, and action button PNG frames from `scripts/generate_ui_frames.cjs`; `game-bottom-hud-frame.png` now frames the whole lower HUD and summon cards are widened to match the reference mockup proportions.
 - v0.2.14 replaces the multiplayer lobby text title with the shared title logo and moves the lobby copy/buttons below the logo stack.
 - v0.2.13 lowers difficulty label/hint copy inside the title button frame and dims the locked Very Hard button via the disabled button art state.
 - v0.2.12 simplifies the result screen into a single-player MMR movement plate and removes the old outcome/reason text stack from the rendered result view.

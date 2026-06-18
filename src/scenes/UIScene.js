@@ -28,7 +28,15 @@ export class UIScene extends Phaser.Scene {
       UI_ASSETS.gameTopHudFrame.key,
       { depth: -0.2, alpha: 0.98 },
     ) || addPanel(this, LAYOUT.HUD_TOP_X, LAYOUT.HUD_TOP_Y, LAYOUT.HUD_TOP_WIDTH, LAYOUT.HUD_TOP_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
-    addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
+    addFramedImage(
+      this,
+      LAYOUT.HUD_PANEL_X + LAYOUT.HUD_PANEL_WIDTH / 2,
+      LAYOUT.HUD_PANEL_Y + LAYOUT.HUD_PANEL_HEIGHT / 2,
+      LAYOUT.HUD_PANEL_WIDTH + 10,
+      LAYOUT.HUD_PANEL_HEIGHT + 6,
+      UI_ASSETS.gameBottomHudFrame.key,
+      { depth: -0.2, alpha: 0.98 },
+    ) || addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
 
     this.playerClockBg = this.add.rectangle(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
       .setAlpha(0.82)
@@ -64,10 +72,12 @@ export class UIScene extends Phaser.Scene {
     addSectionLabel(this, PANEL_X, LAYOUT.HUD_SUMMON_LABEL_Y, UI_COPY.game.summon);
 
     this.summonButtons = {};
+    const summonContentX = LAYOUT.HUD_PANEL_X + 5;
+    const summonContentW = LAYOUT.HUD_PANEL_WIDTH - 10;
     SUMMONABLE.forEach((type, i) => {
       const cardW = LAYOUT.HUD_SUMMON_CARD_WIDTH;
-      const gap = (CONTENT_W - cardW * SUMMONABLE.length) / (SUMMONABLE.length - 1);
-      const x = PANEL_X + cardW / 2 + i * (cardW + gap);
+      const gap = (summonContentW - cardW * SUMMONABLE.length) / (SUMMONABLE.length - 1);
+      const x = summonContentX + cardW / 2 + i * (cardW + gap);
       const y = LAYOUT.HUD_SUMMON_START_Y;
       const button = addTextButton(this, x, y, cardW, LAYOUT.HUD_SUMMON_CARD_HEIGHT, '', {
         enabled: false,
@@ -75,18 +85,18 @@ export class UIScene extends Phaser.Scene {
         assetKey: UI_ASSETS.gameSummonTileFrame.key,
       });
       const cardFrame = button.bg;
-      const icon = this.add.image(x, y - 24, `${type.toLowerCase()}_w`).setDisplaySize(43, 43).setAlpha(0.3).setDepth(2);
-      const name = this.add.text(x, y + 16, getPieceName(type), {
-        fontSize: '13px',
+      const icon = this.add.image(x, y - 29, `${type.toLowerCase()}_w`).setDisplaySize(49, 49).setAlpha(0.3).setDepth(2);
+      const name = this.add.text(x, y + 22, getPieceName(type), {
+        fontSize: '12px',
         color: TEXT_COLORS.PRIMARY,
         fontStyle: 'bold',
         align: 'center',
-        fixedWidth: cardW - 10,
+        fixedWidth: cardW - 12,
       }).setOrigin(0.5).setAlpha(0.5).setDepth(2);
       name.setStroke?.('#050812', 3);
-      const manaIcon = this._addManaIcon(x - 9, y + 39, 0.7, 2);
+      const manaIcon = this._addManaIcon(x - 10, y + 47, 0.74, 2);
       manaIcon.setAlpha(0.45);
-      const cost = this.add.text(x + 3, y + 39, String(SUMMON_COSTS[type]), {
+      const cost = this.add.text(x + 3, y + 47, String(SUMMON_COSTS[type]), {
         fontSize: '14px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
       }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
 

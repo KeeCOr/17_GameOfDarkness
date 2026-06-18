@@ -131,6 +131,11 @@ describe('visual theme helpers', () => {
       path: 'assets/ui/title-button-frame.png',
       type: 'image',
     });
+    expect(UI_ASSETS.resultTrophy).toEqual({
+      key: 'ui_result_trophy',
+      path: 'assets/ui/result-trophy.png',
+      type: 'image',
+    });
     expect(UI_ASSETS.gameBackground).toEqual({
       key: 'ui_game_background',
       path: 'assets/ui/game-background.png',
@@ -139,6 +144,11 @@ describe('visual theme helpers', () => {
     expect(UI_ASSETS.gameTopHudFrame).toEqual({
       key: 'ui_game_top_hud_frame',
       path: 'assets/ui/game-top-hud-frame.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameBottomHudFrame).toEqual({
+      key: 'ui_game_bottom_hud_frame',
+      path: 'assets/ui/game-bottom-hud-frame.png',
       type: 'image',
     });
     expect(UI_ASSETS.gameBoardFrame).toEqual({
@@ -199,9 +209,11 @@ describe('visual theme helpers', () => {
     const logo = readFileSync(new URL('../public/assets/brand/chesssummon-logo.png', import.meta.url));
     const titleBackground = readFileSync(new URL('../public/assets/ui/title-background.png', import.meta.url));
     const titleButton = readFileSync(new URL('../public/assets/ui/title-button-frame.png', import.meta.url));
+    const resultTrophy = readFileSync(new URL('../public/assets/ui/result-trophy.png', import.meta.url));
     const logoOrnament = readFileSync(new URL('../public/assets/brand/title-logo-ornament.png', import.meta.url));
     const gameBackground = readFileSync(new URL('../public/assets/ui/game-background.png', import.meta.url));
     const gameTopHud = readFileSync(new URL('../public/assets/ui/game-top-hud-frame.png', import.meta.url));
+    const gameBottomHud = readFileSync(new URL('../public/assets/ui/game-bottom-hud-frame.png', import.meta.url));
     const gameBoard = readFileSync(new URL('../public/assets/ui/game-board-frame.png', import.meta.url));
     const gameSummon = readFileSync(new URL('../public/assets/ui/game-summon-card-frame.png', import.meta.url));
     const gameSummonTile = readFileSync(new URL('../public/assets/ui/game-summon-tile-frame.png', import.meta.url));
@@ -218,9 +230,11 @@ describe('visual theme helpers', () => {
     expect(logo.subarray(1, 4).toString()).toBe('PNG');
     expect(titleBackground.length).toBeGreaterThan(100000);
     expect(titleButton.length).toBeGreaterThan(100000);
+    expect(resultTrophy.length).toBeGreaterThan(1000);
     expect(logoOrnament.length).toBeGreaterThan(100000);
     expect(gameBackground.length).toBeGreaterThan(100000);
     expect(gameTopHud.length).toBeGreaterThan(30000);
+    expect(gameBottomHud.length).toBeGreaterThan(30000);
     expect(gameBoard.length).toBeGreaterThan(10000);
     expect(gameSummon.length).toBeGreaterThan(15000);
     expect(gameSummonTile.length).toBeGreaterThan(10000);
@@ -259,9 +273,11 @@ describe('visual theme helpers', () => {
     expect(loaded).toContainEqual(UI_ASSETS.stageBackground);
     expect(loaded).toContainEqual(UI_ASSETS.titleBackground);
     expect(loaded).toContainEqual(UI_ASSETS.titleButtonFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.resultTrophy);
     expect(loaded).toContainEqual(UI_ASSETS.titleLogoOrnament);
     expect(loaded).toContainEqual(UI_ASSETS.gameBackground);
     expect(loaded).toContainEqual(UI_ASSETS.gameTopHudFrame);
+    expect(loaded).toContainEqual(UI_ASSETS.gameBottomHudFrame);
     expect(loaded).toContainEqual(UI_ASSETS.gameBoardFrame);
     expect(loaded).toContainEqual(UI_ASSETS.gameSummonCardFrame);
     expect(loaded).toContainEqual(UI_ASSETS.gameSummonTileFrame);
@@ -347,10 +363,12 @@ describe('visual theme helpers', () => {
     expect(visualsSource).toContain('ui_stage_background');
     expect(visualsSource).toContain('ui_title_background');
     expect(visualsSource).toContain('ui_title_button_frame');
+    expect(visualsSource).toContain('ui_result_trophy');
     expect(visualsSource).toContain('w / 2, 180, UI_ASSETS.brandLogo.key');
     expect(visualsSource).toContain('setDisplaySize(410, 205)');
     expect(visualsSource).toContain('ui_game_background');
     expect(visualsSource).toContain('ui_game_top_hud_frame');
+    expect(visualsSource).toContain('ui_game_bottom_hud_frame');
     expect(visualsSource).toContain('ui_game_board_frame');
     expect(visualsSource).not.toContain('scene.add.image(w / 2, 94, UI_ASSETS.titleLogoOrnament.key)');
     expect(visualsSource).toContain('addFramedImage');
@@ -358,6 +376,7 @@ describe('visual theme helpers', () => {
     expect(gameSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
     expect(gameSceneSource).toContain('UI_ASSETS.stageBackground.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameTopHudFrame.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameBottomHudFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameSummonTileFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameManaFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameActionButtonFrame.key');
@@ -370,6 +389,8 @@ describe('visual theme helpers', () => {
     expect(multiplayerSceneSource).toContain('textOffsetY: 2');
     expect(resultSceneSource).toContain('preferTitleArt: true');
     expect(resultSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
+    expect(resultSceneSource).toContain('UI_ASSETS.resultTrophy.key');
+    expect(resultSceneSource).not.toContain("'SINGLE MMR'");
     expect(resultSceneSource).not.toContain('_drawResultCrown');
     expect(resultSceneSource).toContain('addTextButton(this, cx, 590, 322, 70');
     expect(resultSceneSource).toContain('danger: !playerWon');
@@ -404,9 +425,11 @@ describe('visual theme helpers', () => {
     const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 14;
     const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(hintBottom).toBeLessThanOrEqual(firstSummonTop - 6);
-    expect(LAYOUT.HUD_SUMMON_CARD_HEIGHT).toBeGreaterThanOrEqual(100);
-    expect(LAYOUT.HUD_SUMMON_CARD_WIDTH * 5).toBeLessThanOrEqual(LAYOUT.PANEL_WIDTH);
-    expect(LAYOUT.HUD_SUMMON_ROW_GAP).toBeGreaterThanOrEqual(LAYOUT.HUD_SUMMON_CARD_WIDTH);
+    expect(LAYOUT.HUD_SUMMON_CARD_HEIGHT).toBeGreaterThanOrEqual(118);
+    expect(LAYOUT.HUD_SUMMON_CARD_WIDTH).toBeGreaterThanOrEqual(76);
+    expect(LAYOUT.HUD_SUMMON_CARD_WIDTH * 5).toBeLessThanOrEqual(LAYOUT.HUD_PANEL_WIDTH - 10);
+    expect(LAYOUT.HUD_SUMMON_ROW_GAP).toBeLessThanOrEqual(8);
+    expect(uiSceneSource).toContain('const summonContentX = LAYOUT.HUD_PANEL_X + 5');
     const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
     const manaGaugeBottom = LAYOUT.HUD_MANA_Y + 11;

@@ -33,6 +33,7 @@ export class ResultScene extends Phaser.Scene {
       active: true,
       assetKey: UI_ASSETS.titleButtonFrame.key,
       depth: 6,
+      textOffsetY: 2,
     });
     replay.rect.on('pointerdown', () => this._replay());
 
@@ -41,6 +42,7 @@ export class ResultScene extends Phaser.Scene {
       danger: !playerWon,
       assetKey: UI_ASSETS.titleButtonFrame.key,
       depth: 6,
+      textOffsetY: 2,
     });
     menu.rect.on('pointerdown', () => {
       this.scene.stop('UI');
@@ -57,13 +59,13 @@ export class ResultScene extends Phaser.Scene {
     const deltaLabel = rating.delta > 0 ? `+${rating.delta}` : String(rating.delta);
     const deltaColor = rating.delta >= 0 ? TEXT_COLORS.SUCCESS : '#ff8f86';
 
-    const label = this.add.text(cx, 220, 'SINGLE MMR', {
-      fontSize: '20px',
-      color: TEXT_COLORS.GOLD,
-      fontStyle: 'bold',
-      align: 'center',
-    }).setOrigin(0.5).setDepth(5);
-    label.setStroke?.('#050812', 5);
+    if (this.textures?.exists?.(UI_ASSETS.resultTrophy.key)) {
+      this.add.image(cx, 214, UI_ASSETS.resultTrophy.key)
+        .setDisplaySize(58, 58)
+        .setDepth(5);
+    } else {
+      this.add.circle(cx, 214, 26, COLORS.GOLD, 0.9).setDepth(5);
+    }
 
     const score = this.add.text(cx, 286, String(rating.current), {
       fontSize: '58px',
@@ -83,7 +85,7 @@ export class ResultScene extends Phaser.Scene {
     }).setOrigin(0.5).setDepth(5);
     delta.setStroke?.('#050812', 6);
 
-    const progress = this.add.text(cx, 402, `${rating.previous} -> ${rating.current}${rating.capped ? '  CAP' : ''}`, {
+    const progress = this.add.text(cx, 416, `${rating.previous} -> ${rating.current}${rating.capped ? '  CAP' : ''}`, {
       fontSize: '14px',
       color: TEXT_COLORS.MUTED,
       fontStyle: 'bold',
@@ -115,7 +117,7 @@ export class ResultScene extends Phaser.Scene {
 
     if (this.textures?.exists?.(UI_ASSETS.titleButtonFrame.key)) {
       this.add.image(cx, 294, UI_ASSETS.titleButtonFrame.key)
-        .setDisplaySize(374, 282)
+        .setDisplaySize(388, 316)
         .setAlpha(0.88)
         .setTint(playerWon ? 0xffffff : 0xffd8d4)
         .setDepth(2);
