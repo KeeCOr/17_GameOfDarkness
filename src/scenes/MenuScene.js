@@ -63,11 +63,15 @@ export class MenuScene extends Phaser.Scene {
       const locked = value === Difficulty.VERY_HARD && !this._isVeryHardUnlocked();
       const label = UI_COPY.menu.difficulties[value];
       const hint = locked ? UI_COPY.menu.veryHardLocked : UI_COPY.menu.difficultyHints[value];
-      const button = addTextButton(this, cx, y, 322, 92, label, { fontSize: '20px', assetKey: UI_ASSETS.titleButtonFrame.key });
-      button.text.y = y - 2;
-      this.add.text(cx, y + 28, hint, {
+      const button = addTextButton(this, cx, y, 322, 92, label, {
+        fontSize: '20px',
+        assetKey: UI_ASSETS.titleButtonFrame.key,
+        enabled: !locked,
+      });
+      button.text.y = y + 4;
+      this.add.text(cx, y + 36, hint, {
         fontSize: '11px',
-        color: locked ? TEXT_COLORS.TIMER_LOW : TEXT_COLORS.MUTED,
+        color: locked ? TEXT_COLORS.DIM : TEXT_COLORS.MUTED,
         fontStyle: 'bold',
         align: 'center',
       }).setOrigin(0.5);

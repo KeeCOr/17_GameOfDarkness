@@ -177,8 +177,8 @@ describe('menu flow', () => {
     expect(texts.some(text => text.value === UI_COPY.menu.subtitle)).toBe(false);
     expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.EASY)).toBe(true);
     expect(texts.some(text => text.value === UI_COPY.menu.difficultyHints.MEDIUM)).toBe(true);
-    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(324);
-    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(354);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(330);
+    expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(362);
 
     const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
     expect(titleButtonFrames.some(image => image.y === 326 && image.width === 322 && image.height === 92)).toBe(true);
@@ -200,10 +200,11 @@ describe('menu flow', () => {
     const lockedHint = texts.find(text => text.value === UI_COPY.menu.veryHardLocked);
 
     expect(titleButtonFrames).toHaveLength(4);
-    expect(lockedFrame).toMatchObject({ width: 322, height: 92, alpha: 1 });
-    expect(lockedLabel).toMatchObject({ y: 630 });
-    expect(lockedLabel.style.color).toBe('#ffffff');
-    expect(lockedHint).toMatchObject({ y: 660 });
+    expect(lockedFrame).toMatchObject({ width: 322, height: 92, alpha: 0.42, tint: 0x72798a });
+    expect(lockedLabel).toMatchObject({ y: 636 });
+    expect(lockedLabel.style.color).toBe('#9aa6bf');
+    expect(lockedHint).toMatchObject({ y: 668 });
+    expect(lockedHint.style.color).toBe('#566077');
     expect(starts).toEqual([]);
   }, 10000);
 
