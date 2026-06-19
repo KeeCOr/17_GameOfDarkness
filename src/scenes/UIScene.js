@@ -38,12 +38,10 @@ export class UIScene extends Phaser.Scene {
       { depth: -0.2, alpha: 0.98 },
     ) || addPanel(this, LAYOUT.HUD_PANEL_X, LAYOUT.HUD_PANEL_Y, LAYOUT.HUD_PANEL_WIDTH, LAYOUT.HUD_PANEL_HEIGHT, { strokeAlpha: 0.68, alpha: 0.98 });
 
-    this.playerClockBg = this.add.rectangle(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
-      .setAlpha(0.82)
-      .setStrokeStyle(1, COLORS.EMERALD, 0.58);
-    this.aiClockBg = this.add.rectangle(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP)
-      .setAlpha(0.82)
-      .setStrokeStyle(1, COLORS.CRIMSON, 0.46);
+    this.playerClockBg = addFramedImage(this, PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 92, 29, UI_ASSETS.gameClockChipPlayer.key, { depth: 0.2, alpha: 0.9 })
+      || this.add.rectangle(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP).setAlpha(0.82);
+    this.aiClockBg = addFramedImage(this, PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, 92, 29, UI_ASSETS.gameClockChipEnemy.key, { depth: 0.2, alpha: 0.86 })
+      || this.add.rectangle(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP).setAlpha(0.82);
     this.playerClockText = this.add.text(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, `나 ${formatClock(TURN_TIME_LIMIT)}`, {
       fontSize: '14px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
       fixedWidth: 82,
@@ -85,19 +83,19 @@ export class UIScene extends Phaser.Scene {
         assetKey: UI_ASSETS.gameSummonTileFrame.key,
       });
       const cardFrame = button.bg;
-      const icon = this.add.image(x, y - 29, `${type.toLowerCase()}_w`).setDisplaySize(49, 49).setAlpha(0.3).setDepth(2);
-      const name = this.add.text(x, y + 22, getPieceName(type), {
-        fontSize: '12px',
+      const icon = this.add.image(x, y - 31, `${type.toLowerCase()}_w`).setDisplaySize(53, 53).setAlpha(0.3).setDepth(2);
+      const name = this.add.text(x, y + 24, getPieceName(type), {
+        fontSize: '13px',
         color: TEXT_COLORS.PRIMARY,
         fontStyle: 'bold',
         align: 'center',
         fixedWidth: cardW - 12,
       }).setOrigin(0.5).setAlpha(0.5).setDepth(2);
       name.setStroke?.('#050812', 3);
-      const manaIcon = this._addManaIcon(x - 10, y + 47, 0.74, 2);
+      const manaIcon = this._addManaIcon(x - 11, y + 51, 0.78, 2);
       manaIcon.setAlpha(0.45);
-      const cost = this.add.text(x + 3, y + 47, String(SUMMON_COSTS[type]), {
-        fontSize: '14px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
+      const cost = this.add.text(x + 3, y + 51, String(SUMMON_COSTS[type]), {
+        fontSize: '15px', color: TEXT_COLORS.DIM, fontStyle: 'bold',
       }).setOrigin(0, 0.5).setAlpha(0.5).setDepth(2);
 
       button.rect.on('pointerdown', () => {
@@ -109,13 +107,14 @@ export class UIScene extends Phaser.Scene {
     });
 
     addFramedImage(this, PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, CONTENT_W, 38, UI_ASSETS.gameManaFrame.key, { depth: 0.3, alpha: 0.96 });
-    this.manaBarBg = this.add.rectangle(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, CONTENT_W, 18, COLORS.BUTTON_DISABLED)
-      .setAlpha(0.88);
-    this.manaBarBg.setStrokeStyle(1, COLORS.PANEL_EDGE, 0.58);
-    this.manaBarFill = this.add.rectangle(PANEL_X, LAYOUT.HUD_MANA_Y, 0, 18, 0x37d9ff)
-      .setOrigin(0, 0.5)
-      .setAlpha(0.92);
-    this._addManaIcon(PANEL_X + 12, LAYOUT.HUD_MANA_Y, 0.82);
+    this.manaCrystals = [];
+    const crystalStartX = PANEL_X + 26;
+    const crystalGap = 18;
+    for (let i = 0; i < MAX_MANA; i++) {
+      const crystal = this._addManaIcon(crystalStartX + i * crystalGap, LAYOUT.HUD_MANA_Y, 0.34, 1.8);
+      crystal.setAlpha(0.22);
+      this.manaCrystals.push(crystal);
+    }
     this.manaText = this.add.text(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_MANA_Y, formatManaGaugeLabel(0), {
       fontSize: '13px', color: '#ffffff', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(2);
@@ -156,20 +155,12 @@ export class UIScene extends Phaser.Scene {
   }
 
   _addManaIcon(x, y, scale = 1, depth = 2) {
-    const g = this.add.graphics().setDepth(depth);
-    const w = 7 * scale;
-    const h = 9 * scale;
-    g.fillStyle(0x37d9ff, 1);
-    g.beginPath();
-    g.moveTo(x, y - h);
-    g.lineTo(x + w, y);
-    g.lineTo(x, y + h);
-    g.lineTo(x - w, y);
-    g.closePath();
-    g.fillPath();
-    g.lineStyle(Math.max(1, 1.5 * scale), 0xd8fbff, 0.9);
-    g.strokePath();
-    return g;
+    if (this.textures.exists(UI_ASSETS.gameManaCrystal.key)) {
+      return this.add.image(x, y, UI_ASSETS.gameManaCrystal.key)
+        .setDisplaySize(24 * scale, 24 * scale)
+        .setDepth(depth);
+    }
+    return this.add.diamond(x, y, 14 * scale, 18 * scale, 0x37d9ff, 1).setDepth(depth);
   }
 
   _showHelp() {
@@ -291,14 +282,18 @@ export class UIScene extends Phaser.Scene {
     this.aiClockText.setText(`상대 ${formatClock(aiTime)}`);
     this.playerClockText.setColor(playerTime <= 10 ? TEXT_COLORS.TIMER_LOW : (playerActive ? TEXT_COLORS.TIMER : TEXT_COLORS.MUTED));
     this.aiClockText.setColor(aiTime <= 10 ? TEXT_COLORS.TIMER_LOW : (aiActive ? TEXT_COLORS.TIMER : TEXT_COLORS.MUTED));
-    this.playerClockBg.setStrokeStyle(1, playerActive ? COLORS.GOLD : COLORS.EMERALD, playerActive ? 0.78 : 0.42);
-    this.aiClockBg.setStrokeStyle(1, aiActive ? COLORS.GOLD : COLORS.CRIMSON, aiActive ? 0.78 : 0.38);
+    this.playerClockBg.setAlpha(playerActive ? 1 : 0.68);
+    this.aiClockBg.setAlpha(aiActive ? 1 : 0.68);
   }
 
   _setMana(value) {
     const mana = Math.max(0, Math.min(MAX_MANA, Number(value) || 0));
-    const ratio = mana / MAX_MANA;
-    this.manaBarFill.width = Math.max(0, CONTENT_W * ratio);
+    this.manaCrystals?.forEach((crystal, index) => {
+      const filled = index < mana;
+      crystal.setAlpha(filled ? 1 : 0.18);
+      if (filled) crystal.clearTint?.();
+      else crystal.setTint?.(0x263142);
+    });
     this.manaText.setText(formatManaGaugeLabel(mana));
     this.manaText.setColor('#ffffff');
   }

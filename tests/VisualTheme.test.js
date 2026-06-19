@@ -177,6 +177,51 @@ describe('visual theme helpers', () => {
       path: 'assets/ui/game-action-button-frame.png',
       type: 'image',
     });
+    expect(UI_ASSETS.gameBoardCellLight).toEqual({
+      key: 'ui_game_board_cell_light',
+      path: 'assets/ui/game-board-cell-light.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameBoardCellDark).toEqual({
+      key: 'ui_game_board_cell_dark',
+      path: 'assets/ui/game-board-cell-dark.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameBoardFogCell).toEqual({
+      key: 'ui_game_board_fog_cell',
+      path: 'assets/ui/game-board-fog-cell.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameCellHighlightMove).toEqual({
+      key: 'ui_game_cell_highlight_move',
+      path: 'assets/ui/game-cell-highlight-move.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameCellHighlightThreat).toEqual({
+      key: 'ui_game_cell_highlight_threat',
+      path: 'assets/ui/game-cell-highlight-threat.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameCellHighlightSummon).toEqual({
+      key: 'ui_game_cell_highlight_summon',
+      path: 'assets/ui/game-cell-highlight-summon.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameManaCrystal).toEqual({
+      key: 'ui_game_mana_crystal',
+      path: 'assets/ui/game-mana-crystal.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameClockChipPlayer).toEqual({
+      key: 'ui_game_clock_chip_player',
+      path: 'assets/ui/game-clock-chip-player.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.gameClockChipEnemy).toEqual({
+      key: 'ui_game_clock_chip_enemy',
+      path: 'assets/ui/game-clock-chip-enemy.png',
+      type: 'image',
+    });
     expect(UI_ASSETS.buttonPrimary).toEqual({
       key: 'ui_button_primary',
       path: 'assets/ui/title-button-frame.png',
@@ -226,6 +271,15 @@ describe('visual theme helpers', () => {
     const gameSummonTile = readFileSync(new URL('../public/assets/ui/game-summon-tile-frame.png', import.meta.url));
     const gameMana = readFileSync(new URL('../public/assets/ui/game-mana-frame.png', import.meta.url));
     const gameAction = readFileSync(new URL('../public/assets/ui/game-action-button-frame.png', import.meta.url));
+    const boardCellLight = readFileSync(new URL('../public/assets/ui/game-board-cell-light.png', import.meta.url));
+    const boardCellDark = readFileSync(new URL('../public/assets/ui/game-board-cell-dark.png', import.meta.url));
+    const boardFogCell = readFileSync(new URL('../public/assets/ui/game-board-fog-cell.png', import.meta.url));
+    const moveHighlight = readFileSync(new URL('../public/assets/ui/game-cell-highlight-move.png', import.meta.url));
+    const threatHighlight = readFileSync(new URL('../public/assets/ui/game-cell-highlight-threat.png', import.meta.url));
+    const summonHighlight = readFileSync(new URL('../public/assets/ui/game-cell-highlight-summon.png', import.meta.url));
+    const manaCrystal = readFileSync(new URL('../public/assets/ui/game-mana-crystal.png', import.meta.url));
+    const clockPlayer = readFileSync(new URL('../public/assets/ui/game-clock-chip-player.png', import.meta.url));
+    const clockEnemy = readFileSync(new URL('../public/assets/ui/game-clock-chip-enemy.png', import.meta.url));
     const primary = readFileSync(new URL('../public/assets/ui/title-button-frame.png', import.meta.url));
     const danger = readFileSync(new URL('../public/assets/ui/game-action-button-frame.png', import.meta.url));
     const stage = readFileSync(new URL('../public/assets/ui/game-background.png', import.meta.url));
@@ -237,16 +291,20 @@ describe('visual theme helpers', () => {
     expect(logo.subarray(1, 4).toString()).toBe('PNG');
     expect(titleBackground.length).toBeGreaterThan(100000);
     expect(titleButton.length).toBeGreaterThan(100000);
-    expect(resultTrophy.length).toBeGreaterThan(1000);
+    expect(resultTrophy.length).toBeGreaterThan(6000);
     expect(logoOrnament.length).toBeGreaterThan(100000);
     expect(gameBackground.length).toBeGreaterThan(100000);
     expect(gameTopHud.length).toBeGreaterThan(30000);
     expect(gameBottomHud.length).toBeGreaterThan(30000);
     expect(gameBoard.length).toBeGreaterThan(10000);
-    expect(gameSummon.length).toBeGreaterThan(15000);
+    expect(gameSummon.length).toBeGreaterThan(25000);
     expect(gameSummonTile.length).toBeGreaterThan(10000);
     expect(gameMana.length).toBeGreaterThan(15000);
     expect(gameAction.length).toBeGreaterThan(10000);
+    for (const bitmap of [boardCellLight, boardCellDark, boardFogCell, moveHighlight, threatHighlight, summonHighlight, manaCrystal, clockPlayer, clockEnemy]) {
+      expect(bitmap.length).toBeGreaterThan(5000);
+      expect(bitmap.subarray(1, 4).toString()).toBe('PNG');
+    }
     for (const bitmap of [primary, danger, stage, topHud, summon, mana]) {
       expect(bitmap.subarray(1, 4).toString()).toBe('PNG');
     }
@@ -254,7 +312,7 @@ describe('visual theme helpers', () => {
     expect(danger.length).toBeGreaterThan(10000);
     expect(stage.length).toBeGreaterThan(100000);
     expect(topHud.length).toBeGreaterThan(30000);
-    expect(summon.length).toBeGreaterThan(15000);
+    expect(summon.length).toBeGreaterThan(25000);
     expect(mana.length).toBeGreaterThan(15000);
   });
 
@@ -384,6 +442,13 @@ describe('visual theme helpers', () => {
     expect(uiSceneSource).toContain('UI_ASSETS.gameSummonTileFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameManaFrame.key');
     expect(uiSceneSource).toContain('UI_ASSETS.gameActionButtonFrame.key');
+    expect(gameSceneSource).toContain('UI_ASSETS.gameBoardCellLight.key');
+    expect(gameSceneSource).toContain('UI_ASSETS.gameBoardFogCell.key');
+    expect(gameSceneSource).toContain('UI_ASSETS.gameCellHighlightMove.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameManaCrystal.key');
+    expect(uiSceneSource).toContain('UI_ASSETS.gameClockChipPlayer.key');
+    expect(uiSceneSource).not.toContain('this.add.graphics().setDepth(depth);');
+    expect(uiSceneSource).not.toContain('this.manaBarFill = this.add.rectangle');
     expect(placementSceneSource).toContain('preferTitleArt: true');
     expect(placementSceneSource).toContain('UI_ASSETS.gameBoardFrame.key');
     expect(placementSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
@@ -429,11 +494,16 @@ describe('visual theme helpers', () => {
     const hintBottom = LAYOUT.HUD_SUMMON_LABEL_Y + 14;
     const firstSummonTop = LAYOUT.HUD_SUMMON_START_Y - LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(hintBottom).toBeLessThanOrEqual(firstSummonTop - 6);
-    expect(LAYOUT.HUD_SUMMON_CARD_HEIGHT).toBeGreaterThanOrEqual(118);
-    expect(LAYOUT.HUD_SUMMON_CARD_WIDTH).toBeGreaterThanOrEqual(76);
+    expect(LAYOUT.HUD_SUMMON_CARD_HEIGHT).toBeGreaterThanOrEqual(122);
+    expect(LAYOUT.HUD_SUMMON_CARD_WIDTH).toBeGreaterThanOrEqual(78);
     expect(LAYOUT.HUD_SUMMON_CARD_WIDTH * 5).toBeLessThanOrEqual(LAYOUT.HUD_PANEL_WIDTH - 10);
     expect(LAYOUT.HUD_SUMMON_ROW_GAP).toBeLessThanOrEqual(8);
+    const summonContentW = LAYOUT.HUD_PANEL_WIDTH - 10;
+    const summonGap = (summonContentW - LAYOUT.HUD_SUMMON_CARD_WIDTH * 5) / 4;
+    expect(summonGap).toBeLessThanOrEqual(2);
     expect(uiSceneSource).toContain('const summonContentX = LAYOUT.HUD_PANEL_X + 5');
+    expect(uiSceneSource).toContain('setDisplaySize(53, 53)');
+    expect(uiSceneSource).toContain('y + 51');
     const lastSummonBottom = LAYOUT.HUD_SUMMON_START_Y + LAYOUT.HUD_SUMMON_CARD_HEIGHT / 2;
     expect(LAYOUT.HUD_MANA_Y).toBeGreaterThan(lastSummonBottom + 16);
     const manaGaugeBottom = LAYOUT.HUD_MANA_Y + 11;

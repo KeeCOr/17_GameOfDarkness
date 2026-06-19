@@ -163,10 +163,11 @@ export class GameScene extends Phaser.Scene {
         const x = LAYOUT.BOARD_OFFSET_X + c * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
         const y = LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
         const isLight = (r + c) % 2 === 0;
-        const cell = this.add.rectangle(x, y, LAYOUT.CELL_SIZE - 2, LAYOUT.CELL_SIZE - 2,
-          isLight ? 0x5e6470 : 0x171d27);
-        cell.setAlpha(isLight ? 0.86 : 0.94);
-        cell.setStrokeStyle(1, 0xd4a64a, 0.34);
+        const key = isLight ? UI_ASSETS.gameBoardCellLight.key : UI_ASSETS.gameBoardCellDark.key;
+        const cell = this.textures.exists(key)
+          ? this.add.image(x, y, key).setDisplaySize(LAYOUT.CELL_SIZE - 2, LAYOUT.CELL_SIZE - 2)
+          : this.add.rectangle(x, y, LAYOUT.CELL_SIZE - 2, LAYOUT.CELL_SIZE - 2, isLight ? 0x5e6470 : 0x171d27);
+        cell.setAlpha(isLight ? 0.94 : 0.98);
         cell.setInteractive({ useHandCursor: true });
         cell.on('pointerdown', () => this._onCellClick(r, c));
       }
@@ -219,15 +220,12 @@ export class GameScene extends Phaser.Scene {
         if (!visible.has(`${r},${c}`)) {
           const x = LAYOUT.BOARD_OFFSET_X + c * LAYOUT.CELL_SIZE;
           const y = LAYOUT.BOARD_OFFSET_Y + r * LAYOUT.CELL_SIZE;
-          const g = this.add.graphics();
-          g.fillStyle(0x030711, 0.86);
-          g.fillRect(x, y, LAYOUT.CELL_SIZE, LAYOUT.CELL_SIZE);
-          g.fillStyle(0x1b2540, 0.18);
-          g.fillCircle(x + LAYOUT.CELL_SIZE / 2, y + LAYOUT.CELL_SIZE / 2, 23);
-          g.lineStyle(1, COLORS.PANEL_EDGE, 0.15);
-          g.strokeRect(x + 2, y + 2, LAYOUT.CELL_SIZE - 4, LAYOUT.CELL_SIZE - 4);
-          g.setDepth(2);
-          this.fogGraphics.push(g);
+          const fog = this.textures.exists(UI_ASSETS.gameBoardFogCell.key)
+            ? this.add.image(x + LAYOUT.CELL_SIZE / 2, y + LAYOUT.CELL_SIZE / 2, UI_ASSETS.gameBoardFogCell.key)
+              .setDisplaySize(LAYOUT.CELL_SIZE, LAYOUT.CELL_SIZE)
+            : this.add.rectangle(x + LAYOUT.CELL_SIZE / 2, y + LAYOUT.CELL_SIZE / 2, LAYOUT.CELL_SIZE, LAYOUT.CELL_SIZE, 0x030711, 0.86);
+          fog.setDepth(2);
+          this.fogGraphics.push(fog);
         }
       }
   }
@@ -282,17 +280,25 @@ export class GameScene extends Phaser.Scene {
   }
 
   _highlightCells(cells, color, alpha = 0.45) {
+    const assetKey = this._getHighlightAssetKey(color);
     for (const { row, col } of cells) {
-      const x = LAYOUT.BOARD_OFFSET_X + col * LAYOUT.CELL_SIZE;
-      const y = LAYOUT.BOARD_OFFSET_Y + row * LAYOUT.CELL_SIZE;
-      const g = this.add.graphics();
-      g.fillStyle(color, alpha);
-      g.fillRoundedRect(x + 4, y + 4, LAYOUT.CELL_SIZE - 8, LAYOUT.CELL_SIZE - 8, 6);
-      g.lineStyle(2, color, Math.min(1, alpha + 0.25));
-      g.strokeRoundedRect(x + 5, y + 5, LAYOUT.CELL_SIZE - 10, LAYOUT.CELL_SIZE - 10, 6);
-      g.setDepth(3);
-      this.highlightGraphics.push(g);
+      const x = LAYOUT.BOARD_OFFSET_X + col * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+      const y = LAYOUT.BOARD_OFFSET_Y + row * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+      const highlight = assetKey && this.textures.exists(assetKey)
+        ? this.add.image(x, y, assetKey).setDisplaySize(LAYOUT.CELL_SIZE - 8, LAYOUT.CELL_SIZE - 8)
+        : this.add.rectangle(x, y, LAYOUT.CELL_SIZE - 8, LAYOUT.CELL_SIZE - 8, color, alpha);
+      highlight.setAlpha(assetKey ? Math.max(0.52, alpha + 0.12) : alpha);
+      highlight.setDepth(3);
+      this.highlightGraphics.push(highlight);
     }
+  }
+
+  _getHighlightAssetKey(color) {
+    if (color === COLORS.THREAT) return UI_ASSETS.gameCellHighlightThreat.key;
+    if (color === COLORS.SUMMON_HIGHLIGHT) return UI_ASSETS.gameCellHighlightSummon.key;
+    if (color === COLORS.SELECTED) return UI_ASSETS.gameCellHighlightSelected.key;
+    if (color === COLORS.MOVABLE_PIECE) return UI_ASSETS.gameCellHighlightMovable.key;
+    return UI_ASSETS.gameCellHighlightMove.key;
   }
 
   _onPointerDown(pointer) {
@@ -519,12 +525,12 @@ export class GameScene extends Phaser.Scene {
     const cx = x + LAYOUT.CELL_SIZE / 2;
     const cy = y + LAYOUT.CELL_SIZE / 2;
     playCheckAlert(this, cx, cy);
-    const ring = this.add.graphics();
-    ring.lineStyle(4, COLORS.THREAT, 1);
-    ring.strokeRoundedRect(x + 3, y + 3, LAYOUT.CELL_SIZE - 6, LAYOUT.CELL_SIZE - 6, 6);
+    const ring = this.textures.exists(UI_ASSETS.gameCellHighlightThreat.key)
+      ? this.add.image(cx, cy, UI_ASSETS.gameCellHighlightThreat.key).setDisplaySize(LAYOUT.CELL_SIZE + 6, LAYOUT.CELL_SIZE + 6)
+      : this.add.rectangle(cx, cy, LAYOUT.CELL_SIZE - 6, LAYOUT.CELL_SIZE - 6, COLORS.THREAT, 0.38);
     ring.setDepth(5);
     this.checkRing = ring;
-    this.tweens.add({ targets: ring, alpha: 0.25, duration: 300, yoyo: true, repeat: 3 });
+    this.tweens.add({ targets: ring, alpha: 0.25, scaleX: 1.1, scaleY: 1.1, duration: 300, yoyo: true, repeat: 3 });
   }
 
   _animatePromotion(r, c, owner) {

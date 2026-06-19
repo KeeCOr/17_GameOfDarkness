@@ -24,14 +24,20 @@ describe('brand, rank, and bot presentation', () => {
       expect(fs.existsSync(tier.icon)).toBe(true);
   });
 
-  it('keeps brand art aligned with the dark metal button palette', () => {
+  it('keeps compact brand and rank art aligned with the dark metal button palette', () => {
     const logo = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-logo.png'));
     const mark = fs.readFileSync(path.join('public', 'assets', 'brand', 'chesssummon-mark.png'));
 
     expect(logo.length).toBeGreaterThan(500000);
     expect(logo.subarray(1, 4).toString()).toBe('PNG');
-    expect(mark.length).toBeGreaterThan(1000);
+    expect(mark.length).toBeGreaterThan(6000);
     expect(mark.subarray(1, 4).toString()).toBe('PNG');
+
+    for (const tier of RANK_TIERS) {
+      const icon = fs.readFileSync(tier.icon);
+      expect(icon.length).toBeGreaterThan(5000);
+      expect(icon.subarray(1, 4).toString()).toBe('PNG');
+    }
   });
 
   it('assigns deterministic international bot profiles', () => {

@@ -24,6 +24,17 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `game-summon-tile-frame` | Gameplay card bitmap | `public/assets/ui/game-summon-tile-frame.png` | Vertical summon tile frame for the horizontal recruit-card layout |
 | `game-mana-frame` | Gameplay mana bitmap | `public/assets/ui/game-mana-frame.png` | Thin dark metal frame for the mana gauge |
 | `game-action-button-frame` | Gameplay button bitmap | `public/assets/ui/game-action-button-frame.png` | Dark metal action frame for turn-end and surrender buttons |
+| `game-board-cell-light` | Board tile bitmap | `public/assets/ui/game-board-cell-light.png` | Light board cell skin replacing visible runtime rectangle art |
+| `game-board-cell-dark` | Board tile bitmap | `public/assets/ui/game-board-cell-dark.png` | Dark board cell skin replacing visible runtime rectangle art |
+| `game-board-fog-cell` | Board fog bitmap | `public/assets/ui/game-board-fog-cell.png` | Fog-of-war tile skin replacing code-drawn fog cell graphics |
+| `game-cell-highlight-move` | Board highlight bitmap | `public/assets/ui/game-cell-highlight-move.png` | Move target highlight skin |
+| `game-cell-highlight-selected` | Board highlight bitmap | `public/assets/ui/game-cell-highlight-selected.png` | Selected piece highlight skin |
+| `game-cell-highlight-movable` | Board highlight bitmap | `public/assets/ui/game-cell-highlight-movable.png` | Movable piece hint highlight skin |
+| `game-cell-highlight-threat` | Board highlight bitmap | `public/assets/ui/game-cell-highlight-threat.png` | Threat/check highlight skin |
+| `game-cell-highlight-summon` | Board highlight bitmap | `public/assets/ui/game-cell-highlight-summon.png` | Summon target highlight skin |
+| `game-mana-crystal` | HUD resource icon | `public/assets/ui/game-mana-crystal.png` | Mana crystal icon used in summon cards and the mana gauge |
+| `game-clock-chip-player` | HUD chip bitmap | `public/assets/ui/game-clock-chip-player.png` | Player clock chip replacing visible rectangle clock background |
+| `game-clock-chip-enemy` | HUD chip bitmap | `public/assets/ui/game-clock-chip-enemy.png` | Enemy clock chip replacing visible rectangle clock background |
 | `frame-top-hud` | HUD frame | `public/assets/ui/game-top-hud-frame.png` | Generated top clock HUD frame based on the approved play-screen direction |
 | `frame-hud-panel` | Panel frame | `public/assets/ui/game-bottom-hud-frame.png` | Right HUD and modal frame reference |
 | `frame-summon-card` | Summon frame | `public/assets/ui/game-summon-card-frame.png` | Generated summon-row frame for in-game piece recruitment controls |
@@ -33,18 +44,21 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 | `fx-capture-impact` | Combat effect | `src/ui/effects.js` | Capture slash and impact reference |
 | `fx-promotion-burst` | Combat effect | `src/ui/effects.js` | Promotion burst/crown reference |
 | `brand-logo` | Brand | `public/assets/brand/chesssummon-logo.png` | Generated 3D metallic Chess of Dark bitmap wordmark with a crown crest, gold lettering, and cyan jewel accents |
-| `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.png` | Compact crown/summon mark for app icons and capsules |
+| `brand-mark` | Brand | `public/assets/brand/chesssummon-mark.png` | Compact dark metal crown/summon mark for app icons and capsules |
 | `title-logo-ornament` | Brand bitmap | `public/assets/brand/title-logo-ornament.png` | Generated gold king ornament behind the title logo |
 | `ingame-entry-mockup` | Concept mockup | `docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png` | 9:16 battle-entry mood reference for first-turn presentation and store screenshot direction |
-| `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.png` | Bronze MMR tier badge |
-| `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.png` | Silver MMR tier badge |
-| `mmr-gold` | Rank icon | `public/assets/rank/mmr-gold.png` | Gold MMR tier badge |
-| `mmr-platinum` | Rank icon | `public/assets/rank/mmr-platinum.png` | Platinum MMR tier badge |
-| `mmr-diamond` | Rank icon | `public/assets/rank/mmr-diamond.png` | Diamond MMR tier badge |
-| `mmr-master` | Rank icon | `public/assets/rank/mmr-master.png` | Master MMR tier badge |
+| `mmr-bronze` | Rank icon | `public/assets/rank/mmr-bronze.png` | Bronze MMR tier metal badge |
+| `mmr-silver` | Rank icon | `public/assets/rank/mmr-silver.png` | Silver MMR tier metal badge |
+| `mmr-gold` | Rank icon | `public/assets/rank/mmr-gold.png` | Gold MMR tier metal badge |
+| `mmr-platinum` | Rank icon | `public/assets/rank/mmr-platinum.png` | Platinum MMR tier metal badge |
+| `mmr-diamond` | Rank icon | `public/assets/rank/mmr-diamond.png` | Diamond MMR tier metal badge |
+| `mmr-master` | Rank icon | `public/assets/rank/mmr-master.png` | Master MMR tier metal badge |
 
 ## Implementation Notes
 
+- v0.2.22 increases summon cards to 78x122, tightens the five-card row spacing, and enlarges card icons/name/cost so the lower HUD has less unused padding.
+- v0.2.21 replaces always-visible in-game board tiles, fog tiles, board highlights, mana crystals, and clock chips with generated PNG skins so the gameplay HUD no longer reads like SVG/runtime primitive art.
+- v0.2.20 regenerates the compact brand mark, all MMR rank badges, result trophy, and legacy summon-card frame with the same dark metal/gold/cyan generator used by the current HUD; tests now reject tiny flat replacement PNGs.
 - Current game effects are code-native Phaser graphics, so they scale cleanly without introducing bitmap blur.
 - SVG files are saved as reusable visual references and future asset hooks.
 - `src/ui/effects.js` owns the resource catalog and combat feedback helpers.
