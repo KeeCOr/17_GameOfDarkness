@@ -56,6 +56,7 @@ Make combat state changes readable at a glance. The first polish pass focuses on
 
 ## Implementation Notes
 
+- v0.2.23 adds compact action feedback for move, capture, and summon outcomes, using the existing top HUD hint line instead of adding another overlapping panel.
 - v0.2.22 increases summon cards to 78x122, tightens the five-card row spacing, and enlarges card icons/name/cost so the lower HUD has less unused padding.
 - v0.2.21 replaces always-visible in-game board tiles, fog tiles, board highlights, mana crystals, and clock chips with generated PNG skins so the gameplay HUD no longer reads like SVG/runtime primitive art.
 - v0.2.20 regenerates the compact brand mark, all MMR rank badges, result trophy, and legacy summon-card frame with the same dark metal/gold/cyan generator used by the current HUD; tests now reject tiny flat replacement PNGs.

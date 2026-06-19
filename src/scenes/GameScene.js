@@ -380,8 +380,9 @@ export class GameScene extends Phaser.Scene {
           this.pendingSummonType = null;
           return;
         }
-        this.summonSys.summon(this.board, Owner.PLAYER, this.pendingSummonType, r, c);
-        this.achievements.recordSummon(this.pendingSummonType);
+        const summonedType = this.pendingSummonType;
+        this.summonSys.summon(this.board, Owner.PLAYER, summonedType, r, c);
+        this.achievements.recordSummon(summonedType);
         this.hasSummoned = true;
         this.summonedCells.add(`${r},${c}`);
         this._clearHighlights();
@@ -395,12 +396,12 @@ export class GameScene extends Phaser.Scene {
         if (this.state === State.GAME_OVER) return;
         if (this.hasMoved) {
           if (!this.tutorialMode) { this._endTurn(); return; }
-          this._emitPlayerAction();
+          this._emitPlayerAction({ type: 'summon', pieceType: summonedType });
           return;
         }
         this._showMovablePieces();
         this._showThreatsIfInCheck();
-        this._emitPlayerAction();
+        this._emitPlayerAction({ type: 'summon', pieceType: summonedType });
         return;
       }
       this._clearHighlights();
@@ -444,11 +445,11 @@ export class GameScene extends Phaser.Scene {
           if (this.state === State.GAME_OVER) return;
           if (this.hasSummoned || this.timeLeft <= 0) {
             if (!this.tutorialMode) { this._endTurn(); return; }
-            this._emitPlayerAction();
+            this._emitPlayerAction({ type: 'move', capture: isCapture });
             return;
           }
           this._showThreatsIfInCheck();
-          this._emitPlayerAction();
+          this._emitPlayerAction({ type: 'move', capture: isCapture });
         });
         return;
       }
@@ -731,13 +732,14 @@ export class GameScene extends Phaser.Scene {
     this.events.emit('hint-change', { hint, color, mode });
   }
 
-  _emitPlayerAction() {
+  _emitPlayerAction(action = null) {
     this._updateHint('default');
     this.events.emit('player-action', {
       hasMoved: this.hasMoved,
       hasSummoned: this.hasSummoned,
       mana: this.board.mana[Owner.PLAYER],
       summonCounts: this.board.summonCounts[Owner.PLAYER],
+      action,
     });
   }
 

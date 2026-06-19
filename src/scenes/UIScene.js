@@ -7,6 +7,7 @@ import {
   addFramedImage, addPanel, addSectionLabel, addTextButton, getPieceName,
   formatManaGaugeLabel, setButtonState, UI_ASSETS, UI_COPY,
 } from '../ui/visuals.js';
+import { ACTION_FEEDBACK_COLORS, getActionFeedback } from '../ui/actionFeedback.js';
 
 const SUMMONABLE = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
 const PANEL_X = LAYOUT.PANEL_X;
@@ -246,10 +247,25 @@ export class UIScene extends Phaser.Scene {
     }
   }
 
-  _onPlayerAction({ hasMoved, hasSummoned, mana, summonCounts }) {
+  _onPlayerAction(payload) {
+    const { hasSummoned, mana, summonCounts } = payload;
     this._refreshSummonButtons(mana, hasSummoned, summonCounts || {});
     this._setMana(mana);
     this._highlightActiveSummon(null);
+    this._showActionFeedback(payload);
+  }
+
+  _showActionFeedback(payload) {
+    const feedback = getActionFeedback(payload);
+    this.hintText.setText(compactHint(feedback.text));
+    this.hintText.setColor(ACTION_FEEDBACK_COLORS[feedback.tone] || '#ffffff');
+    this.tweens.add({
+      targets: this.hintText,
+      scaleX: 1.04,
+      scaleY: 1.04,
+      duration: 90,
+      yoyo: true,
+    });
   }
 
   _onSummonCancel() {

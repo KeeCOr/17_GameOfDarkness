@@ -1,6 +1,15 @@
+## 2026-06-19 Update: Action Feedback Quality Pass
+
+- Version: `v0.2.23`
+- Added a compact action-feedback line after player move, capture, and summon actions so the HUD immediately confirms what happened.
+- The feedback also states the remaining action slot, reducing uncertainty around the one-move plus one-summon turn rule.
+- Added regression coverage for action feedback copy and wired the player-action event payload to carry action context.
+
+---
+
 ## 2026-06-19 Update: Summon Card Size Fill
 
-- Version: `v0.2.22`
+- Version: `v0.2.23`
 - Increased summon card width and height from 76x118 to 78x122 so the lower HUD uses its available space more fully.
 - Raised the summon piece icon to 53px and enlarged card name/cost presentation while preserving mana gauge and footer button clearance.
 - Added layout assertions so the five-card row remains tight without overflowing the HUD panel.
@@ -9,7 +18,7 @@
 
 ## 2026-06-19 Update: In-Game Vector-Looking Skin Replacement
 
-- Version: `v0.2.22`
+- Version: `v0.2.23`
 - Replaced always-visible in-game board cells, fog cells, move/selected/movable/threat/summon highlights, mana crystals, and clock chips with generated PNG skins.
 - Updated `GameScene` and `UIScene` so these surfaces no longer depend on visible Phaser shape artwork during normal runtime.
 - Added global workspace guidance to audit SVG-looking runtime primitives, not only literal `.svg` files, across all projects.
@@ -18,7 +27,7 @@
 
 ## 2026-06-19 Update: Resource Tone Alignment
 
-- Version: `v0.2.22`
+- Version: `v0.2.23`
 - Regenerated compact brand mark, all MMR tier badges, result trophy, and the legacy summon-card frame as dark metal/gold/cyan PNG assets.
 - Routed these assets through `scripts/generate_ui_frames.cjs` so they share the same frame, gem, highlight, and texture language as the current HUD.
 - Raised brand/rank/result/summon-frame tests so tiny flat PNG replacements fail before release packaging.
@@ -27,7 +36,7 @@
 
 ## 2026-06-18 업데이트: SVG 런타임 리소스 PNG 교체
 
-- 버전: `v0.2.22`
+- 버전: `v0.2.23`
 - 메뉴/게임 HUD/버튼/소환 카드/마나 프레임에서 남아 있던 SVG 참조를 기존 고품질 PNG 프레임으로 재매핑했다.
 - 브랜드 보조 마크와 MMR 티어 배지를 PNG 자산으로 생성하고 `rankTiers`, 리소스 목록, 검증 테스트를 함께 갱신했다.
 - Boot 프리로드는 UI 자산을 모두 이미지로 로드하도록 정리했다.
@@ -831,9 +840,9 @@ AI 턴 생각 시간:
 
 | 형태 | 파일명 |
 | --- | --- |
-| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.2.22.html` |
-| Windows 포터블 실행 파일 | `ChessSummon_v0.2.22_portable.exe` |
-| Electron 빌드 출력 | `release/ChessSummon_v0.2.22_portable.exe` |
+| 설치 없는 단일 HTML 파일 | `ChessSummon_v0.2.23.html` |
+| Windows 포터블 실행 파일 | `ChessSummon_v0.2.23_portable.exe` |
+| Electron 빌드 출력 | `release/ChessSummon_v0.2.23_portable.exe` |
 
 ---
 
