@@ -1,6 +1,6 @@
 {
   "name": "chess-summon",
-  "version": "0.2.24",
+  "version": "0.2.26",
   "description": "A 5x5 dark tactical chess game built for single-player Steam release candidates.",
   "author": "Jinwoo Oh",
   "license": "UNLICENSED",
@@ -18,7 +18,8 @@
     "dist": "vite build && electron-builder --win --x64",
     "build:html": "cross-env BUILD_MODE=singlefile VITE_RELEASE_CHANNEL=html vite build",
     "build:steam": "cross-env VITE_RELEASE_CHANNEL=steam vite build",
-    "dist:steam": "cross-env VITE_RELEASE_CHANNEL=steam npm run dist"
+    "dist:steam": "cross-env VITE_RELEASE_CHANNEL=steam npm run dist",
+    "verify:steam-release": "node scripts/verify_steam_release.mjs --smoke"
   },
   "build": {
     "appId": "com.chesssummon.game",
@@ -36,7 +37,7 @@
       "icon": "icon.ico"
     },
     "portable": {
-      "artifactName": "ChessSummon_v0.2.24_portable.exe"
+      "artifactName": "ChessSummon_v0.2.26_portable.exe"
     },
     "files": [
       "electron/**/*",

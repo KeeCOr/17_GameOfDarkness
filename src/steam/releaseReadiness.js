@@ -85,6 +85,20 @@ export function getSteamReleaseReadiness(options = {}) {
       passed: artifactSet.has(releasePortable),
     }),
     makeCheck({
+      id: 'artifact_portable_hash_match',
+      area: 'Build Artifacts',
+      label: 'Root and release portable SHA256 hashes match',
+      owner: 'build',
+      passed: options.artifactVerification?.portableHashesMatch === true,
+    }),
+    makeCheck({
+      id: 'portable_smoke_6s',
+      area: 'Build Artifacts',
+      label: 'Portable executable stays open for at least 6 seconds in smoke QA',
+      owner: 'build',
+      passed: Number(options.artifactVerification?.portableSmokeSeconds || 0) >= 6,
+    }),
+    makeCheck({
       id: 'steam_app_id',
       area: 'Steamworks',
       label: 'Steam App ID is assigned for test builds',
@@ -135,3 +149,4 @@ export function getSteamReleaseReadiness(options = {}) {
     }),
   });
 }
+

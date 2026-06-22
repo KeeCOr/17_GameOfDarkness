@@ -802,9 +802,9 @@
   </table>
 
   <h2>7. 배포</h2>
-  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.2.23.html</code></p>
-  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.2.23_portable.exe</code></p>
-  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.2.23_portable.exe</code></p>
+  <p>설치 없는 단일 HTML 파일: <code>ChessSummon_v0.2.26.html</code></p>
+  <p>Windows 포터블 실행 파일: <code>ChessSummon_v0.2.26_portable.exe</code></p>
+  <p>Electron 빌드 출력: <code>release/ChessSummon_v0.2.26_portable.exe</code></p>
 </main>
 
 <section>
@@ -860,6 +860,28 @@
   </div>
 </section>
 <!-- RESOURCE_PREVIEWS_END -->
+
+<hr />
+<section>
+  <h2>2026-06-22 업데이트: v0.2.25 Steam 릴리즈 산출물 자동 검증</h2>
+  <ul>
+    <li>현재 릴리즈 버전: <code>v0.2.25</code></li>
+    <li><code>npm run verify:steam-release</code> 명령을 추가해 루트/<code>release</code> portable 실행파일 SHA256 일치와 6초 스모크 기동을 자동 확인한다.</li>
+    <li>Steam readiness 체크에 <code>artifact_portable_hash_match</code>, <code>portable_smoke_6s</code> 항목을 추가해 제출 직전 빌드 산출물 문제를 blocker로 표시한다.</li>
+  </ul>
+</section>
+
+
+<hr />
+<section>
+  <h2>2026-06-22 업데이트: v0.2.26 상단 액션 피드백 배너</h2>
+  <ul>
+    <li>현재 릴리즈 버전: <code>v0.2.26</code></li>
+    <li>이동, 처치, 소환 후 상단 HUD 힌트 뒤에 톤별 컬러 배너가 짧게 점등되도록 개선했다.</li>
+    <li>피드백은 top HUD 내부에 고정되어 보드, 체스 시계, 하단 소환 카드와 겹치지 않으며 400ms 이내에 즉시 반응한다.</li>
+  </ul>
+</section>
+
 </body>
 </html>
 

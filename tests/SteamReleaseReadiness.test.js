@@ -27,6 +27,8 @@ describe('Steam release readiness checklist', () => {
       'store_capsules',
       'store_screenshots',
       'store_trailer',
+      'artifact_portable_hash_match',
+      'portable_smoke_6s',
       'manual_single_player_qa',
     ]));
     expect(readiness.checks.find(item => item.id === 'achievement_catalog')?.passed).toBe(true);
@@ -37,6 +39,10 @@ describe('Steam release readiness checklist', () => {
     const artifacts = getRequiredSteamArtifactNames();
     const readiness = getSteamReleaseReadiness({
       artifacts,
+      artifactVerification: {
+        portableHashesMatch: true,
+        portableSmokeSeconds: 6,
+      },
       steamAppId: '123456',
       storeAssets: {
         capsules: true,
@@ -55,4 +61,31 @@ describe('Steam release readiness checklist', () => {
     expect(readiness.blockers).toEqual([]);
     expect(readiness.summary.passed).toBe(readiness.summary.total);
   });
+  it('requires matching portable hashes and a 6 second smoke launch before release is complete', () => {
+    const readiness = getSteamReleaseReadiness({
+      artifacts: getRequiredSteamArtifactNames(),
+      artifactVerification: {
+        portableHashesMatch: true,
+        portableSmokeSeconds: 5,
+      },
+      steamAppId: '123456',
+      storeAssets: {
+        capsules: true,
+        screenshots: true,
+        trailer: true,
+      },
+      manualQa: {
+        singlePlayer: true,
+        tutorial: true,
+        restart: true,
+        steamOverlay: true,
+      },
+    });
+
+    expect(readiness.complete).toBe(false);
+    expect(readiness.blockers.map(item => item.id)).toEqual(['portable_smoke_6s']);
+    expect(readiness.checks.find(item => item.id === 'artifact_portable_hash_match')?.passed).toBe(true);
+    expect(readiness.checks.find(item => item.id === 'portable_smoke_6s')?.passed).toBe(false);
+  });
 });
+

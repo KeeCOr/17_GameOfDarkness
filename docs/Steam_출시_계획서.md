@@ -1,4 +1,4 @@
-﻿# ChessSummon Steam 출시 계획서
+# ChessSummon Steam 출시 계획서
 
 작성일: 2026-06-01
 대상 버전: v0.1.18 이후 출시 준비 빌드
@@ -216,6 +216,8 @@ Steam에서 유저에게 보이는 랭킹을 만들려면 Steamworks의 `ISteamU
 - 상점 페이지 검수 제출 가능
 
 진행 기록:
+- v0.2.26: 이동/처치/소환 직후 상단 HUD 힌트 뒤에 톤별 액션 피드백 배너가 120ms 플래시와 240ms 페이드로 표시되도록 해, 출시 후보 플레이 중 행동 결과 인지를 강화했다.
+- v0.2.25: `npm run verify:steam-release`를 추가해 현재 버전 산출물 존재 여부, 루트/`release` portable SHA256 일치, portable 6초 스모크 기동을 Steam readiness의 Build Artifacts blocker로 자동 검증한다.
 - v0.2.17: 결과 화면의 `SINGLE MMR` 라벨을 제거하고 새 `result-trophy.png` 아이콘을 표시한다. 결과 점수 프레임을 388x316으로 키우고 진행 텍스트를 아래로 정리해 프레임 안쪽 여백을 확보했다.
 - v0.2.16: 결과 화면의 `다시하기`와 `메인 메뉴` 버튼 텍스트를 6px 낮춰 타이틀 버튼 프레임의 시각 중심에 맞췄다.
 - v0.2.15: `chesssummon-ingame-entry-mockup-v0.1.53.png` 예시 이미지의 상단/하단 HUD 구성을 참고해 `game-bottom-hud-frame.png`를 추가하고, 상단 HUD/소환 카드/마나/액션 버튼 PNG 프레임을 재생성했다. 소환 카드는 76x118로 넓혀 5장 카드가 하단 패널 전체 폭을 더 적극적으로 쓰게 했다.

@@ -830,9 +830,9 @@ AI ???앷컖 ?쒓컙:
 
 | ?뺥깭 | ?뚯씪紐?|
 | --- | --- |
-| ?ㅼ튂 ?녿뒗 ?⑥씪 HTML ?뚯씪 | `ChessSummon_v0.2.23.html` |
-| Windows ?ы꽣釉??ㅽ뻾 ?뚯씪 | `ChessSummon_v0.2.23_portable.exe` |
-| Electron 鍮뚮뱶 異쒕젰 | `release/ChessSummon_v0.2.23_portable.exe` |
+| ?ㅼ튂 ?녿뒗 ?⑥씪 HTML ?뚯씪 | `ChessSummon_v0.2.26.html` |
+| Windows ?ы꽣釉??ㅽ뻾 ?뚯씪 | `ChessSummon_v0.2.26_portable.exe` |
+| Electron 鍮뚮뱶 異쒕젰 | `release/ChessSummon_v0.2.26_portable.exe` |
 
 ---
 
@@ -893,3 +893,19 @@ AI ???앷컖 ?쒓컙:
 
 
 
+
+---
+
+## 2026-06-22 업데이트: v0.2.25 Steam 릴리즈 산출물 자동 검증
+
+- 현재 릴리즈 버전: `v0.2.25`
+- `npm run verify:steam-release` 명령을 추가해 루트/`release` portable 실행파일 SHA256 일치와 6초 스모크 기동을 자동 확인한다.
+- Steam readiness 체크에 `artifact_portable_hash_match`, `portable_smoke_6s` 항목을 추가해 제출 직전 빌드 산출물 문제를 blocker로 표시한다.
+
+---
+
+## 2026-06-22 업데이트: v0.2.26 상단 액션 피드백 배너
+
+- 현재 릴리즈 버전: `v0.2.26`
+- 이동, 처치, 소환 후 상단 HUD 힌트 뒤에 톤별 컬러 배너가 짧게 점등되도록 개선했다.
+- 피드백은 top HUD 내부에 고정되어 보드, 체스 시계, 하단 소환 카드와 겹치지 않으며 400ms 이내에 즉시 반응한다.

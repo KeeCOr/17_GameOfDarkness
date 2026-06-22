@@ -12,6 +12,11 @@ import { ACTION_FEEDBACK_COLORS, getActionFeedback } from '../ui/actionFeedback.
 const SUMMONABLE = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
 const PANEL_X = LAYOUT.PANEL_X;
 const CONTENT_W = LAYOUT.PANEL_WIDTH;
+const ACTION_FEEDBACK_FILLS = Object.freeze({
+  normal: 0x263155,
+  success: 0x123c2a,
+  summon: 0x103b40,
+});
 
 export class UIScene extends Phaser.Scene {
   constructor() { super({ key: 'UI', active: false }); }
@@ -58,6 +63,10 @@ export class UIScene extends Phaser.Scene {
 
     const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 22, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
     help.rect.on('pointerdown', () => this._showHelp());
+
+    this.actionFeedbackBanner = this.add.rectangle(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_TOP_Y + 59, CONTENT_W, 26, ACTION_FEEDBACK_FILLS.normal, 0)
+      .setDepth(1.5)
+      .setStrokeStyle(1, COLORS.GOLD, 0.42);
 
     this.hintText = this.add.text(PANEL_X, LAYOUT.HUD_TOP_Y + 52, compactHint(UI_COPY.hints.default), {
       fontSize: '12px',
@@ -257,14 +266,26 @@ export class UIScene extends Phaser.Scene {
 
   _showActionFeedback(payload) {
     const feedback = getActionFeedback(payload);
+    const fill = ACTION_FEEDBACK_FILLS[feedback.tone] || ACTION_FEEDBACK_FILLS.normal;
     this.hintText.setText(compactHint(feedback.text));
     this.hintText.setColor(ACTION_FEEDBACK_COLORS[feedback.tone] || '#ffffff');
+    this.hintText.setAlpha(1);
+    this.actionFeedbackBanner.setFillStyle(ACTION_FEEDBACK_FILLS[feedback.tone] || fill, 0.72);
+    this.actionFeedbackBanner.setAlpha(0.72);
+    this.actionFeedbackBanner.setScale(0.96, 1);
+    this.tweens.killTweensOf([this.actionFeedbackBanner, this.hintText]);
     this.tweens.add({
-      targets: this.hintText,
+      targets: [this.actionFeedbackBanner, this.hintText],
       scaleX: 1.04,
       scaleY: 1.04,
-      duration: 90,
+      duration: 120,
       yoyo: true,
+    });
+    this.tweens.add({
+      targets: this.actionFeedbackBanner,
+      alpha: 0,
+      delay: 640,
+      duration: 240,
     });
   }
 

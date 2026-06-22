@@ -77,6 +77,17 @@ describe('visual theme helpers', () => {
     expect(uiSceneSource).not.toContain('wordWrap: { width: CONTENT_W - 82 }');
   });
 
+  it('shows action feedback as a compact flashing top-HUD banner', () => {
+    const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
+
+    expect(uiSceneSource).toContain('this.actionFeedbackBanner');
+    expect(uiSceneSource).toContain('ACTION_FEEDBACK_FILLS');
+    expect(uiSceneSource).toContain('setFillStyle(ACTION_FEEDBACK_FILLS');
+    expect(uiSceneSource).toContain('targets: [this.actionFeedbackBanner, this.hintText]');
+    expect(uiSceneSource).toContain('duration: 120');
+    expect(uiSceneSource).toContain('duration: 240');
+  });
+
   it('shows both chess clocks in the top HUD', () => {
     const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
 
