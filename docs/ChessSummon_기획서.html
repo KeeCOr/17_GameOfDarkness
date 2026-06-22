@@ -20,6 +20,17 @@
 </head>
 <body>
   <section>
+    <h2>2026-06-22 Update: Check &amp; Checkmate Visual Effects</h2>
+    <ul>
+      <li>Version: <code>v0.2.28</code></li>
+      <li><strong>CHECK 연출</strong>: 300ms 카메라 쉐이크, 전체화면 빨간 플래시, 화면 테두리 위험 테두리, 킹 위치에서 동심원 확장 링, 보드 상단 "CHECK!" 배너.</li>
+      <li><strong>체크 링 무한 펄스</strong>: 킹이 체크 상태인 동안 링이 <code>repeat: -1</code>로 무한히 깜빡임 (이전 3회 반복 후 정지에서 변경).</li>
+      <li><strong>CHECKMATE 시네마틱 연출 (~2300ms)</strong>: 500ms 카메라 쉐이크 → 다크 베일 페이드인/아웃 → 3단계 스태거 확장 링 → 12방향 방사형 스파크 → 킹 위치 버스트 링+레이 라인 → 중앙 "CHECKMATE / YOU WIN|LOSE" 플레이트.</li>
+      <li><strong>승패 색상 구분</strong>: 플레이어 승리 시 에메랄드/청록 계열, 패배 시 크림슨/빨간 계열.</li>
+      <li><strong>씬 전환 타이밍 조정</strong>: 체크메이트 시 결과 씬 전환 딜레이 2500ms로 연장 (기존 800ms) — 시네마틱 완료 후 전환.</li>
+    </ul>
+  </section>
+  <section>
     <h2>2026-06-22 Update: MMR-Based First-Turn Order</h2>
     <ul>
       <li>Version: <code>v0.2.27</code></li>
