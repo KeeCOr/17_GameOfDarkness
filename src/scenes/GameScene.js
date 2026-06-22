@@ -1,4 +1,4 @@
-﻿// src/scenes/GameScene.js
+// src/scenes/GameScene.js
 import { Board } from '../game/Board.js';
 import { Piece } from '../game/Piece.js';
 import { MoveCalculator } from '../game/MoveCalculator.js';

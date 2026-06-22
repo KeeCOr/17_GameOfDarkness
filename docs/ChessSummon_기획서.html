@@ -1,8 +1,8 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <title>Chess of Dark plan v0.2.23</title>
+  <title>Chess of Dark plan v0.2.24</title>
   <style>
     body { margin: 0; background: #111426; color: #eef2ff; font-family: Arial, "Malgun Gothic", sans-serif; line-height: 1.6; }
     main { max-width: 920px; margin: 0 auto; padding: 40px 28px 72px; }
@@ -19,6 +19,16 @@
   </style>
 </head>
 <body>
+  <section>
+    <h2>2026-06-22 Update: Board and Piece Quality Pass</h2>
+    <ul>
+      <li>Version: <code>v0.2.24</code></li>
+      <li>Preserved original chess-piece PNGs under <code>public/assets/pieces/source</code> and added <code>scripts/normalize_piece_assets.cjs</code> so board pieces regenerate with larger visible silhouettes and consistent bottom alignment.</li>
+      <li>Added <code>game-piece-shadow.png</code> and routed GameScene and PlacementScene through bitmap piece shadows instead of visible runtime ellipse shadows.</li>
+      <li>Updated PlacementScene to use the same generated board cell PNG skins as the in-game board.</li>
+      <li>Recovered corrupted UI copy in <code>src/ui/visuals.js</code> to normal Korean release text and added VisualTheme coverage for the board/piece skin pipeline.</li>
+    </ul>
+  </section>
   <section>
     <h2>2026-06-19 Update: Action Feedback Quality Pass</h2>
     <ul>
@@ -852,6 +862,7 @@
 <!-- RESOURCE_PREVIEWS_END -->
 </body>
 </html>
+
 
 
 

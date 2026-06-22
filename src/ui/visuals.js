@@ -1,4 +1,4 @@
-﻿import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
+import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
 
 export const UI_ASSETS = Object.freeze({
   brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.png', type: 'image' }),

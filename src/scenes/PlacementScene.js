@@ -1,4 +1,4 @@
-﻿// src/scenes/PlacementScene.js
+// src/scenes/PlacementScene.js
 import { LAYOUT, COLORS, PieceType, Owner, Difficulty, TEXT_COLORS } from '../config.js';
 import { addStageBackground, addTextButton, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 
