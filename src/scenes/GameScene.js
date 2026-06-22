@@ -236,14 +236,19 @@ export class GameScene extends Phaser.Scene {
     const key = `${piece.type.toLowerCase()}_${piece.owner === Owner.PLAYER ? 'w' : 'd'}`;
     const displaySize = this._getPieceDisplaySize(piece);
     const shadowWidth = piece.type === PieceType.PAWN ? LAYOUT.PIECE_SHADOW_WIDTH : LAYOUT.NON_PAWN_PIECE_SHADOW_WIDTH;
-    const shadow = this.add.ellipse(
-      x + 2,
-      cellCenterY + LAYOUT.CELL_SIZE * 0.34,
-      shadowWidth,
-      LAYOUT.PIECE_SHADOW_HEIGHT,
-      0x000000,
-      0.34,
-    ).setDepth(3);
+    const shadow = this.textures?.exists?.(UI_ASSETS.gamePieceShadow.key)
+      ? this.add.image(x + 2, cellCenterY + LAYOUT.CELL_SIZE * 0.34, UI_ASSETS.gamePieceShadow.key)
+        .setDisplaySize(shadowWidth, LAYOUT.PIECE_SHADOW_HEIGHT * 2.7)
+        .setAlpha(0.72)
+      : this.add.ellipse(
+        x + 2,
+        cellCenterY + LAYOUT.CELL_SIZE * 0.34,
+        shadowWidth,
+        LAYOUT.PIECE_SHADOW_HEIGHT,
+        0x000000,
+        0.34,
+      );
+    shadow.setDepth(3);
     const obj = this.add.image(renderPos.x, renderPos.y, key)
       .setDisplaySize(displaySize, displaySize)
       .setDepth(4);
@@ -1049,6 +1054,8 @@ export class GameScene extends Phaser.Scene {
     this._clearSceneTimers();
   }
 }
+
+
 
 
 

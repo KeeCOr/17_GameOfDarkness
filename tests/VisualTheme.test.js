@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+﻿import { existsSync, readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
 import { LAYOUT, PieceType } from '../src/config.js';
 import {
@@ -482,7 +482,35 @@ describe('visual theme helpers', () => {
     expect(gameSceneSource).toContain('_getPieceDisplaySize');
     expect(gameSceneSource).toContain('PieceType.PAWN');
     expect(gameSceneSource).toContain('LAYOUT.NON_PAWN_PIECE_SIZE');
+  });  it('uses bitmap board skins and shadows in gameplay and placement boards', () => {
+    const gameSceneSource = readFileSync(new URL('../src/scenes/GameScene.js', import.meta.url), 'utf8');
+    const placementSceneSource = readFileSync(new URL('../src/scenes/PlacementScene.js', import.meta.url), 'utf8');
+
+    expect(UI_ASSETS.gamePieceShadow).toEqual({
+      key: 'ui_game_piece_shadow',
+      path: 'assets/ui/game-piece-shadow.png',
+      type: 'image',
+    });
+    expect(gameSceneSource).toContain('UI_ASSETS.gamePieceShadow.key');
+    expect(gameSceneSource).not.toContain('const shadow = this.add.ellipse');
+    expect(placementSceneSource).toContain('UI_ASSETS.gameBoardCellLight.key');
+    expect(placementSceneSource).toContain('UI_ASSETS.gameBoardCellDark.key');
+    expect(placementSceneSource).toContain('UI_ASSETS.gamePieceShadow.key');
+    expect(placementSceneSource).not.toContain('const cell = this.add.rectangle(x, y, cellSize - 2, cellSize - 2');
   });
+
+  it('keeps a repeatable piece normalization pipeline for larger board silhouettes', () => {
+    const scriptPath = new URL('../scripts/normalize_piece_assets.cjs', import.meta.url);
+    const sourceDir = new URL('../public/assets/pieces/source/', import.meta.url);
+    const scriptSource = readFileSync(scriptPath, 'utf8');
+
+    expect(existsSync(sourceDir)).toBe(true);
+    expect(scriptSource).toContain('TARGET_SIZE = 256');
+    expect(scriptSource).toContain('TARGET_COVERAGE');
+    expect(scriptSource).toContain('bottomPadding');
+    expect(scriptSource).toContain('writeAsync(path.join(OUT_DIR, file))');
+  });
+
 
   it('reserves non-overlapping summon panel zones', () => {
     const uiSceneSource = readFileSync(new URL('../src/scenes/UIScene.js', import.meta.url), 'utf8');
@@ -544,3 +572,5 @@ describe('visual theme helpers', () => {
     expect(hudBottom).toBeLessThanOrEqual(LAYOUT.GAME_HEIGHT - 4);
   });
 });
+
+

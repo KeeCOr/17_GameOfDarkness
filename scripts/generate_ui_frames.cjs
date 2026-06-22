@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const Jimp = require('jimp');
 
@@ -24,6 +24,7 @@ const CELL_HIGHLIGHT_SUMMON = path.join(OUT_DIR, 'game-cell-highlight-summon.png
 const MANA_CRYSTAL = path.join(OUT_DIR, 'game-mana-crystal.png');
 const CLOCK_CHIP_PLAYER = path.join(OUT_DIR, 'game-clock-chip-player.png');
 const CLOCK_CHIP_ENEMY = path.join(OUT_DIR, 'game-clock-chip-enemy.png');
+const PIECE_SHADOW = path.join(OUT_DIR, 'game-piece-shadow.png');
 const BRAND_MARK = path.join(BRAND_DIR, 'chesssummon-mark.png');
 const RANK_ICONS = [
   { file: 'mmr-bronze.png', trim: [174, 96, 52], gem: [196, 113, 57], accent: [90, 188, 225] },
@@ -546,6 +547,26 @@ async function generateClockChip(file, side = 'player') {
   await image.writeAsync(file);
 }
 
+async function generatePieceShadow() {
+  const width = 160;
+  const height = 56;
+  const image = await new Jimp(width, height, rgba(0, 0, 0, 0));
+  image.scan(0, 0, width, height, function scan(x, y, idx) {
+    const dx = (x - width / 2) / (width / 2);
+    const dy = (y - height / 2) / (height / 2);
+    const radius = dx * dx + dy * dy;
+    if (radius > 1) return;
+    const falloff = Math.max(0, 1 - radius);
+    const edgeNoise = ((x * 29 + y * 17 + ((x ^ y) * 5)) % 17) - 8;
+    this.bitmap.data[idx] = 0;
+    this.bitmap.data[idx + 1] = 0;
+    this.bitmap.data[idx + 2] = 0;
+    this.bitmap.data[idx + 3] = clamp(118 * falloff + edgeNoise, 0, 128);
+  });
+  fillEllipse(image, 80, 30, 45, 12, rgba(8, 4, 2, 82));
+  drawLine(image, 34, 25, 126, 25, 1, rgba(255, 218, 128, 26));
+  await image.writeAsync(PIECE_SHADOW);
+}
 async function generateGameplaySkins() {
   await generateBoardCell(BOARD_CELL_LIGHT, { light: true });
   await generateBoardCell(BOARD_CELL_DARK, { light: false });
@@ -558,6 +579,7 @@ async function generateGameplaySkins() {
   await generateManaCrystal();
   await generateClockChip(CLOCK_CHIP_PLAYER, 'player');
   await generateClockChip(CLOCK_CHIP_ENEMY, 'enemy');
+  await generatePieceShadow();
 }
 
 async function main() {
@@ -573,3 +595,5 @@ main().catch(error => {
   console.error(error);
   process.exit(1);
 });
+
+

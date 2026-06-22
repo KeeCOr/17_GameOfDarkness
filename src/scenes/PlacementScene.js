@@ -1,4 +1,4 @@
-// src/scenes/PlacementScene.js
+﻿// src/scenes/PlacementScene.js
 import { LAYOUT, COLORS, PieceType, Owner, Difficulty, TEXT_COLORS } from '../config.js';
 import { addStageBackground, addTextButton, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 
@@ -99,9 +99,11 @@ export class PlacementScene extends Phaser.Scene {
         const x = boardX + c * cellSize + cellSize / 2;
         const y = boardY + r * cellSize + cellSize / 2;
         const isLight = (r + c) % 2 === 0;
-        const cell = this.add.rectangle(x, y, cellSize - 2, cellSize - 2,
-          isLight ? COLORS.BOARD_LIGHT : COLORS.BOARD_DARK);
-        cell.setStrokeStyle(1, 0x2c1b12, 0.38);
+        const cellKey = isLight ? UI_ASSETS.gameBoardCellLight.key : UI_ASSETS.gameBoardCellDark.key;
+        const cell = this.textures?.exists?.(cellKey)
+          ? this.add.image(x, y, cellKey).setDisplaySize(cellSize - 2, cellSize - 2)
+          : this.add.rectangle(x, y, cellSize - 2, cellSize - 2, isLight ? COLORS.BOARD_LIGHT : COLORS.BOARD_DARK);
+        if (cell.setStrokeStyle) cell.setStrokeStyle(1, 0x2c1b12, 0.38);
 
         if (r === KING_ROW && c === KING_COL) {
           this._addPlacementPiece(x, y, PieceType.KING, Owner.PLAYER);
@@ -110,8 +112,8 @@ export class PlacementScene extends Phaser.Scene {
 
         if (r >= 3) {
           cell.setInteractive({ useHandCursor: true });
-          cell.on('pointerover', () => { if (!this.placed[`${r},${c}`]) cell.setFillStyle(0xc8e08a); });
-          cell.on('pointerout', () => { if (!this.placed[`${r},${c}`]) cell.setFillStyle(isLight ? COLORS.BOARD_LIGHT : COLORS.BOARD_DARK); });
+          cell.on('pointerover', () => { if (!this.placed[`${r},${c}`]) this._setPlacementCellState(cell, isLight, 'hover'); });
+          cell.on('pointerout', () => { if (!this.placed[`${r},${c}`]) this._setPlacementCellState(cell, isLight, 'default'); });
           cell.on('pointerdown', () => this._togglePawn(r, c, x, y, cell, isLight));
           this.cellGraphics[`${r},${c}`] = { cell, x, y, isLight, text: null };
         }
@@ -119,16 +121,32 @@ export class PlacementScene extends Phaser.Scene {
     }
   }
 
+  _setPlacementCellState(cell, isLight, state) {
+    if (cell.setTint && cell.clearTint) {
+      if (state === 'selected') cell.setTint(0x8ee0a1);
+      else if (state === 'hover') cell.setTint(0xd4f0a0);
+      else cell.clearTint();
+      return;
+    }
+    const fill = state === 'selected' ? COLORS.EMERALD : state === 'hover' ? 0xc8e08a : isLight ? COLORS.BOARD_LIGHT : COLORS.BOARD_DARK;
+    cell.setFillStyle(fill);
+  }
+
   _addPlacementPiece(x, y, type, owner = Owner.PLAYER) {
     const key = `${type.toLowerCase()}_${owner === Owner.PLAYER ? 'w' : 'd'}`;
-    const shadow = this.add.ellipse(
-      x + 2,
-      y + LAYOUT.CELL_SIZE * 0.34,
-      LAYOUT.PIECE_SHADOW_WIDTH,
-      LAYOUT.PIECE_SHADOW_HEIGHT,
-      0x000000,
-      0.34,
-    ).setDepth(3);
+    const shadow = this.textures?.exists?.(UI_ASSETS.gamePieceShadow.key)
+      ? this.add.image(x + 2, y + LAYOUT.CELL_SIZE * 0.34, UI_ASSETS.gamePieceShadow.key)
+        .setDisplaySize(LAYOUT.PIECE_SHADOW_WIDTH, LAYOUT.PIECE_SHADOW_HEIGHT * 2.7)
+        .setAlpha(0.72)
+      : this.add.ellipse(
+        x + 2,
+        y + LAYOUT.CELL_SIZE * 0.34,
+        LAYOUT.PIECE_SHADOW_WIDTH,
+        LAYOUT.PIECE_SHADOW_HEIGHT,
+        0x000000,
+        0.34,
+      );
+    shadow.setDepth(3);
     const image = this.add.image(x, y - LAYOUT.PIECE_BOARD_LIFT, key)
       .setDisplaySize(LAYOUT.PIECE_SIZE, LAYOUT.PIECE_SIZE)
       .setDepth(4);
@@ -144,13 +162,13 @@ export class PlacementScene extends Phaser.Scene {
       this.pawnCount--;
       this.cellGraphics[key].text?.destroy();
       this.cellGraphics[key].text = null;
-      cell.setFillStyle(isLight ? COLORS.BOARD_LIGHT : COLORS.BOARD_DARK);
+      this._setPlacementCellState(cell, isLight, 'default');
     } else {
       if (this.pawnCount >= PAWN_COUNT) return;
       this.placed[key] = true;
       this.pawnCount++;
       this.cellGraphics[key].text = this._addPlacementPiece(x, y, PieceType.PAWN, Owner.PLAYER);
-      cell.setFillStyle(COLORS.EMERALD);
+      this._setPlacementCellState(cell, isLight, 'selected');
     }
     this._updateReadyButton();
   }
@@ -227,3 +245,4 @@ export class PlacementScene extends Phaser.Scene {
     this.readyButton.text.setColor(ready ? TEXT_COLORS.PRIMARY : TEXT_COLORS.DIM);
   }
 }
+

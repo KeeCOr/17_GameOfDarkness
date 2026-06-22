@@ -1,4 +1,4 @@
-import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
+﻿import { COLORS, LAYOUT, MAX_MANA, PieceType, SummonRequirement, TEXT_COLORS } from '../config.js';
 
 export const UI_ASSETS = Object.freeze({
   brandLogo: Object.freeze({ key: 'brand_logo', path: 'assets/brand/chesssummon-logo.png', type: 'image' }),
@@ -26,6 +26,7 @@ export const UI_ASSETS = Object.freeze({
   gameManaCrystal: Object.freeze({ key: 'ui_game_mana_crystal', path: 'assets/ui/game-mana-crystal.png', type: 'image' }),
   gameClockChipPlayer: Object.freeze({ key: 'ui_game_clock_chip_player', path: 'assets/ui/game-clock-chip-player.png', type: 'image' }),
   gameClockChipEnemy: Object.freeze({ key: 'ui_game_clock_chip_enemy', path: 'assets/ui/game-clock-chip-enemy.png', type: 'image' }),
+  gamePieceShadow: Object.freeze({ key: 'ui_game_piece_shadow', path: 'assets/ui/game-piece-shadow.png', type: 'image' }),
   buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/title-button-frame.png', type: 'image' }),
   buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/game-action-button-frame.png', type: 'image' }),
   frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/game-bottom-hud-frame.png', type: 'image' }),
@@ -42,7 +43,7 @@ export const UI_COPY = Object.freeze({
     multiplayer: '멀티 플레이',
     back: '뒤로',
     subtitle: '난이도를 선택하세요',
-    veryHardLocked: '어려움 승리 후 해금',
+    veryHardLocked: '어려움 클리어 후 잠금 해제',
     difficulties: {
       VERY_HARD: '매우 어려움',
       EASY: '쉬움',
@@ -65,11 +66,11 @@ export const UI_COPY = Object.freeze({
   tutorialPrompt: {
     title: '튜토리얼을 볼까요?',
     body: '게임 방법을 단계별로 알려드립니다',
-    yes: '네',
+    yes: '예',
     no: '아니요',
   },
   game: {
-    playerTurn: '내 턴',
+    playerTurn: '플레이어 턴',
     aiTurn: 'AI 턴',
     mana: '마나',
     manaIconLabel: '마나',
@@ -77,17 +78,17 @@ export const UI_COPY = Object.freeze({
     moveSlot: '이동 1회',
     summonSlot: '소환 1회',
     turnRule: '이동 1회 + 소환 1회',
-    turnRuleSub: '둘 다 사용하면 턴 종료',
+    turnRuleSub: '모두 사용하면 턴 종료',
     moveReady: '가능',
     moveDone: '완료',
     summonReady: '가능',
     summonDone: '완료',
     summon: '소환 카드',
     endTurn: '턴 종료',
-    surrender: '기권',
+    surrender: '항복',
     help: '?',
     check: '체크!',
-    confirmSurrender: '정말 기권하시겠습니까?',
+    confirmSurrender: '정말 항복하시겠습니까?',
     idleWarningTitle: '입력이 없습니다',
     idleWarningBody: '30초 동안 입력이 없습니다. 10초 안에 선택하지 않으면 패배합니다.',
     keepThinking: '조금 더 생각한다',
@@ -98,22 +99,22 @@ export const UI_COPY = Object.freeze({
     selected: '선택',
   },
   hints: {
-    default: '말을 선택해 이동하거나, 소환 카드를 선택하세요',
-    selected: '밝은 칸으로 이동하면 새 시야가 열립니다',
+    default: '말을 선택해 이동하거나 소환 카드를 선택하세요',
+    selected: '밝은 칸으로 이동하면 시야가 열립니다',
     summon: '초록 칸을 클릭하면 선택한 말을 소환합니다',
     moveRemaining: '소환 완료. 아직 이동 1회를 사용할 수 있습니다',
     summonRemaining: '이동 완료. 아직 소환 1회를 사용할 수 있습니다',
     done: '이번 턴 행동 완료. 턴 종료를 누르세요',
-    ai: 'AI가 수를 계산하고 있습니다',
+    ai: 'AI가 다음 수를 계산하고 있습니다',
   },
   help: {
-    title: '전투 도움말',
+    title: '전투 규칙',
     lines: [
       '한 턴에는 이동 1회와 소환 1회를 각각 사용할 수 있습니다.',
       '소환은 아군 말 주변 8칸 중 빈 칸에만 가능합니다.',
       '말을 선택하면 이동 가능한 칸이 밝게 표시됩니다.',
-      '시야는 내 말 주변 1칸, 이동 가능한 경로, 체크 위협 말이 밝혀집니다.',
-      '두 행동을 모두 사용했다면 턴 종료를 누르세요.',
+      '시야는 아군 말 주변 1칸과 이동 가능한 경로, 체크 위협 말이 밝게 드러납니다.',
+      '행동을 모두 사용했다면 턴 종료를 누르세요.',
     ],
     close: '확인',
   },
@@ -134,7 +135,7 @@ export const UI_COPY = Object.freeze({
   result: {
     win: '승리!',
     lose: '패배...',
-    timeoutLose: '시간이 부족해서 졌습니다',
+    timeoutLose: '시간이 부족해 패배했습니다',
     timeoutWin: '상대 시간이 부족해 승리했습니다',
     checkmateLose: '체크메이트로 패배했습니다',
     checkmateWin: '체크메이트로 승리했습니다',
@@ -145,7 +146,7 @@ export const UI_COPY = Object.freeze({
     title: '온라인 멀티 플레이',
     nicknamePrompt: '랭크에 사용할 닉네임을 입력하세요',
     connecting: '서버에 연결 중...',
-    offline: '서버 연결 실패: npm run online:server 를 먼저 실행하세요',
+    offline: '서버 연결 실패: AI 상대를 준비합니다',
     account: '계정',
     rank: '랭크 포인트',
     queue: '빠른 매칭',
@@ -191,7 +192,6 @@ export function formatManaGaugeLabel(value, maxMana = MAX_MANA) {
   const mana = Math.max(0, Math.min(max, Number(value) || 0));
   return `보유 마나 ${mana} / ${max}`;
 }
-
 export function getButtonColors({ enabled = true, active = false, danger = false } = {}) {
   if (!enabled) {
     return { fill: COLORS.BUTTON_DISABLED, stroke: 0x2f3548, text: 0x9aa6bf, alpha: 0.46, bgTint: 0x72798a };
@@ -404,3 +404,5 @@ function applyReadableTextStyle(text, state) {
   text.setStroke?.(textIsDark ? '#fff0b8' : '#050812', textIsDark ? 1 : 4);
   text.setShadow?.(0, 1, textIsDark ? '#fff6ce' : '#000000', textIsDark ? 1 : 3, true, true);
 }
+
+
