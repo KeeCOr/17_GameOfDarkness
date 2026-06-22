@@ -1,3 +1,13 @@
+## 2026-06-22 Update: MMR-Based First-Turn Order
+
+- Version: `v0.2.27`
+- 플레이어 MMR이 AI 기준 MMR(1000)보다 낮으면 플레이어가 선수, 높으면 AI가 선수, 같으면 랜덤으로 결정.
+- 후수(2번째 플레이어)는 게임 시작 시 마나 1 추가 보너스를 받아 선후수 불이익을 보정.
+- PvP 모드에서는 기존 서버 지정 순서(`pvpSession.currentTurn`)를 그대로 유지.
+- `package.json` 의 `portable.artifactName`을 `${version}` 템플릿으로 교체하여 버전 누락 버그 수정.
+
+---
+
 ## 2026-06-22 Update: Board and Piece Quality Pass
 
 - Version: `v0.2.24`

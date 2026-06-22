@@ -14,6 +14,7 @@ import {
 } from '../config.js';
 import { getTurnHint, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
 import { playCaptureEffect, playCheckAlert, playCheckmateAlert, playPromotionEffect } from '../ui/effects.js';
+import { readSinglePlayerRating, SINGLE_PLAYER_MMR_DEFAULT } from '../game/singlePlayerRating.js';
 
 const State = {
   WAITING: 'WAITING',
@@ -99,8 +100,20 @@ export class GameScene extends Phaser.Scene {
     this.events.on('tutorial-complete', () => this.achievements.recordTutorialComplete());
     this.input.on('pointerdown', this._onPointerDown, this);
     this._attachPvpSocket();
-    this._startTurn(this.pvpSession?.currentTurn || Owner.PLAYER);
+    const firstPlayer = this._determineFirstPlayer();
+    const secondPlayer = firstPlayer === Owner.PLAYER ? Owner.AI : Owner.PLAYER;
+    this.board.addMana(secondPlayer, 1);
+    this._startTurn(firstPlayer);
     if (this.tutorialMode) this.scene.launch('Tutorial');
+  }
+
+  _determineFirstPlayer() {
+    if (this.pvpSession?.currentTurn) return this.pvpSession.currentTurn;
+    const playerMmr = readSinglePlayerRating();
+    const aiMmr = SINGLE_PLAYER_MMR_DEFAULT;
+    if (playerMmr < aiMmr) return Owner.PLAYER;
+    if (playerMmr > aiMmr) return Owner.AI;
+    return Math.random() < 0.5 ? Owner.PLAYER : Owner.AI;
   }
 
   _drawStage() {
@@ -536,7 +549,7 @@ export class GameScene extends Phaser.Scene {
       : this.add.rectangle(cx, cy, LAYOUT.CELL_SIZE - 6, LAYOUT.CELL_SIZE - 6, COLORS.THREAT, 0.38);
     ring.setDepth(5);
     this.checkRing = ring;
-    this.tweens.add({ targets: ring, alpha: 0.25, scaleX: 1.1, scaleY: 1.1, duration: 300, yoyo: true, repeat: 3 });
+    this.tweens.add({ targets: ring, alpha: 0.25, scaleX: 1.1, scaleY: 1.1, duration: 300, yoyo: true, repeat: -1 });
   }
 
   _animatePromotion(r, c, owner) {
@@ -958,7 +971,7 @@ export class GameScene extends Phaser.Scene {
     });
     this.input.off('pointerdown', this._onPointerDown, this);
     this._clearSceneTimers();
-    this.gameOverTransitionTimer = this.time.delayedCall(800, () => {
+    this.gameOverTransitionTimer = this.time.delayedCall(resultReason === 'checkmate' ? 2500 : 800, () => {
       this.gameOverTransitionTimer = null;
       this.scene.stop('UI');
       if (this.tutorialMode) this.scene.stop('Tutorial');

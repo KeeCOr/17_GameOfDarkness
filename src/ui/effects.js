@@ -202,59 +202,147 @@ export function playPromotionEffect(scene, x, y, { owner = Owner.PLAYER } = {}) 
 }
 
 export function playCheckAlert(scene, x, y) {
-  scene.cameras?.main?.shake?.(220, 0.004);
+  scene.cameras?.main?.shake?.(300, 0.009);
 
+  // Full-screen red flash
   const overlay = scene.add.rectangle(
-    LAYOUT.GAME_WIDTH / 2,
-    LAYOUT.GAME_HEIGHT / 2,
-    LAYOUT.GAME_WIDTH,
-    LAYOUT.GAME_HEIGHT,
-    COLORS.CRIMSON,
-    0.18,
+    LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2,
+    LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT,
+    COLORS.CRIMSON, 0.32,
   ).setDepth(7);
 
+  // Screen-edge danger border
+  const border = scene.add.graphics().setDepth(8);
+  border.lineStyle(20, COLORS.THREAT, 0.75);
+  border.strokeRect(10, 10, LAYOUT.GAME_WIDTH - 20, LAYOUT.GAME_HEIGHT - 20);
+
+  // Concentric rings expanding from king
   const ring = scene.add.graphics().setDepth(9);
   ring.lineStyle(5, COLORS.THREAT, 1);
-  ring.strokeCircle(x, y, 35);
+  ring.strokeCircle(x, y, 32);
   ring.lineStyle(2, 0xffffff, 0.82);
-  ring.strokeCircle(x, y, 47);
+  ring.strokeCircle(x, y, 46);
 
   scene.tweens.add({
     targets: overlay,
     alpha: 0,
-    duration: 420,
+    duration: 520,
     ease: 'Sine.easeOut',
     onComplete: () => overlay.destroy(),
   });
   scene.tweens.add({
+    targets: border,
+    alpha: 0,
+    duration: 640,
+    ease: 'Quad.easeOut',
+    onComplete: () => border.destroy(),
+  });
+  scene.tweens.add({
     targets: ring,
     alpha: 0.1,
-    scaleX: 1.45,
-    scaleY: 1.45,
-    duration: 520,
+    scaleX: 1.7,
+    scaleY: 1.7,
+    duration: 580,
     yoyo: true,
     repeat: 1,
     onComplete: () => ring.destroy(),
   });
-  showImpactLabel(scene, x, y - 62, 'CHECK', '#ff6b6b');
+
+  // Prominent CHECK banner above board
+  const bx = LAYOUT.GAME_WIDTH / 2;
+  const by = LAYOUT.BOARD_OFFSET_Y - 28;
+  const banner = scene.add.rectangle(bx, by, 192, 44, 0x1a0305, 0.93)
+    .setDepth(11)
+    .setStrokeStyle(2, COLORS.THREAT, 0.88);
+  const label = scene.add.text(bx, by, 'CHECK!', {
+    fontSize: '22px',
+    color: '#ff4040',
+    fontStyle: 'bold',
+    letterSpacing: 4,
+  }).setOrigin(0.5).setDepth(12);
+
+  scene.tweens.add({
+    targets: [banner, label],
+    y: '-=22',
+    alpha: 0,
+    duration: 680,
+    delay: 400,
+    ease: 'Quad.easeIn',
+    onComplete: () => { banner.destroy(); label.destroy(); },
+  });
 }
 
 export function playCheckmateAlert(scene, x, y, { winner } = {}) {
-  scene.cameras?.main?.shake?.(420, 0.009);
+  scene.cameras?.main?.shake?.(500, 0.014);
 
   const playerWon = winner === Owner.PLAYER;
-  const accent = playerWon ? COLORS.SUCCESS : COLORS.CRIMSON;
-  const overlay = scene.add.rectangle(
-    LAYOUT.GAME_WIDTH / 2,
-    LAYOUT.GAME_HEIGHT / 2,
-    LAYOUT.GAME_WIDTH,
-    LAYOUT.GAME_HEIGHT,
-    playerWon ? 0x0d7f66 : COLORS.CRIMSON,
-    0.26,
-  ).setDepth(14);
+  const accentColor = playerWon ? COLORS.EMERALD : COLORS.THREAT;
+  const sparkColor = playerWon ? 0x7dffca : 0xff6b6b;
+  const headerColor = playerWon ? '#6fffe0' : '#ff6b6b';
 
+  // Dark dramatic veil — fades in, holds, then fades out
+  const veil = scene.add.rectangle(
+    LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2,
+    LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT,
+    0x000000, 0,
+  ).setDepth(14);
+  scene.tweens.add({
+    targets: veil,
+    alpha: 0.60,
+    duration: 220,
+    ease: 'Sine.easeIn',
+    onComplete: () => {
+      scene.tweens.add({
+        targets: veil,
+        alpha: 0,
+        duration: 700,
+        delay: 1400,
+        ease: 'Sine.easeOut',
+        onComplete: () => veil.destroy(),
+      });
+    },
+  });
+
+  // Staggered expanding rings from defeated king
+  for (let i = 0; i < 3; i++) {
+    scene.time.delayedCall(i * 130, () => {
+      const r = scene.add.graphics().setDepth(15);
+      r.lineStyle(4 - i, accentColor, 1 - i * 0.15);
+      r.strokeCircle(x, y, 28 + i * 18);
+      scene.tweens.add({
+        targets: r,
+        scaleX: 4,
+        scaleY: 4,
+        alpha: 0,
+        duration: 750,
+        ease: 'Quad.easeOut',
+        onComplete: () => r.destroy(),
+      });
+    });
+  }
+
+  // Radial sparks from king
+  for (let i = 0; i < 12; i++) {
+    const angle = (Math.PI * 2 * i) / 12;
+    const spark = scene.add.rectangle(
+      x + Math.cos(angle) * 20,
+      y + Math.sin(angle) * 20,
+      4, 16, sparkColor,
+    ).setDepth(17).setRotation(angle);
+    scene.tweens.add({
+      targets: spark,
+      x: x + Math.cos(angle) * 90,
+      y: y + Math.sin(angle) * 90,
+      alpha: 0,
+      duration: 580,
+      ease: 'Quad.easeOut',
+      onComplete: () => spark.destroy(),
+    });
+  }
+
+  // Burst rings + ray lines at king
   const burst = scene.add.graphics().setDepth(16);
-  burst.lineStyle(7, accent, 1);
+  burst.lineStyle(7, accentColor, 1);
   burst.strokeCircle(x, y, 44);
   burst.lineStyle(3, COLORS.GOLD, 0.9);
   burst.strokeCircle(x, y, 62);
@@ -264,28 +352,55 @@ export function playCheckmateAlert(scene, x, y, { winner } = {}) {
     burst.lineBetween(
       x + Math.cos(angle) * 34,
       y + Math.sin(angle) * 34,
-      x + Math.cos(angle) * 82,
-      y + Math.sin(angle) * 82,
+      x + Math.cos(angle) * 88,
+      y + Math.sin(angle) * 88,
     );
   }
-
-  scene.tweens.add({
-    targets: overlay,
-    alpha: 0,
-    duration: 720,
-    ease: 'Sine.easeOut',
-    onComplete: () => overlay.destroy(),
-  });
   scene.tweens.add({
     targets: burst,
     alpha: 0,
-    scaleX: 1.65,
-    scaleY: 1.65,
-    duration: 760,
+    scaleX: 2.0,
+    scaleY: 2.0,
+    duration: 900,
     ease: 'Back.easeOut',
     onComplete: () => burst.destroy(),
   });
-  showImpactLabel(scene, LAYOUT.GAME_WIDTH / 2, y - 80, 'CHECKMATE', playerWon ? '#6fffe0' : '#ff6b6b');
+
+  // Center CHECKMATE plate
+  const cx = LAYOUT.GAME_WIDTH / 2;
+  const cy = LAYOUT.GAME_HEIGHT / 2;
+  const plate = scene.add.rectangle(cx, cy + 10, 320, 88, 0x050912, 0.95)
+    .setDepth(18)
+    .setStrokeStyle(2, COLORS.GOLD, 0.9)
+    .setAlpha(0);
+  const title = scene.add.text(cx, cy - 6, 'CHECKMATE', {
+    fontSize: '30px',
+    color: headerColor,
+    fontStyle: 'bold',
+    letterSpacing: 5,
+  }).setOrigin(0.5).setDepth(19).setAlpha(0);
+  const sub = scene.add.text(cx, cy + 24, playerWon ? 'YOU WIN' : 'YOU LOSE', {
+    fontSize: '15px',
+    color: '#d4a843',
+    fontStyle: 'bold',
+    letterSpacing: 3,
+  }).setOrigin(0.5).setDepth(19).setAlpha(0);
+
+  scene.tweens.add({
+    targets: [plate, title, sub],
+    alpha: 1,
+    duration: 260,
+    delay: 200,
+    ease: 'Sine.easeOut',
+  });
+  scene.tweens.add({
+    targets: [plate, title, sub],
+    alpha: 0,
+    duration: 400,
+    delay: 1700,
+    ease: 'Sine.easeIn',
+    onComplete: () => { plate.destroy(); title.destroy(); sub.destroy(); },
+  });
 }
 
 export function showImpactLabel(scene, x, y, label, color) {
