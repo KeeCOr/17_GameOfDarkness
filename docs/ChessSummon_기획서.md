@@ -1,3 +1,14 @@
+## 2026-06-23 Update: UI Frame & Button Rendering Fixes
+
+- Version: `v0.2.32`
+- **`addTextButton` 스트로크 버그 수정**: PNG bg 이미지가 로드된 경우 rect의 `setStrokeStyle`이 실행되지 않도록 수정 — 버튼 PNG 위에 불필요한 컬러 테두리가 그려지던 문제 해결.
+- **`addPanel` PNG 제거**: 모달 패널이 초상화형 `game-bottom-hud-frame.png`를 가로로 늘려 사용하던 문제 해결 — 항상 코드 드로잉(Graphics fillRoundedRect + stroke)으로 렌더링하여 `stroke` 색상(골드/크림슨)이 실제 반영됨.
+- **항복 버튼 틴트 수정**: `rect.setFillStyle()` (투명 rect에 무효) → `bg.setTint(0x888888)` 으로 교체하여 항복 버튼이 어둡게 표시되는 의도대로 동작.
+- **모달 버튼 에셋 키 추가**: 도움말 닫기, 항복 확인(yes/no), 유휴 경고(생각/포기) 버튼 전부 `gameActionButtonFrame.key` 지정 — 모달 버튼이 코드 직사각형 대신 PNG 프레임으로 렌더링됨.
+- **ResultScene 패널 왜곡 수정**: 결과 화면 중앙 패널이 가로형 버튼 프레임(`titleButtonFrame`)을 정사각형 가깝게 늘리던 것을 코드 드로잉으로 교체 — 승리 시 골드 테두리, 패배 시 크림슨 테두리 유지.
+
+---
+
 ## 2026-06-23 Update: AI-Generated Game Assets (Full Set)
 
 - Version: `v0.2.31`

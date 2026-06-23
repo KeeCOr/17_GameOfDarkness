@@ -150,7 +150,7 @@ export class UIScene extends Phaser.Scene {
       assetKey: UI_ASSETS.gameActionButtonFrame.key,
       textOffsetY: 1,
     });
-    this.surrenderButton.rect.setFillStyle(0x171a22);
+    this.surrenderButton.bg?.setTint(0x888888);
     this.surrenderButton.text.setColor(TEXT_COLORS.MUTED);
     this.surrenderButton.rect.on('pointerdown', () => this._showSurrenderConfirm());
 
@@ -187,7 +187,7 @@ export class UIScene extends Phaser.Scene {
       wordWrap: { width: 344 },
     }).setDepth(62);
 
-    const ok = addTextButton(this, cx, cy + 160, 120, 38, UI_COPY.help.close, { active: true, depth: 62 });
+    const ok = addTextButton(this, cx, cy + 160, 120, 38, UI_COPY.help.close, { active: true, depth: 62, assetKey: UI_ASSETS.gameActionButtonFrame.key });
     const objs = [overlay, panel, title, body, ok.bg, ok.rect, ok.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());
     ok.rect.on('pointerdown', close);
@@ -202,8 +202,8 @@ export class UIScene extends Phaser.Scene {
       fontSize: '18px', color: TEXT_COLORS.PRIMARY, fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(52);
 
-    const yes = addTextButton(this, cx - 70, cy + 34, 112, 38, UI_COPY.game.surrender, { danger: true, depth: 52 });
-    const no = addTextButton(this, cx + 70, cy + 34, 112, 38, UI_COPY.game.cancel, { depth: 52 });
+    const yes = addTextButton(this, cx - 70, cy + 34, 112, 38, UI_COPY.game.surrender, { danger: true, depth: 52, assetKey: UI_ASSETS.gameActionButtonFrame.key });
+    const no = addTextButton(this, cx + 70, cy + 34, 112, 38, UI_COPY.game.cancel, { depth: 52, assetKey: UI_ASSETS.gameActionButtonFrame.key });
 
     const objs = [overlay, panel, msg, yes.bg, yes.rect, yes.text, no.bg, no.rect, no.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());
@@ -223,8 +223,8 @@ export class UIScene extends Phaser.Scene {
       fontSize: '14px', color: TEXT_COLORS.PRIMARY, align: 'center',
       wordWrap: { width: 292 },
     }).setOrigin(0.5).setDepth(72);
-    const think = addTextButton(this, cx - 82, cy + 48, 144, 38, UI_COPY.game.keepThinking, { active: true, fontSize: '13px', depth: 72 });
-    const lose = addTextButton(this, cx + 94, cy + 48, 116, 38, UI_COPY.game.loseNow, { danger: true, fontSize: '13px', depth: 72 });
+    const think = addTextButton(this, cx - 82, cy + 48, 144, 38, UI_COPY.game.keepThinking, { active: true, fontSize: '13px', depth: 72, assetKey: UI_ASSETS.gameActionButtonFrame.key });
+    const lose = addTextButton(this, cx + 94, cy + 48, 116, 38, UI_COPY.game.loseNow, { danger: true, fontSize: '13px', depth: 72, assetKey: UI_ASSETS.gameActionButtonFrame.key });
 
     const objs = [overlay, panel, title, body, think.bg, think.rect, think.text, lose.bg, lose.rect, lose.text].filter(Boolean);
     const close = () => objs.forEach(o => o.destroy());

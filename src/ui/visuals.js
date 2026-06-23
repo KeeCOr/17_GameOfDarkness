@@ -279,13 +279,6 @@ export function addFramedImage(scene, x, y, width, height, key, options = {}) {
 export function addPanel(scene, x, y, width, height, options = {}) {
   const depth = options.depth ?? 0;
   const alpha = options.alpha ?? 0.96;
-  const assetKey = getPanelAssetKey();
-  if (hasTexture(scene, assetKey)) {
-    return scene.add.image(x + width / 2, y + height / 2, assetKey)
-      .setDisplaySize(width, height)
-      .setAlpha(alpha)
-      .setDepth(depth);
-  }
   const g = scene.add.graphics().setDepth(depth);
   g.fillStyle(options.fill ?? COLORS.PANEL_DEEP, alpha);
   g.fillRoundedRect(x, y, width, height, options.radius ?? 8);
@@ -332,7 +325,7 @@ export function addTextButton(scene, x, y, width, height, label, options = {}) {
     .setInteractive({ useHandCursor: true })
     .setAlpha(bg ? 0.001 : state.alpha)
     .setDepth(bg ? depth + 0.2 : depth);
-  rect.setStrokeStyle(1, state.stroke, 0.85);
+  if (!bg) rect.setStrokeStyle(1, state.stroke, 0.85);
 
   const text = scene.add.text(x, y + textOffsetY, label, {
     fontSize: options.fontSize || '18px',

@@ -115,17 +115,11 @@ export class ResultScene extends Phaser.Scene {
     this.add.circle(cx, 252, 164, glow, playerWon ? 0.12 : 0.16).setDepth(1);
     this.add.circle(cx, 252, 104, glow, playerWon ? 0.08 : 0.1).setDepth(1);
 
-    if (this.textures?.exists?.(UI_ASSETS.titleButtonFrame.key)) {
-      this.add.image(cx, 294, UI_ASSETS.titleButtonFrame.key)
-        .setDisplaySize(388, 316)
-        .setAlpha(0.88)
-        .setTint(playerWon ? 0xffffff : 0xffd8d4)
-        .setDepth(2);
-    } else {
-      this.add.rectangle(cx, 294, 374, 282, COLORS.PANEL_DEEP, 0.9)
-        .setStrokeStyle(3, accent, playerWon ? 0.8 : 0.92)
-        .setDepth(2);
-    }
+    const g = this.add.graphics().setDepth(2);
+    g.fillStyle(COLORS.PANEL_DEEP, 0.9);
+    g.fillRoundedRect(cx - 187, 294 - 141, 374, 282, 10);
+    g.lineStyle(3, accent, playerWon ? 0.8 : 0.92);
+    g.strokeRoundedRect(cx - 187, 294 - 141, 374, 282, 10);
 
     this.add.rectangle(cx, 410, 278, 1, accent, playerWon ? 0.58 : 0.76)
       .setDepth(3);
