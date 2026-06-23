@@ -27,6 +27,10 @@ export const UI_ASSETS = Object.freeze({
   gameClockChipPlayer: Object.freeze({ key: 'ui_game_clock_chip_player', path: 'assets/ui/game-clock-chip-player.png', type: 'image' }),
   gameClockChipEnemy: Object.freeze({ key: 'ui_game_clock_chip_enemy', path: 'assets/ui/game-clock-chip-enemy.png', type: 'image' }),
   gamePieceShadow: Object.freeze({ key: 'ui_game_piece_shadow', path: 'assets/ui/game-piece-shadow.png', type: 'image' }),
+  fxCaptureRing: Object.freeze({ key: 'fx_capture_ring', path: 'assets/fx/capture-impact-ring.png', type: 'image' }),
+  fxCaptureSlash: Object.freeze({ key: 'fx_capture_slash', path: 'assets/fx/capture-impact-slash.png', type: 'image' }),
+  fxPromotionBeam: Object.freeze({ key: 'fx_promotion_beam', path: 'assets/fx/promotion-beam.png', type: 'image' }),
+  fxPromotionBurst: Object.freeze({ key: 'fx_promotion_burst', path: 'assets/fx/promotion-burst.png', type: 'image' }),
   buttonPrimary: Object.freeze({ key: 'ui_button_primary', path: 'assets/ui/title-button-frame.png', type: 'image' }),
   buttonDanger: Object.freeze({ key: 'ui_button_danger', path: 'assets/ui/game-action-button-frame.png', type: 'image' }),
   frameHudPanel: Object.freeze({ key: 'ui_frame_hud_panel', path: 'assets/ui/game-bottom-hud-frame.png', type: 'image' }),
@@ -279,6 +283,12 @@ export function addFramedImage(scene, x, y, width, height, key, options = {}) {
 export function addPanel(scene, x, y, width, height, options = {}) {
   const depth = options.depth ?? 0;
   const alpha = options.alpha ?? 0.96;
+  if (hasTexture(scene, UI_ASSETS.frameHudPanel.key)) {
+    return scene.add.image(x + width / 2, y + height / 2, UI_ASSETS.frameHudPanel.key)
+      .setDisplaySize(width, height)
+      .setAlpha(alpha)
+      .setDepth(depth);
+  }
   const g = scene.add.graphics().setDepth(depth);
   g.fillStyle(options.fill ?? COLORS.PANEL_DEEP, alpha);
   g.fillRoundedRect(x, y, width, height, options.radius ?? 8);
@@ -375,7 +385,7 @@ export function setButtonState(button, options = {}) {
   const state = getButtonColors(options);
   button.rect.setData('enabled', options.enabled !== false);
   button.rect.setFillStyle(state.fill);
-  button.rect.setStrokeStyle(1, state.stroke, 0.85);
+  if (!button.bg) button.rect.setStrokeStyle(1, state.stroke, 0.85);
   button.rect.setAlpha(button.bg ? 0.001 : state.alpha);
   if (button.bg) {
     button.bg.setAlpha(state.alpha);

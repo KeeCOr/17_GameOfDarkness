@@ -240,8 +240,12 @@ export class PlacementScene extends Phaser.Scene {
     const ready = this.pawnCount >= PAWN_COUNT;
     this.countText.setText(`${UI_COPY.placement.count}: ${this.pawnCount} / ${PAWN_COUNT}`);
     this.readyButton.rect.setData('enabled', ready);
-    this.readyButton.rect.setFillStyle(ready ? COLORS.EMERALD : COLORS.BUTTON_DISABLED);
-    this.readyButton.rect.setAlpha(ready ? 1 : 0.5);
+    if (this.readyButton.bg) {
+      this.readyButton.bg.setAlpha(ready ? 1 : 0.4);
+    } else {
+      this.readyButton.rect.setFillStyle(ready ? COLORS.EMERALD : COLORS.BUTTON_DISABLED);
+      this.readyButton.rect.setAlpha(ready ? 1 : 0.5);
+    }
     this.readyButton.text.setColor(ready ? TEXT_COLORS.PRIMARY : TEXT_COLORS.DIM);
   }
 }

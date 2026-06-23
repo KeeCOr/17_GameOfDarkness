@@ -98,8 +98,8 @@ export class MenuScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true })
       .setData('difficultyHitArea', value);
 
-    hitArea.on('pointerover', () => button.rect.setFillStyle(0x394779));
-    hitArea.on('pointerout', () => button.rect.setFillStyle(0x263155));
+    hitArea.on('pointerover', () => button.bg ? button.bg.setTint(0x8899cc) : button.rect.setFillStyle(0x394779));
+    hitArea.on('pointerout', () => button.bg ? button.bg.clearTint() : button.rect.setFillStyle(0x263155));
     hitArea.on('pointerdown', startPlacement);
   }
 

@@ -61,7 +61,7 @@ export class UIScene extends Phaser.Scene {
     this.playerClockText.setStroke?.('#050812', 3);
     this.aiClockText.setStroke?.('#050812', 3);
 
-    const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 22, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true });
+    const help = addTextButton(this, PANEL_X + CONTENT_W - 18, LAYOUT.HUD_TOP_Y + 22, 30, 30, UI_COPY.game.help, { fontSize: '16px', active: true, assetKey: UI_ASSETS.gameActionButtonFrame.key });
     help.rect.on('pointerdown', () => this._showHelp());
 
     this.actionFeedbackBanner = this.add.rectangle(PANEL_X + CONTENT_W / 2, LAYOUT.HUD_TOP_Y + 59, CONTENT_W, 26, ACTION_FEEDBACK_FILLS.normal, 0)

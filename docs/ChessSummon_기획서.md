@@ -1,3 +1,13 @@
+## 2026-06-23 Update: UI Button State & Hover Fixes
+
+- Version: `v0.2.33`
+- **`setButtonState` 스트로크 버그 수정**: PNG bg 이미지가 존재할 때도 투명 hit rect에 `setStrokeStyle`을 호출하던 버그 수정 (`v0.2.32`에서 `addTextButton`만 수정했으나 `setButtonState`는 누락됨).
+- **난이도 선택 호버 수정 (MenuScene)**: `_wireDifficultyOption`의 `hitArea` 호버 핸들러가 `button.rect.setFillStyle()`을 호출하던 것을 `button.bg?.setTint()` / `button.bg?.clearTint()`로 교체 — PNG 버튼에서 호버 피드백이 보이지 않던 문제 해결.
+- **준비 버튼 비활성화 비주얼 수정 (PlacementScene)**: `_updateReadyButton`에서 투명 rect의 `setFillStyle`/`setAlpha` 대신 PNG bg의 `setAlpha(0.4/1.0)`으로 비활성화 상태 표현.
+- **도움말 버튼 에셋 키 추가 (UIScene)**: 좌상단 "?" 버튼에 `gameActionButtonFrame.key` 지정 — 코드 직사각형 대신 다른 버튼과 동일한 PNG 프레임으로 렌더링됨.
+
+---
+
 ## 2026-06-23 Update: UI Frame & Button Rendering Fixes
 
 - Version: `v0.2.32`

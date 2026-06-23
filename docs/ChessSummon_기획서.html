@@ -20,6 +20,17 @@
 </head>
 <body>
   <section>
+    <h2>2026-06-23 Update: UI Button State &amp; Hover Fixes</h2>
+    <ul>
+      <li>Version: <code>v0.2.33</code></li>
+      <li><strong><code>setButtonState</code> 스트로크 버그 수정</strong>: PNG bg 이미지가 존재할 때도 투명 hit rect에 <code>setStrokeStyle</code>을 호출하던 버그 수정 (<code>v0.2.32</code>에서 <code>addTextButton</code>만 수정했으나 <code>setButtonState</code>는 누락됨).</li>
+      <li><strong>난이도 선택 호버 수정 (MenuScene)</strong>: <code>_wireDifficultyOption</code>의 hitArea 호버 핸들러가 <code>button.rect.setFillStyle()</code>을 호출하던 것을 <code>button.bg?.setTint()</code> / <code>button.bg?.clearTint()</code>로 교체 — PNG 버튼에서 호버 피드백이 보이지 않던 문제 해결.</li>
+      <li><strong>준비 버튼 비활성화 비주얼 수정 (PlacementScene)</strong>: <code>_updateReadyButton</code>에서 투명 rect의 <code>setFillStyle</code>/<code>setAlpha</code> 대신 PNG bg의 <code>setAlpha(0.4/1.0)</code>으로 비활성화 상태 표현.</li>
+      <li><strong>도움말 버튼 에셋 키 추가 (UIScene)</strong>: 좌상단 "?" 버튼에 <code>gameActionButtonFrame.key</code> 지정 — 코드 직사각형 대신 다른 버튼과 동일한 PNG 프레임으로 렌더링됨.</li>
+    </ul>
+  </section>
+
+  <section>
     <h2>2026-06-23 Update: UI Frame &amp; Button Rendering Fixes</h2>
     <ul>
       <li>Version: <code>v0.2.32</code></li>
