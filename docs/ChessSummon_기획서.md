@@ -1,3 +1,25 @@
+## 2026-06-23 Update: 기물 디자인 재작업 — 전통 체스 실루엣 기반 캐쥬얼 스타일
+
+- Version: `v0.2.34`
+- 기존 기물 이미지가 전통 체스 기물과 모양이 너무 달라 학습이 어렵다는 문제로 전면 재작업.
+- 흰색 기물 6종(pawn_w, rook_w, knight_w, bishop_w, queen_w, king_w) + 검은 기물 2종(pawn_d, rook_d)을 전통 체스 기물 실루엣 기반 캐쥬얼 카툰 스티커 스타일로 재생성.
+  - **흰색 기물**: 진주 흰색/라이트 실버 색상, 소프트 그레이 아웃라인
+  - **검은 기물**: 다크 차콜/거의 검은색, 강한 아웃라인
+  - 기물별 특징: 룩(성벽 윗 처마), 퀸(왕관 볼 5개), 비숍(주교 미트라), 나이트(말 두상), 킹(십자가 상단), 폰(둥근 볼 상단)
+- 검은 기물 4종(king_d, queen_d, bishop_d, knight_d)은 기존 캐쥬얼 카툰 스타일 유지.
+- 모든 기물 72×72 RGBA 투명 배경 PNG.
+
+---
+
+## 2026-06-23 Update: Bitmap Combat FX Pass
+
+- Version: `v0.2.34`
+- Replaced the visible capture slash/ring and promotion beam/burst runtime graphics with preloaded PNG bitmap FX assets under `public/assets/fx/`.
+- Routed capture and promotion feedback through `UI_ASSETS.fxCapture*` / `UI_ASSETS.fxPromotion*` so BootScene preloads them with the rest of the release art.
+- Added VisualTheme regression coverage that fails if those effects fall back to the old Phaser `graphics()` ring, slash, beam, or burst implementation.
+
+---
+
 ## 2026-06-23 Update: UI Button State & Hover Fixes
 
 - Version: `v0.2.33`
@@ -110,9 +132,9 @@
 ---
 
 # Chess of Dark 湲고쉷??
-**Version:** 0.2.24  
+**Version:** 0.2.34  
 **?묒꽦??** 2026-05-12  
-**Last Updated:** 2026-06-22  
+**Last Updated:** 2026-06-23  
 **?λⅤ:** ?붿????꾨왂 / 泥댁뒪 蹂??
 ---
 

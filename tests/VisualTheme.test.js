@@ -327,6 +327,46 @@ describe('visual theme helpers', () => {
     expect(mana.length).toBeGreaterThan(15000);
   });
 
+  it('uses preloaded bitmap assets for capture and promotion combat effects', () => {
+    const effectsSource = readFileSync(new URL('../src/ui/effects.js', import.meta.url), 'utf8');
+
+    expect(UI_ASSETS.fxCaptureRing).toEqual({
+      key: 'fx_capture_ring',
+      path: 'assets/fx/capture-impact-ring.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.fxCaptureSlash).toEqual({
+      key: 'fx_capture_slash',
+      path: 'assets/fx/capture-impact-slash.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.fxPromotionBeam).toEqual({
+      key: 'fx_promotion_beam',
+      path: 'assets/fx/promotion-beam.png',
+      type: 'image',
+    });
+    expect(UI_ASSETS.fxPromotionBurst).toEqual({
+      key: 'fx_promotion_burst',
+      path: 'assets/fx/promotion-burst.png',
+      type: 'image',
+    });
+
+    for (const asset of [UI_ASSETS.fxCaptureRing, UI_ASSETS.fxCaptureSlash, UI_ASSETS.fxPromotionBeam, UI_ASSETS.fxPromotionBurst]) {
+      const bitmap = readFileSync(new URL(`../public/${asset.path}`, import.meta.url));
+      expect(bitmap.subarray(1, 4).toString()).toBe('PNG');
+      expect(bitmap.length).toBeGreaterThan(4000);
+    }
+
+    expect(effectsSource).toContain('UI_ASSETS.fxCaptureRing.key');
+    expect(effectsSource).toContain('UI_ASSETS.fxCaptureSlash.key');
+    expect(effectsSource).toContain('UI_ASSETS.fxPromotionBeam.key');
+    expect(effectsSource).toContain('UI_ASSETS.fxPromotionBurst.key');
+    expect(effectsSource).not.toContain('const ring = scene.add.graphics().setDepth(8);');
+    expect(effectsSource).not.toContain('const slash = scene.add.graphics().setDepth(9);');
+    expect(effectsSource).not.toContain('const beam = scene.add.graphics().setDepth(7);');
+    expect(effectsSource).not.toContain('const burst = scene.add.graphics().setDepth(9);');
+  });
+
   it('preloads reusable UI art before the menu scene starts', async () => {
     globalThis.Phaser = { Scene: class {} };
     const { BootScene } = await import('../src/scenes/BootScene.js');

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <title>Chess of Dark plan v0.2.24</title>
+  <title>Chess of Dark plan v0.2.34</title>
   <style>
     body { margin: 0; background: #111426; color: #eef2ff; font-family: Arial, "Malgun Gothic", sans-serif; line-height: 1.6; }
     main { max-width: 920px; margin: 0 auto; padding: 40px 28px 72px; }
@@ -19,7 +19,34 @@
   </style>
 </head>
 <body>
-  <section>
+    <section>
+    <h2>2026-06-23 Update: 기물 디자인 재작업 — 전통 체스 실루엣 기반 캐쥬얼 스타일</h2>
+    <ul>
+      <li>Version: <code>v0.2.34</code></li>
+      <li>기존 기물 이미지가 전통 체스 기물과 모양이 너무 달라 학습이 어렵다는 문제로 전면 재작업.</li>
+      <li>흰색 기물 6종(pawn_w, rook_w, knight_w, bishop_w, queen_w, king_w) + 검은 기물 2종(pawn_d, rook_d)을 전통 체스 기물 실루엣 기반 캐쥬얼 카툰 스티커 스타일로 재생성.
+        <ul>
+          <li><strong>흰색 기물</strong>: 진주 흰색/라이트 실버 색상, 소프트 그레이 아웃라인</li>
+          <li><strong>검은 기물</strong>: 다크 차콜/거의 검은색, 강한 아웃라인</li>
+          <li>기물별 특징: 룩(성벽 윗 처마), 퀸(왕관 볼 5개), 비숍(주교 미트라), 나이트(말 두상), 킹(십자가 상단), 폰(둥근 볼 상단)</li>
+        </ul>
+      </li>
+      <li>검은 기물 4종(king_d, queen_d, bishop_d, knight_d)은 기존 캐쥬얼 카툰 스타일 유지.</li>
+      <li>모든 기물 72×72 RGBA 투명 배경 PNG.</li>
+    </ul>
+  </section>
+
+    <section>
+    <h2>2026-06-23 Update: Bitmap Combat FX Pass</h2>
+    <ul>
+      <li>Version: <code>v0.2.34</code></li>
+      <li>Replaced the visible capture slash/ring and promotion beam/burst runtime graphics with preloaded PNG bitmap FX assets under <code>public/assets/fx/</code>.</li>
+      <li>Routed capture and promotion feedback through <code>UI_ASSETS.fxCapture*</code> / <code>UI_ASSETS.fxPromotion*</code> so BootScene preloads them with the rest of the release art.</li>
+      <li>Added VisualTheme regression coverage that fails if those effects fall back to the old Phaser <code>graphics()</code> ring, slash, beam, or burst implementation.</li>
+    </ul>
+  </section>
+
+<section>
     <h2>2026-06-23 Update: UI Button State &amp; Hover Fixes</h2>
     <ul>
       <li>Version: <code>v0.2.33</code></li>

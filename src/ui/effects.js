@@ -1,4 +1,5 @@
 import { COLORS, LAYOUT, Owner } from '../config.js';
+import { UI_ASSETS } from './visuals.js';
 
 export const UI_RESOURCE_LIST = Object.freeze([
   {
@@ -57,15 +58,15 @@ export const UI_RESOURCE_LIST = Object.freeze([
   },
   {
     id: 'fx-capture-impact',
-    type: 'runtime-effect',
-    purpose: 'Strong capture impact: slash, shock ring, sparks, and short camera shake.',
-    file: 'src/ui/effects.js',
+    type: 'bitmap-effect',
+    purpose: 'Strong capture impact: bitmap slash, shock ring, sparks, and short camera shake.',
+    file: 'public/assets/fx/capture-impact-*.png',
   },
   {
     id: 'fx-promotion-burst',
-    type: 'runtime-effect',
-    purpose: 'Promotion feedback: vertical beam, crown burst, and floating promotion label.',
-    file: 'src/ui/effects.js',
+    type: 'bitmap-effect',
+    purpose: 'Promotion feedback: bitmap vertical beam, crown burst, and floating promotion label.',
+    file: 'public/assets/fx/promotion-*.png',
   },
   {
     id: 'brand-logo',
@@ -93,23 +94,14 @@ export function playCaptureEffect(scene, x, y, { owner = Owner.AI } = {}) {
   const ringColor = hostile ? COLORS.GOLD : COLORS.THREAT;
   scene.cameras?.main?.shake?.(140, 0.006);
 
-  const ring = scene.add.graphics().setDepth(8);
-  ring.lineStyle(4, ringColor, 0.95);
-  ring.strokeCircle(x, y, 16);
-  ring.lineStyle(2, 0xffffff, 0.75);
-  ring.strokeCircle(x, y, 28);
-
-  const slash = scene.add.graphics().setDepth(9);
-  slash.lineStyle(8, slashColor, 1);
-  slash.beginPath();
-  slash.moveTo(x - 30, y - 26);
-  slash.lineTo(x + 30, y + 26);
-  slash.strokePath();
-  slash.lineStyle(3, 0xffffff, 0.78);
-  slash.beginPath();
-  slash.moveTo(x - 22, y + 24);
-  slash.lineTo(x + 28, y - 20);
-  slash.strokePath();
+  const ring = scene.add.image(x, y, UI_ASSETS.fxCaptureRing.key)
+    .setDisplaySize(112, 112)
+    .setDepth(8)
+    .setTint(ringColor);
+  const slash = scene.add.image(x, y, UI_ASSETS.fxCaptureSlash.key)
+    .setDisplaySize(124, 124)
+    .setDepth(9)
+    .setTint(slashColor);
 
   const sparks = [];
   const sparkColor = hostile ? 0xfff0b8 : 0xff8a8a;
@@ -161,26 +153,14 @@ export function playPromotionEffect(scene, x, y, { owner = Owner.PLAYER } = {}) 
   const labelColor = player ? '#7dffca' : '#ffad7a';
   scene.cameras?.main?.shake?.(180, 0.004);
 
-  const beam = scene.add.graphics().setDepth(7);
-  beam.fillStyle(beamColor, 0.24);
-  beam.fillRect(x - 18, LAYOUT.BOARD_OFFSET_Y - 18, 36, LAYOUT.CELL_SIZE * 5 + 36);
-  beam.lineStyle(2, 0xffffff, 0.7);
-  beam.lineBetween(x, y - 52, x, y + 52);
-
-  const burst = scene.add.graphics().setDepth(9);
-  burst.lineStyle(3, COLORS.GOLD, 1);
-  for (let i = 0; i < 12; i++) {
-    const angle = (Math.PI * 2 * i) / 12;
-    burst.lineBetween(
-      x + Math.cos(angle) * 18,
-      y + Math.sin(angle) * 18,
-      x + Math.cos(angle) * 44,
-      y + Math.sin(angle) * 44,
-    );
-  }
-  burst.fillStyle(COLORS.GOLD, 0.92);
-  burst.fillTriangle(x, y - 32, x - 20, y - 4, x + 20, y - 4);
-  burst.fillRect(x - 22, y - 4, 44, 9);
+  const beam = scene.add.image(x, LAYOUT.BOARD_OFFSET_Y + LAYOUT.CELL_SIZE * 2.5, UI_ASSETS.fxPromotionBeam.key)
+    .setDisplaySize(74, LAYOUT.CELL_SIZE * 5 + 52)
+    .setDepth(7)
+    .setTint(beamColor);
+  const burst = scene.add.image(x, y, UI_ASSETS.fxPromotionBurst.key)
+    .setDisplaySize(126, 126)
+    .setDepth(9)
+    .setTint(player ? COLORS.GOLD : 0xffad7a);
 
   scene.tweens.add({
     targets: beam,
