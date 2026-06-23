@@ -25,6 +25,28 @@ describe('GameScene manual turn ending', () => {
     expect(ended).toBe(true);
   }, 10000);
 
+
+  it('allows ending after moving without summoning', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    let ended = false;
+
+    scene.state = 'WAITING';
+    scene.board = { currentTurn: Owner.PLAYER };
+    scene.hasMoved = true;
+    scene.hasSummoned = false;
+    scene.animating = false;
+    scene.tutorialMode = false;
+    scene.events = { emit: () => {} };
+    scene._recordPlayerInput = () => {};
+    scene._sendPvpCommand = () => false;
+    scene._endTurn = () => { ended = true; };
+
+    scene.endTurnManually();
+
+    expect(ended).toBe(true);
+  });
+
   it('cancels selected movement with a right-click', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);

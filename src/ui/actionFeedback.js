@@ -3,8 +3,8 @@ import { PieceType, TEXT_COLORS } from '../config.js';
 const ACTION_PIECE_NAMES = Object.freeze({
   [PieceType.PAWN]: '병사',
   [PieceType.KNIGHT]: '기사',
-  [PieceType.BISHOP]: '주교',
-  [PieceType.ROOK]: '성채',
+  [PieceType.BISHOP]: '비숍',
+  [PieceType.ROOK]: '룩',
   [PieceType.QUEEN]: '여왕',
   [PieceType.KING]: '왕',
 });
@@ -37,7 +37,7 @@ export function getActionFeedback(payload = {}) {
 
 function getRemainingActionText({ hasMoved = false, hasSummoned = false } = {}) {
   if (hasMoved && hasSummoned) return '턴 종료 준비';
-  if (hasMoved) return '소환 가능';
+  if (hasMoved) return '소환 선택 가능 / 턴 종료 가능';
   if (hasSummoned) return '이동 가능';
   return '행동 선택';
 }

@@ -3,13 +3,23 @@ import { PieceType } from '../src/config.js';
 import { getActionFeedback } from '../src/ui/actionFeedback.js';
 
 describe('action feedback copy', () => {
-  it('confirms a normal move and points to the remaining summon action', () => {
+  it('confirms a normal move and says the player may end without summoning', () => {
     expect(getActionFeedback({
       type: 'move',
       hasMoved: true,
       hasSummoned: false,
     })).toEqual({
-      text: '이동 완료 · 소환 가능',
+      text: '이동 완료 · 소환 선택 가능 / 턴 종료 가능',
+      tone: 'normal',
+    });
+  });
+
+  it('does not require summon before manual turn end copy', () => {
+    expect(getActionFeedback({
+      hasMoved: true,
+      hasSummoned: false,
+    })).toEqual({
+      text: '소환 선택 가능 / 턴 종료 가능',
       tone: 'normal',
     });
   });
@@ -38,4 +48,3 @@ describe('action feedback copy', () => {
     });
   });
 });
-
