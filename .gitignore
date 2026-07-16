@@ -5,3 +5,5 @@ dist/
 
 release/
 .claude/
+*.exe
+ChessSummon_v*.html

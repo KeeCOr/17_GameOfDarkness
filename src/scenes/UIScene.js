@@ -7,7 +7,7 @@ import {
   addFramedImage, addPanel, addSectionLabel, addTextButton, getPieceName,
   formatManaGaugeLabel, setButtonState, UI_ASSETS, UI_COPY,
 } from '../ui/visuals.js';
-import { ACTION_FEEDBACK_COLORS, getActionFeedback } from '../ui/actionFeedback.js';
+import { ACTION_FEEDBACK_COLORS, formatActionFeedbackText, getActionFeedback } from '../ui/actionFeedback.js';
 
 const SUMMONABLE = [PieceType.PAWN, PieceType.KNIGHT, PieceType.BISHOP, PieceType.ROOK, PieceType.QUEEN];
 const PANEL_X = LAYOUT.PANEL_X;
@@ -48,12 +48,12 @@ export class UIScene extends Phaser.Scene {
       || this.add.rectangle(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP).setAlpha(0.82);
     this.aiClockBg = addFramedImage(this, PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, 92, 29, UI_ASSETS.gameClockChipEnemy.key, { depth: 0.2, alpha: 0.86 })
       || this.add.rectangle(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, 88, 26, COLORS.PANEL_DEEP).setAlpha(0.82);
-    this.playerClockText = this.add.text(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, `ÎÇò ${formatClock(TURN_TIME_LIMIT)}`, {
+    this.playerClockText = this.add.text(PANEL_X + 112, LAYOUT.HUD_TOP_Y + 24, `??${formatClock(TURN_TIME_LIMIT)}`, {
       fontSize: '14px', color: TEXT_COLORS.TIMER, fontStyle: 'bold',
       fixedWidth: 82,
       align: 'center',
     }).setOrigin(0.5);
-    this.aiClockText = this.add.text(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, `ÏÉÅÎåÄ ${formatClock(TURN_TIME_LIMIT)}`, {
+    this.aiClockText = this.add.text(PANEL_X + 210, LAYOUT.HUD_TOP_Y + 24, `?ÅÎ? ${formatClock(TURN_TIME_LIMIT)}`, {
       fontSize: '14px', color: TEXT_COLORS.MUTED, fontStyle: 'bold',
       fixedWidth: 82,
       align: 'center',
@@ -243,6 +243,13 @@ export class UIScene extends Phaser.Scene {
     this._setMana(mana[Owner.PLAYER]);
     this.checkText.setVisible(false);
     this._refreshSummonButtons(playerTurn ? mana[Owner.PLAYER] : -1, false, summonCounts || {});
+    if (playerTurn) {
+      this._showActionFeedback({
+        type: 'board-loop',
+        hasMoved: false,
+        hasSummoned: false,
+      });
+    }
   }
 
   _onCheck(inCheck) {
@@ -267,7 +274,7 @@ export class UIScene extends Phaser.Scene {
   _showActionFeedback(payload) {
     const feedback = getActionFeedback(payload);
     const fill = ACTION_FEEDBACK_FILLS[feedback.tone] || ACTION_FEEDBACK_FILLS.normal;
-    this.hintText.setText(compactHint(feedback.text));
+    this.hintText.setText(compactHint(formatActionFeedbackText(feedback)));
     this.hintText.setColor(ACTION_FEEDBACK_COLORS[feedback.tone] || '#ffffff');
     this.hintText.setAlpha(1);
     this.actionFeedbackBanner.setFillStyle(ACTION_FEEDBACK_FILLS[feedback.tone] || fill, 0.72);
@@ -315,8 +322,8 @@ export class UIScene extends Phaser.Scene {
     const playerActive = activeTurn === Owner.PLAYER;
     const aiActive = activeTurn === Owner.AI;
 
-    this.playerClockText.setText(`ÎÇò ${formatClock(playerTime)}`);
-    this.aiClockText.setText(`ÏÉÅÎåÄ ${formatClock(aiTime)}`);
+    this.playerClockText.setText(`??${formatClock(playerTime)}`);
+    this.aiClockText.setText(`?ÅÎ? ${formatClock(aiTime)}`);
     this.playerClockText.setColor(playerTime <= 10 ? TEXT_COLORS.TIMER_LOW : (playerActive ? TEXT_COLORS.TIMER : TEXT_COLORS.MUTED));
     this.aiClockText.setColor(aiTime <= 10 ? TEXT_COLORS.TIMER_LOW : (aiActive ? TEXT_COLORS.TIMER : TEXT_COLORS.MUTED));
     this.playerClockBg.setAlpha(playerActive ? 1 : 0.68);

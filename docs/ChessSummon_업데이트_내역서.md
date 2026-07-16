@@ -1,85 +1,60 @@
 # ChessSummon 업데이트 내역서
 
-- 프로젝트명: ChessSummon / Chess of Dark
-- 대상 폴더: `17_DC`
-- 현재 버전: `v0.2.35`
-- 최종 정리일: 2026-06-23
-- 관련 기획서: `ChessSummon_기획서.md`, `ChessSummon_기획서.html`
+## 2026-07-01 v0.6.1 Checkmate Final Vision Reveal
+- 체크메이트를 결정한 마지막 수 직후 전체 보드 시야를 밝히도록 개선했다.
+- 결과 화면 전환 전에 기존 fog 오브젝트를 제거하고 모든 칸/말을 다시 렌더링한다.
+- 패배한 왕 위치를 중심으로 FINAL VISION 라벨, 보드 라이트 스윕, 스파크, 기존 CHECKMATE 플레이트가 이어지는 특수 연출을 추가했다.
+- GameScene 테스트 3개를 추가해 체크메이트 reveal 이벤트, 전체 칸 visible 처리, reveal 중 fog 재생성 금지를 검증했다.
 
-## 관리 원칙
+## 2026-06-30 v0.6.0 Action Result Layer Feedback
+- Persona feedback target: summon, move, capture, check, and mana changes should read as one action-result chain.
+- Replaced action feedback copy with short ASCII tactical layers to avoid prior encoding ambiguity and improve scan speed.
+- Added result layers for summon mana delta, captured piece type, check pressure, no-capture moves, and remaining action choice.
+- Wired GameScene payloads to send `manaBefore`, `manaAfter`, `capturedPieceType`, and `gaveCheck` to the HUD action banner.
+- Added/updated ActionFeedback tests for move preview, summon preview, board-loop copy, and three detailed result outcomes.
+## 2026-06-30 v0.5.0 보드 루프 HUD
+- 플레이어 턴 시작 시 상단 HUD action feedback에 1 소환 선택 → 2 이동/처치 → 승리: 적 왕 격파를 표시한다.
+- ActionFeedback 테스트에 보드 루프 문구와 UIScene 연결 계약을 추가했다.
+- 기존 PNG/bitmap HUD 리소스를 유지하고 새 이미지는 추가하지 않았다.
 
-- 이 문서는 버전별 변경 사항, 테스트, 빌드, 배포 상태를 기록한다.
-- 게임 설명과 시스템 설계는 기획서에서 관리하고, 업데이트 히스토리는 이 문서에서 관리한다.
-- Steam 출시 준비 blocker는 자동 검증 항목과 수동 QA 항목을 분리해서 추적한다.
 
-## v0.2.35 - Optional Summon Turn Commit
+## 2026-06-29 v0.4.0 소환 후보 피드백
+- 소환 카드 선택 직후 HUD에 소환 가능 칸 수를 표시하도록 개선했다.
+- 이동 전 소환 모드에서는 "이동 1회 남음", 이동 후 소환 모드에서는 "소환 후 턴 종료"를 안내한다.
+- 기존 소환 하이라이트 리소스를 유지하고, 새 이미지는 추가하지 않았다.
 
-- 플레이어가 이동 후 소환을 하지 않아도 `턴 종료`로 즉시 AI에게 턴을 넘길 수 있음을 HUD 피드백에 명확히 표시했다.
-- 행동 피드백 문구를 `소환 선택 가능 / 턴 종료 가능`으로 바꿔 소환이 필수가 아니라 선택임을 알린다.
-- 수동 턴 종료 테스트에 `hasMoved=true`, `hasSummoned=false` 상태에서도 턴 종료가 동작하는 회귀 케이스를 추가했다.
+## 2026-06-29 v0.3.0 이동 후보 피드백
+- 말 선택 직후 HUD에 이동 후보 칸 수와 처치 후보 칸 수를 표시하도록 개선했다.
+- 이동 후보가 없는 말은 "이동 가능한 칸 없음" 안내로 다른 말 선택을 유도한다.
+- 기존 `public/assets/ui` 이동 하이라이트 리소스를 유지하고, 새 이미지는 추가하지 않았다.
 
-## v0.2.34 - Bitmap Combat FX Pass
+## 2026-06-24 문서 구조 정리
+- 기획서와 업데이트 내역서를 분리했다.
+- 기획서는 게임 소개, 핵심 루프, MVP 가설, KPI, UX 원칙 중심으로 재작성했다.
+- 변경 이력, 구현 로그, 검증 기록은 이 문서에서 관리한다.
 
-- 캡처 이펙트의 런타임 `graphics()` 링/슬래시를 `public/assets/fx/capture-impact-ring.png`, `capture-impact-slash.png` 비트맵 FX로 교체했다.
-- 승급 이펙트의 런타임 `graphics()` 빔/버스트를 `promotion-beam.png`, `promotion-burst.png` 비트맵 FX로 교체했다.
-- 결과 화면 중앙 패널도 `titleButtonFrame` PNG 프레임 우선 렌더링으로 바꿔 벡터 도형 느낌을 줄였다.
-- `VisualTheme.test.js`에 캡처/승급 FX가 PNG 자산을 쓰는지, 기존 `graphics()` 구현으로 되돌아가지 않는지 검증하는 회귀 테스트를 추가했다.
-- 검증: `npm test` 34 files / 189 tests 통과, `npm run build:html` 성공, `npm run dist` 성공, `npm run verify:steam-release` smoke 6.0s 통과.
-- 산출물 SHA256: `56F07C9DD283D6C58333F43779B08AC4A58C80035EB176953634E391BB535C72`.
+## 기존 문서에서 분리한 이력 후보
+- ChessSummon 기획서 v0.2.35
+- 버전: v0.2.35
+- 최종 업데이트: 2026-06-23
+- 플랫폼: PC Windows, Steam 출시 후보
+- 업데이트 내역: ChessSummon_업데이트_내역서.md
+- Steam 출시 후보 기준으로 업적, 리더보드, Cloud 저장, Electron portable 빌드, smoke 검증 경로를 갖춘다.
+- portable 실행파일 smoke 검증
+- 가설검증 방법현재 상태
+- 5x5 보드와 한 턴 2행동 구조는 10분 안쪽의 압축 전술 재미를 만든다.한 판 평균 시간, 재시작률, 수동 QA구현됨, 수동 QA 필요
+- 마나 소환은 체스 규칙을 모르는 유저에게도 명확한 성장/역전 수단으로 작동한다.소환 사용률, 소환 후 승률 변화, 튜토리얼 이탈률구현됨
+- 즉시 피드백 HUD와 PNG 전투 FX는 행동 결과 이해도를 높인다.첫 판 중 행동 착오 수, 캡처/승급 인지 여부v0.2.34 개선됨
+- MMR 결과 화면은 반복 플레이 동기를 만든다.패배 후 재도전률, MMR 상승 목표 언급구현됨
+- Steam 업적/리더보드는 출시 후 장기 목표로 작동한다.업적 달성률, 리더보드 등록률설계/연동 준비됨
+- 첫 판 튜토리얼 완료율: 70% 이상
+- Steam 출시 전 필수 수동 QA 체크리스트 통과율: 100%
+- Steam 빌드 smoke 검증 성공률: 릴리스 후보마다 100%
+- 출시 후보 기준
+- 루트, release, Google Drive 실행파일 해시 일치
+- ChessSummon 업데이트 내역서
 
-## v0.2.33 - UI Button State & Hover Fixes
-
-- PNG 버튼 배경이 있는 상태에서도 `setButtonState`가 투명 hit rect에 stroke를 그리려던 문제를 수정했다.
-- 난이도 선택 hover를 `button.bg.setTint()` / `clearTint()` 중심으로 정리해 PNG 버튼의 시각 피드백을 살렸다.
-- 배치 화면 준비 버튼 비활성 상태를 PNG 배경 alpha 조절로 표현했다.
-- UIScene의 우측 상단 도움말 버튼도 동일한 PNG 액션 버튼 프레임을 사용하도록 정리했다.
-
-## v0.2.32 - UI Frame & Button Rendering Fixes
-
-- `addTextButton`에서 PNG bg가 있을 때 불필요한 rect stroke를 생략해 버튼 위 컬러 테두리 문제를 줄였다.
-- 모달/결과 화면 일부 버튼과 패널의 PNG 프레임 적용을 보정했다.
-- 결과 화면의 버튼 텍스트 위치를 실제 PNG 프레임에 맞게 조정했다.
-
-## v0.2.31 - AI-Generated Game Assets Full Set
-
-- 체스 말, 보드 타일, 하이라이트, HUD 프레임, 소환 UI, 마나/랭크/브랜드 계열 PNG 자산 세트를 확충했다.
-- `public/assets/` 하위에 Steam 출시 후보용 아트 리소스를 정리했다.
-- 기존 SVG/런타임 도형 느낌을 줄이기 위해 실제 PNG 자산 중심으로 UI 리소스 로딩 경로를 구성했다.
-
-## v0.2.28 - Check & Checkmate Visual Effects
-
-- 체크 발생 시 화면 플래시, 위험 테두리, 왕 위치 링, CHECK 배너를 추가했다.
-- 체크메이트 발생 시 베일, 확장 링, 방사형 스파크, 중앙 CHECKMATE 플레이트를 추가했다.
-- 체크메이트 후 결과 화면 전환 시간을 늘려 연출이 끝난 뒤 화면이 전환되도록 조정했다.
-
-## v0.2.27 - MMR-Based First-Turn Order
-
-- 플레이어 MMR과 AI 기준 MMR을 비교해 선공을 정하도록 했다.
-- 후공 플레이어에게 시작 마나 +1 보너스를 부여해 선후공 불균형을 보정했다.
-- Electron portable 파일명이 package version을 자동 반영하도록 정리했다.
-
-## v0.2.24 - Board and Piece Quality Pass
-
-- 원본 체스 말 PNG를 `public/assets/pieces/source`에 보존했다.
-- `scripts/normalize_piece_assets.cjs`로 말 실루엣 크기와 하단 정렬을 재생성할 수 있게 했다.
-- 보드 말 그림자를 런타임 ellipse 대신 PNG 그림자로 교체했다.
-- 배치 화면도 인게임 보드 타일 PNG를 사용하도록 맞췄다.
-
-## v0.2.23 - Action Feedback & In-Game Skin Replacement
-
-- 이동, 캡처, 소환 후 HUD에 즉시 행동 피드백을 표시하도록 했다.
-- 보드 셀, 안개 셀, 이동/선택/위협/소환 하이라이트, 마나 크리스탈, 시계 칩을 PNG 스킨으로 교체했다.
-- SVG 파일뿐 아니라 런타임 도형으로 만든 SVG-like primitive까지 점검하는 기준을 세웠다.
-
-## 남은 Steam 출시 준비 항목
-
-| 분류 | 항목 | 상태 |
-|------|------|------|
-| Steamworks | Steam App ID 지정 | 수동 준비 필요 |
-| Store Page | 캡슐 이미지 세트 | 수동 준비 필요 |
-| Store Page | 스크린샷 세트 | 수동 준비 필요 |
-| Store Page | 트레일러/짧은 플레이 영상 | 수동 준비 필요 |
-| Manual QA | 싱글플레이 전체 플로우 | 수동 QA 필요 |
-| Manual QA | 튜토리얼 플로우 | 수동 QA 필요 |
-| Manual QA | 재시작/리플레이 | 수동 QA 필요 |
-| Manual QA | Steam overlay | Steam 클라이언트 환경 QA 필요 |
+## 작성 규칙
+- 기능 추가, 밸런스 변경, UI/UX 수정, 리소스 교체, 빌드/배포 변경은 날짜와 버전을 함께 기록한다.
+- 기획서에는 최신 소개와 현재 설계 의도만 남기고, 과거 작업 로그는 이 문서로 이동한다.
+- MD와 HTML은 항상 함께 갱신한다.

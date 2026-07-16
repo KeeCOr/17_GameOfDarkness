@@ -460,6 +460,95 @@ describe('GameScene manual turn ending', () => {
     ]);
   });
 
+  it('reveals the whole board before the checkmate result transition', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    const destroyed = [];
+    const emitted = [];
+    let renderedAllPieces = false;
+
+    scene.state = 'WAITING';
+    scene.difficulty = Difficulty.EASY;
+    scene.aiProfile = null;
+    scene.timeLeft = 42;
+    scene.turnTimer = null;
+    scene.idleWarningTimer = null;
+    scene.idleWarningLossTimer = null;
+    scene.aiThinkTimer = null;
+    scene.gameOverTransitionTimer = null;
+    scene.input = { off() {} };
+    scene.events = { emit: (event, payload) => emitted.push({ event, payload }) };
+    scene.scene = { stop() {}, start() {} };
+    scene.time = { delayedCall: () => ({ remove() {} }) };
+    scene.achievements = { recordGameOver() {} };
+    scene.board = {
+      findKing: owner => ({ row: owner === Owner.AI ? 0 : 4, col: 2 }),
+    };
+    scene.fogGraphics = [
+      { destroy: () => destroyed.push('fog-a') },
+      { destroy: () => destroyed.push('fog-b') },
+    ];
+    scene._renderAllPieces = () => { renderedAllPieces = true; };
+    scene._animateCheckmate = () => {};
+
+    scene._gameOver(Owner.PLAYER, 'checkmate');
+
+    expect(destroyed).toEqual(['fog-a', 'fog-b']);
+    expect(scene.fogGraphics).toEqual([]);
+    expect(renderedAllPieces).toBe(true);
+    expect(emitted).toContainEqual({
+      event: 'checkmate-reveal',
+      payload: { winner: Owner.PLAYER, defeated: Owner.AI },
+    });
+  });
+
+
+  it('treats every board cell as visible during the checkmate reveal', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+
+    scene.revealAllBoard = true;
+    scene.board = new Board();
+    scene.board.setPiece(4, 2, new Piece(PieceType.KING, Owner.PLAYER));
+    scene.board.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
+    scene.calc = { getMoves: () => [] };
+    scene.detector = { getThreats: () => [] };
+
+    const visible = scene._getVisibleCells();
+
+    expect(visible.size).toBe(BOARD_SIZE * BOARD_SIZE);
+    expect(visible.has('0,0')).toBe(true);
+    expect(visible.has('4,4')).toBe(true);
+  });
+
+  it('does not recreate fog while the checkmate reveal is active', async () => {
+    const { GameScene } = await import('../src/scenes/GameScene.js');
+    const scene = Object.create(GameScene.prototype);
+    let destroyed = false;
+    const addedFog = [];
+
+    scene.revealAllBoard = true;
+    scene.fogGraphics = [{ destroy: () => { destroyed = true; } }];
+    scene.board = new Board();
+    scene.board.setPiece(4, 2, new Piece(PieceType.KING, Owner.PLAYER));
+    scene.board.setPiece(0, 2, new Piece(PieceType.KING, Owner.AI));
+    scene.calc = { getMoves: () => [] };
+    scene.detector = { getThreats: () => [] };
+    scene.textures = { exists: () => false };
+    scene.add = {
+      rectangle: (...args) => {
+        addedFog.push(args);
+        return { setDepth() { return this; } };
+      },
+    };
+
+    scene._renderFog();
+
+    expect(destroyed).toBe(true);
+    expect(scene.fogGraphics).toEqual([]);
+    expect(addedFog).toEqual([]);
+  });
+
   it('records only player promotions for achievements', async () => {
     const { GameScene } = await import('../src/scenes/GameScene.js');
     const scene = Object.create(GameScene.prototype);

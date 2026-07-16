@@ -69,6 +69,12 @@ export const UI_RESOURCE_LIST = Object.freeze([
     file: 'public/assets/fx/promotion-*.png',
   },
   {
+    id: 'fx-checkmate-reveal',
+    type: 'runtime-effect',
+    purpose: 'Final checkmate move reveals the whole board with a gold/emerald light sweep before the result transition.',
+    file: 'src/ui/effects.js',
+  },
+  {
     id: 'brand-logo',
     type: 'brand',
     purpose: 'Generated 3D metallic Chess of Dark bitmap logo for title, store, and promotional use.',
@@ -250,6 +256,96 @@ export function playCheckAlert(scene, x, y) {
     ease: 'Quad.easeIn',
     onComplete: () => { banner.destroy(); label.destroy(); },
   });
+}
+
+export function playCheckmateRevealEffect(scene, x, y, { winner } = {}) {
+  const playerWon = winner === Owner.PLAYER;
+  const accentColor = playerWon ? COLORS.EMERALD : COLORS.THREAT;
+  const labelColor = playerWon ? '#7dffca' : '#ff8a8a';
+  scene.cameras?.main?.flash?.(360, playerWon ? 125 : 255, playerWon ? 255 : 110, playerWon ? 202 : 110);
+  scene.cameras?.main?.shake?.(260, 0.006);
+
+  const boardCx = LAYOUT.BOARD_OFFSET_X + (LAYOUT.CELL_SIZE * 5) / 2;
+  const boardCy = LAYOUT.BOARD_OFFSET_Y + (LAYOUT.CELL_SIZE * 5) / 2;
+  const boardSize = LAYOUT.CELL_SIZE * 5;
+
+  const veil = scene.add.rectangle(
+    LAYOUT.GAME_WIDTH / 2, LAYOUT.GAME_HEIGHT / 2,
+    LAYOUT.GAME_WIDTH, LAYOUT.GAME_HEIGHT,
+    0xf8d67a, 0.16,
+  ).setDepth(12).setAlpha(0);
+  const boardLight = scene.add.rectangle(boardCx, boardCy, boardSize + 26, boardSize + 26, accentColor, 0.18)
+    .setDepth(13)
+    .setAlpha(0)
+    .setStrokeStyle?.(3, COLORS.GOLD, 0.82);
+  const sweep = scene.add.rectangle(LAYOUT.BOARD_OFFSET_X - 42, boardCy, 28, boardSize + 86, 0xffffff, 0.42)
+    .setDepth(16)
+    .setAngle?.(-15);
+
+  const labelBg = scene.add.rectangle(boardCx, LAYOUT.BOARD_OFFSET_Y - 42, 232, 38, 0x050912, 0.9)
+    .setDepth(17)
+    .setStrokeStyle(2, COLORS.GOLD, 0.72)
+    .setAlpha(0);
+  const label = scene.add.text(boardCx, LAYOUT.BOARD_OFFSET_Y - 42, 'FINAL VISION', {
+    fontSize: '18px',
+    color: labelColor,
+    fontStyle: 'bold',
+    letterSpacing: 3,
+  }).setOrigin(0.5).setDepth(18).setAlpha(0);
+
+  scene.tweens.add({
+    targets: [veil, boardLight, labelBg, label],
+    alpha: 1,
+    duration: 180,
+    ease: 'Sine.easeOut',
+  });
+  scene.tweens.add({
+    targets: sweep,
+    x: LAYOUT.BOARD_OFFSET_X + boardSize + 42,
+    alpha: 0,
+    duration: 520,
+    ease: 'Cubic.easeOut',
+    onComplete: () => sweep.destroy(),
+  });
+  scene.tweens.add({
+    targets: boardLight,
+    scaleX: 1.08,
+    scaleY: 1.08,
+    alpha: 0,
+    duration: 900,
+    delay: 480,
+    ease: 'Sine.easeOut',
+    onComplete: () => boardLight.destroy(),
+  });
+  scene.tweens.add({
+    targets: [veil, labelBg, label],
+    alpha: 0,
+    duration: 420,
+    delay: 900,
+    ease: 'Sine.easeIn',
+    onComplete: () => { veil.destroy(); labelBg.destroy(); label.destroy(); },
+  });
+
+  for (let i = 0; i < 10; i++) {
+    const angle = (Math.PI * 2 * i) / 10;
+    const spark = scene.add.rectangle(
+      x + Math.cos(angle) * 10,
+      y + Math.sin(angle) * 10,
+      5,
+      18,
+      playerWon ? 0x7dffca : 0xff9a70,
+      0.82,
+    ).setDepth(17).setRotation(angle);
+    scene.tweens.add({
+      targets: spark,
+      x: x + Math.cos(angle) * 72,
+      y: y + Math.sin(angle) * 72,
+      alpha: 0,
+      duration: 520,
+      ease: 'Quad.easeOut',
+      onComplete: () => spark.destroy(),
+    });
+  }
 }
 
 export function playCheckmateAlert(scene, x, y, { winner } = {}) {

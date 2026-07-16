@@ -1,4 +1,4 @@
-// src/scenes/GameScene.js
+﻿// src/scenes/GameScene.js
 import { Board } from '../game/Board.js';
 import { Piece } from '../game/Piece.js';
 import { MoveCalculator } from '../game/MoveCalculator.js';
@@ -13,7 +13,9 @@ import {
   BOARD_SIZE, Difficulty,
 } from '../config.js';
 import { getTurnHint, UI_ASSETS, UI_COPY } from '../ui/visuals.js';
-import { playCaptureEffect, playCheckAlert, playCheckmateAlert, playPromotionEffect } from '../ui/effects.js';
+import { formatActionFeedbackText, getActionFeedback } from '../ui/actionFeedback.js';
+import { preloadActionSfx, playActionSfx } from '../audio/actionSfx.js';
+import { playCaptureEffect, playCheckAlert, playCheckmateAlert, playCheckmateRevealEffect, playPromotionEffect } from '../ui/effects.js';
 import { readSinglePlayerRating, SINGLE_PLAYER_MMR_DEFAULT } from '../game/singlePlayerRating.js';
 
 const State = {
@@ -35,6 +37,7 @@ export class GameScene extends Phaser.Scene {
       this.load.image(`${t}_d`, `assets/pieces/${t}_d.png`);
     }
     this.load.image('ui_battle_entry_plate', 'assets/ui/battle-entry-plate.png');
+    preloadActionSfx(this);
   }
 
   init(data) {
@@ -77,6 +80,7 @@ export class GameScene extends Phaser.Scene {
     this.hasMoved = false;
     this.hasSummoned = false;
     this.fogGraphics = [];
+    this.revealAllBoard = false;
     this.animating = false;
     this.checkRing = null;
     this.currentHintMode = 'default';
@@ -205,6 +209,12 @@ export class GameScene extends Phaser.Scene {
 
   _getVisibleCells() {
     const visible = new Set();
+    if (this.revealAllBoard) {
+      for (let r = 0; r < BOARD_SIZE; r++)
+        for (let c = 0; c < BOARD_SIZE; c++)
+          visible.add(`${r},${c}`);
+      return visible;
+    }
     for (let r = 0; r < BOARD_SIZE; r++)
       for (let c = 0; c < BOARD_SIZE; c++) {
         const piece = this.board.getPiece(r, c);
@@ -227,6 +237,7 @@ export class GameScene extends Phaser.Scene {
   _renderFog() {
     this.fogGraphics.forEach(g => g.destroy());
     this.fogGraphics = [];
+    if (this.revealAllBoard) return;
     const visible = this._getVisibleCells();
     for (let r = 0; r < BOARD_SIZE; r++)
       for (let c = 0; c < BOARD_SIZE; c++) {
@@ -399,7 +410,9 @@ export class GameScene extends Phaser.Scene {
           return;
         }
         const summonedType = this.pendingSummonType;
+        const manaBefore = this.board.mana[Owner.PLAYER];
         this.summonSys.summon(this.board, Owner.PLAYER, summonedType, r, c);
+        playActionSfx(this, { type: 'summon' });
         this.achievements.recordSummon(summonedType);
         this.hasSummoned = true;
         this.summonedCells.add(`${r},${c}`);
@@ -408,18 +421,31 @@ export class GameScene extends Phaser.Scene {
         this.pendingSummonType = null;
         this._refreshBoard();
         this._animateSummon(r, c);
-        this._recordPlayerCheckIfNeeded();
+        const gaveCheck = this.detector.isInCheck(this.board, Owner.AI);
+          if (gaveCheck) this.achievements.recordCheck();
         if (this.tutorialMode) this.events.emit('tutorial-summoned');
         this._checkGameOver();
         if (this.state === State.GAME_OVER) return;
         if (this.hasMoved) {
           if (!this.tutorialMode) { this._endTurn(); return; }
-          this._emitPlayerAction({ type: 'summon', pieceType: summonedType });
+          this._emitPlayerAction({
+            type: 'summon',
+            pieceType: summonedType,
+            manaBefore,
+            manaAfter: this.board.mana[Owner.PLAYER],
+            gaveCheck,
+          });
           return;
         }
         this._showMovablePieces();
         this._showThreatsIfInCheck();
-        this._emitPlayerAction({ type: 'summon', pieceType: summonedType });
+        this._emitPlayerAction({
+          type: 'summon',
+          pieceType: summonedType,
+          manaBefore,
+          manaAfter: this.board.mana[Owner.PLAYER],
+          gaveCheck,
+        });
         return;
       }
       this._clearHighlights();
@@ -438,7 +464,8 @@ export class GameScene extends Phaser.Scene {
       }
       const moves = this.calc.getMoves(this.board, this.selectedCell.row, this.selectedCell.col);
       if (moves.some(m => m.row === r && m.col === c)) {
-        const isCapture = !!this.board.getPiece(r, c);
+        const capturedPiece = this.board.getPiece(r, c);
+        const isCapture = !!capturedPiece;
         const { row: fr, col: fc } = this.selectedCell;
         if (this._sendPvpCommand({ type: 'move', from: { row: fr, col: fc }, to: { row: r, col: c } })) {
           this._clearHighlights();
@@ -453,21 +480,33 @@ export class GameScene extends Phaser.Scene {
         this._animateMove(fr, fc, r, c, isCapture, () => {
           this.animating = false;
           this.board.movePiece(fr, fc, r, c);
+          playActionSfx(this, { type: 'move', capture: isCapture });
           if (isCapture) this.achievements.recordCapture();
           this.hasMoved = true;
           if (this.tutorialMode) this.events.emit('tutorial-piece-moved');
           this._checkPromotion();
           this._refreshBoard();
-          this._recordPlayerCheckIfNeeded();
+          const gaveCheck = this.detector.isInCheck(this.board, Owner.AI);
+          if (gaveCheck) this.achievements.recordCheck();
           this._checkGameOver();
           if (this.state === State.GAME_OVER) return;
           if (this.hasSummoned || this.timeLeft <= 0) {
             if (!this.tutorialMode) { this._endTurn(); return; }
-            this._emitPlayerAction({ type: 'move', capture: isCapture });
+            this._emitPlayerAction({
+              type: 'move',
+              capture: isCapture,
+              capturedPieceType: capturedPiece?.type,
+              gaveCheck,
+            });
             return;
           }
           this._showThreatsIfInCheck();
-          this._emitPlayerAction({ type: 'move', capture: isCapture });
+          this._emitPlayerAction({
+            type: 'move',
+            capture: isCapture,
+            capturedPieceType: capturedPiece?.type,
+            gaveCheck,
+          });
         });
         return;
       }
@@ -485,7 +524,8 @@ export class GameScene extends Phaser.Scene {
       this._highlightCells([{ row: r, col: c }], COLORS.SELECTED);
       this._highlightCells(moves, COLORS.MOVE_HIGHLIGHT);
       this._showThreatsIfInCheck();
-      this._updateHint('selected');
+      this._showMovePreviewFeedback(moves);
+      playActionSfx(this, 'piece-select');
       if (this.tutorialMode) this.events.emit('tutorial-piece-selected');
     }
   }
@@ -594,7 +634,7 @@ export class GameScene extends Phaser.Scene {
       strokeThickness: 4,
     }).setOrigin(0.5).setDepth(16).setAlpha(0);
 
-    const subtitle = this.add.text(cx, cy - 42, '왕을 지키고 전장을 장악하세요', {
+    const subtitle = this.add.text(cx, cy - 42, '정을 지키고 전장을 장악하세요', {
       fontSize: '14px',
       color: '#d9e6ff',
       stroke: '#050812',
@@ -737,6 +777,29 @@ export class GameScene extends Phaser.Scene {
     if (this.detector.isInCheck(this.board, Owner.AI)) {
       this.achievements.recordCheck();
     }
+  }
+
+  _showMovePreviewFeedback(moves = []) {
+    const captureCount = moves.filter(({ row, col }) => Boolean(this.board.getPiece(row, col))).length;
+    const feedback = getActionFeedback({
+      type: 'move-preview',
+      moveCount: moves.length,
+      captureCount,
+    });
+    const color = feedback.tone === 'success' ? '#7dffb8' : '#ffffff';
+    playActionSfx(this, 'move-preview');
+    this.events.emit('hint-change', { hint: formatActionFeedbackText(feedback), color, mode: 'selected' });
+  }
+
+  _showSummonPreviewFeedback(squares = []) {
+    const feedback = getActionFeedback({
+      type: 'summon-preview',
+      summonableCount: squares.length,
+      hasMoved: this.hasMoved,
+      hasSummoned: this.hasSummoned,
+    });
+    const color = feedback.tone === 'summon' ? '#6fffe0' : '#ffffff';
+    this.events.emit('hint-change', { hint: formatActionFeedbackText(feedback), color, mode: 'summon' });
   }
 
   _updateHint(mode = 'default') {
@@ -963,7 +1026,11 @@ export class GameScene extends Phaser.Scene {
   _gameOver(winner, resultReason = null) {
     if (this.state === State.GAME_OVER) return;
     this.state = State.GAME_OVER;
-    if (resultReason === 'checkmate') this._animateCheckmate(winner);
+    playActionSfx(this, { type: 'game-over', won: winner === Owner.PLAYER });
+    if (resultReason === 'checkmate') {
+      this._revealBoardForCheckmate(winner);
+      this._animateCheckmate(winner);
+    }
     this.achievements?.recordGameOver?.({
       winner,
       difficulty: this.difficulty,
@@ -983,6 +1050,25 @@ export class GameScene extends Phaser.Scene {
         multiplayerMode: this.multiplayerMode,
       });
     });
+  }
+
+  _revealBoardForCheckmate(winner) {
+    const defeated = winner === Owner.PLAYER ? Owner.AI : Owner.PLAYER;
+    this.revealAllBoard = true;
+    if (Array.isArray(this.highlightGraphics)) this._clearHighlights?.();
+    this._clearCheckRing?.();
+    this.fogGraphics?.forEach(g => g.destroy());
+    this.fogGraphics = [];
+    this._renderAllPieces?.();
+
+    const kingPos = this.board?.findKing?.(defeated);
+    if (kingPos && this.add && this.tweens && this.time) {
+      const x = LAYOUT.BOARD_OFFSET_X + kingPos.col * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+      const y = LAYOUT.BOARD_OFFSET_Y + kingPos.row * LAYOUT.CELL_SIZE + LAYOUT.CELL_SIZE / 2;
+      playCheckmateRevealEffect(this, x, y, { winner, defeated });
+    }
+
+    this.events?.emit?.('checkmate-reveal', { winner, defeated });
   }
 
   _animateCheckmate(winner) {
@@ -1014,7 +1100,7 @@ export class GameScene extends Phaser.Scene {
     this._clearHighlights();
     const squares = this.summonSys.getSummonableSquares(this.board, this._localOwner());
     this._highlightCells(squares, COLORS.SUMMON_HIGHLIGHT);
-    this._updateHint('summon');
+    this._showSummonPreviewFeedback(squares);
     this.events.emit('summon-mode', { pieceType, hasMoved: this.hasMoved, hasSummoned: this.hasSummoned });
     if (this.tutorialMode) this.events.emit('tutorial-summon-clicked');
   }
@@ -1067,8 +1153,6 @@ export class GameScene extends Phaser.Scene {
     this._clearSceneTimers();
   }
 }
-
-
 
 
 
