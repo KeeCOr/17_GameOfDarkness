@@ -322,6 +322,21 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  _showMovePredictionLayer(moves = []) {
+    for (const { row, col } of moves) {
+      const { x, y } = this._getCellCenter(row, col);
+      const isCapture = Boolean(this.board.getPiece(row, col));
+      const label = this.add.text(x, y, isCapture ? 'CAPTURE' : 'MOVE', {
+        fontSize: '9px',
+        color: isCapture ? '#ffb0a7' : '#b9ffe4',
+        fontStyle: 'bold',
+        stroke: '#09101d',
+        strokeThickness: 3,
+      }).setOrigin(0.5).setDepth(7);
+      this.highlightGraphics.push(label);
+    }
+  }
+
   _getHighlightAssetKey(color) {
     if (color === COLORS.THREAT) return UI_ASSETS.gameCellHighlightThreat.key;
     if (color === COLORS.SUMMON_HIGHLIGHT) return UI_ASSETS.gameCellHighlightSummon.key;
@@ -523,6 +538,7 @@ export class GameScene extends Phaser.Scene {
       this._clearHighlights();
       this._highlightCells([{ row: r, col: c }], COLORS.SELECTED);
       this._highlightCells(moves, COLORS.MOVE_HIGHLIGHT);
+      this._showMovePredictionLayer(moves);
       this._showThreatsIfInCheck();
       this._showMovePreviewFeedback(moves);
       playActionSfx(this, 'piece-select');
