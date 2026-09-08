@@ -1,0 +1,123 @@
+# ChessSummon
+
+- 문서 유형: 게임
+- 문서 버전: 1.0
+- 프로젝트 버전: 0.8.0
+- 근거 신뢰도: 중간
+
+## 1. 문서 메타데이터와 근거 범례
+
+- 문서 버전 1.0, 프로젝트 버전 0.8.0(`package.json` 기준, 사실).
+- 근거 유형: **사실**(파일/자산/스크립트 존재 확인) vs **제안**(문서 존재는 확인되나 본문 미열람 상태에서의 해석).
+- 신뢰도 범례: 높음=package.json/파일시스템 직접 확인, 중간=파일명·디렉토리 구조 기반 추정, 낮음=본문 미확인 제안.
+
+## 2. 문제 정의
+
+5x5 소형 보드에 포획-소환 메커닉을 결합한 변형 체스에서, 신규 플레이어가 소환 조건과 승패 조건을 짧은 첫 플레이 안에 학습하지 못해 이탈할 위험이 있음.
+- 근거(사실): `docs/superpowers/specs/2026-05-13-tutorial-design.md`, `2026-05-13-turn-rules-layout-ux-design.md` 문서 파일 존재는 온보딩/규칙 이해가 실제 다뤄진 주제임을 시사(본문 미확인, 제안).
+
+## 3. 한 줄 피치와 제품 포지셔닝
+
+"작은 5x5 보드 위에서 상대 말을 포획해 소환하며 싸우는 다크 판타지 1인용 전술 체스." (근거: `package.json` description "A 5x5 dark tactical chess game built for single-player Steam release candidates.", 사실)
+
+## 4. 주 페르소나
+
+박서준, 32세, 백엔드 개발자. 퇴근 후 20~30분 짧은 세션으로 두뇌 자극형 전략 게임을 즐기는 캐주얼 전략 게이머.
+- 근거(제안): `docs/persona_playtest_feedback.md` 문서 파일 존재로 페르소나 기반 플레이테스트가 수행되었음을 시사하나, 본문 미확인으로 이름/나이/직업 세부는 제안 구성임.
+
+## 5. 디자인 기둥과 핵심 재미
+
+- 소형 보드 전술: 5x5 축소 보드로 빠른 판단 유도.
+- 소환 메커닉: 포획한 말을 소환에 활용해 고전 체스 대비 차별화(문서명 `2026-05-08-chess-summoning-game-design.md` 존재, 사실).
+- 다크 판타지 연출 톤: `capture-impact-ring/slash.png`, `promotion-beam/burst.png` 등 FX 자산 존재로 확인(사실).
+
+## 6. 핵심 루프
+
+유저가 선택을 하면 결과가 되고, 그 결과 때문에 다시 선택을 한다.
+
+순환 문장: "플레이어는 말을 이동시키고 → 상대 말을 포획하고 → 포획한 말을 소환하여 전력을 강화하고 → 다시 이동한다."
+- 근거: 이동/포획/소환 관련 하이라이트 및 FX 자산(사실), 세부 트리거 조건은 문서 미열람으로 제안.
+
+## 7. 최초 30초 플레이 흐름
+
+- 타이틀/브랜드 로고 노출(`assets/brand/chesssummon-logo.png` 등 확인, 사실).
+- 보드 진입 후 첫 기물 선택 시 이동 가능 칸 하이라이트(`game-cell-highlight-movable.png`, 사실).
+- 튜토리얼 유도 단계 존재(제안, `tutorial-design.md` 파일명 근거).
+- 첫 이동 확정 시 move-confirm 사운드 재생(`move-confirm.ogg`, 사실).
+
+## 8. 게임 규칙과 승패 조건
+
+사실: 단일 플레이어 대상 5x5 보드 체스 변형(`package.json`).
+제안: 소환 조건, 정확한 승패 판정 로직은 `chess-summoning-game-design.md`, `turn-rules-layout-ux-design.md` 문서에 기술된 것으로 추정되나 본문 미확인으로 세부 규칙은 이번 근거로 확정할 수 없음.
+
+## 9. 콘텐츠, 진행, 성장, 경제 구조
+
+사실: 업적 시스템 존재(`tests/AchievementProgress.test.js`, `tests/AchievementsCatalog.test.js`), Steam 업적/리더보드 설계 문서 존재(`Steam_Achievements_설계.md`, `Steam_Leaderboards_설계.md`).
+제안: 재화·경제 순환 구조에 대한 구체 근거는 확인되지 않아 별도 기재하지 않음.
+
+## 10. MVP 가설과 검증 방법
+
+- 가설1: 소환 메커닉이 고전 체스 대비 재플레이 유도력을 높인다 — 검증: 페르소나 대상 플레이테스트 피드백 수집(`persona_playtest_feedback.md` 문서 기반, 제안).
+- 가설2: 5x5 축소 보드가 세션 길이를 짧게 유지해 캐주얼 유저 이탈을 줄인다 — 검증: 세션 길이 계측(제안, 계측 구현 근거 없음).
+
+## 11. 레퍼런스별 핵심 행동 단계 수와 적용 교훈
+
+제안(구조적 유추, 실제 비교 문서 근거 없음):
+- 고전 체스: 기물 선택 → 이동 대상 확인 → 이동 확정 (3단계) — 교훈: 단순한 3단계 흐름이 학습 곡선을 낮춤.
+- 유닛 합성/소환형 전략 게임: 자원(포획물) 확보 → 소환 대상 선택 → 배치 확정 (3단계) — 교훈: 소환 행동을 이동과 동일한 3단계 구조로 맞춰 추가 학습 부담을 최소화.
+
+## 12. 수치 KPI와 측정 방법
+
+제안(실측 데이터 근거 없음, 목표치):
+- 튜토리얼 완료율 ≥ 70% — 측정: 튜토리얼 단계별 진입/완료 이벤트 로깅.
+- 평균 세션 길이 20~30분 — 측정: 세션 시작·종료 타임스탬프 차이 집계.
+- 첫 판 완주율(승패 판정까지 도달) ≥ 60% — 측정: 게임 종료 이벤트 발생 비율 집계.
+
+## 13. UI, HUD, 컨트롤
+
+5개 UI 상태(사실 기반, 자산 존재로 확인):
+1) 대기(Idle) — 보드·기물 표시, 입력 대기.
+2) 기물 선택(Selected) — 이동 가능 칸 하이라이트(`game-cell-highlight-movable.png`).
+3) 이동 확인(Move Confirm) — `move-confirm.ogg` 재생.
+4) 포획/소환(Capture-Summon) — `capture-impact-ring/slash.png`, `promotion-beam/burst.png`, `summon-confirm.ogg` 재생.
+5) 승패(Victory/Defeat) — `victory.ogg`/`defeat.ogg` 재생.
+
+## 14. 로딩·빈 상태·에러·100개 이상 데이터·3배 긴 텍스트 대응
+
+근거 없음: 로딩 화면, 빈 상태, 에러 처리, 대량 데이터(100개 이상) 및 긴 텍스트 대응에 관한 파일 또는 문서가 제공된 경로 목록에서 확인되지 않음.
+
+## 15. 접근성
+
+근거 없음: 접근성 관련 설정, 문서, 자산이 제공된 경로 목록에서 확인되지 않음.
+
+## 16. 시각·청각·햅틱 피드백
+
+사실: FX 이미지(`capture-impact-ring/slash.png`, `promotion-beam/burst.png`), 오디오(`capture`, `defeat`, `move-confirm`, `move-preview`, `piece-select`, `summon-confirm`, `victory` `.ogg`) 다수 확인.
+근거 없음: 햅틱 피드백 관련 자산/문서는 확인되지 않음.
+
+## 17. 구현 상태 매트릭스
+
+- 이동/선택 하이라이트: 자산 확인됨 — `assets/highlights/game-cell-highlight-movable.png`
+- 오디오 피드백(선택/이동/포획/소환/승패): 자산 확인됨 — `assets/audio/kenney/*.ogg`
+- 업적 시스템: 테스트 파일 존재 — `tests/AchievementProgress.test.js`, `tests/AchievementsCatalog.test.js`
+- AI 상대: 테스트 파일 존재 — `tests/AIController.test.js`
+- Steam 업적/리더보드/클라우드 연동: 설계 문서만 존재, 구현 여부 미확인 — `Steam_Achievements_설계.md`, `Steam_Leaderboards_설계.md`, `Steam_Cloud_저장소_설계.md`
+- 멀티플레이어 서버: package.json 스크립트 존재(`online:server`) — `server/multiplayer-server.cjs`
+
+## 18. 빌드·테스트 근거
+
+- `package.json`에 vitest 기반 `test` 스크립트 확인, `tests/` 디렉토리 내 다수 `.test.js` 파일 존재(예: `Board.test.js`, `ActionFeedback.test.js`, `ActionSfx.test.js`) — 테스트 파일 존재는 확인되나 실행 결과(통과/실패)는 관찰되지 않음.
+- 빌드 산출물 존재 확인: `ChessSummon_v0.8.0.html`, `ChessSummon_v0.8.0_portable.exe`, `dist-html/`(index.html, assets 포함) — 산출물 파일 존재는 확인되나 빌드 실행 로그는 관찰되지 않음.
+- electron-builder 기반 portable 배포 설정 확인(`package.json` build 필드).
+
+## 19. 알려진 리스크와 실패 시나리오
+
+- 온보딩 리스크: 소환 규칙 이해 실패로 인한 신규 유저 이탈 가능성(`tutorial-design.md`, `turn-rules-layout-ux-design.md` 문서 존재 자체가 이 문제 인지를 시사, 제안).
+- Steam 연동 리스크: 업적/리더보드/클라우드 설계 문서만 존재하고 실동작 검증 근거가 없어 출시 전 미확인 상태로 남을 위험.
+- 멀티플레이어 안정성 리스크: `online:server` 스크립트는 존재하나 이를 검증하는 테스트 근거가 확인되지 않음.
+
+## 20. 다음 우선순위
+
+- 튜토리얼/규칙 설계 문서 본문을 실제 구현과 대조 검증.
+- Steam 서비스 연동(업적/리더보드/클라우드) 실동작 확인 근거 확보.
+- 로딩/빈 상태/에러/대량 데이터/긴 텍스트 대응 및 접근성 설계 문서화 착수(현재 근거 부재).

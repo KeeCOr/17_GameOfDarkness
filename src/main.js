@@ -8,6 +8,9 @@ import { ResultScene } from './scenes/ResultScene.js';
 import { TutorialScene } from './scenes/TutorialScene.js';
 import { MultiplayerLobbyScene } from './scenes/MultiplayerLobbyScene.js';
 import { LAYOUT } from './config.js';
+import { installGameAudioRuntime } from './audio/GameAudioRuntime.js';
+
+installGameAudioRuntime('/assets/audio/original');
 
 new Phaser.Game({
   type: Phaser.AUTO,
