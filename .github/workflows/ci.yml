@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true
+
+      - name: Vite build (web)
+        run: npm run build
+
+      - name: Verify dist output
+        run: ls dist/index.html

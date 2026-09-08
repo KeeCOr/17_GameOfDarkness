@@ -4,6 +4,9 @@ const { createSteamClient } = require('./steamClient.cjs');
 const { registerSteamIpcHandlers } = require('./steamIpc.cjs');
 const { createStaticServer } = require('./staticServer.cjs');
 
+// TODO: Replace 480 with actual Steam App ID before release
+if (!process.env.STEAM_APP_ID) process.env.STEAM_APP_ID = '480';
+
 registerSteamIpcHandlers(ipcMain, { steamClient: createSteamClient() });
 
 const GAME_CONTENT_WIDTH = 450;
