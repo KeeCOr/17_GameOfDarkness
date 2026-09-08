@@ -38,14 +38,15 @@ describe('Kenney action SFX routing', () => {
     expect(getActionSfxKey({ type: 'unknown' })).toBe(null);
   });
 
-  it('preloads and plays through Phaser sound when available', async () => {
+  it('preloads assets but routes playback through the shared director', async () => {
     const { ACTION_SFX, preloadActionSfx, playActionSfx } = await import('../src/audio/actionSfx.js');
     const loaded = [];
     const played = [];
     const scene = {
       load: { audio: (key, path) => loaded.push({ key, path }) },
-      sound: { play: (key, options) => played.push({ key, options }) },
     };
+
+    globalThis.__gameAudioRuntime = { playCue: (cue) => { played.push(cue); return true; } };
 
     preloadActionSfx(scene);
     playActionSfx(scene, { type: 'move', capture: true });
@@ -54,12 +55,8 @@ describe('Kenney action SFX routing', () => {
       key: ACTION_SFX.capture.key,
       path: ACTION_SFX.capture.path,
     });
-    expect(played).toEqual([
-      {
-        key: ACTION_SFX.capture.key,
-        options: { volume: ACTION_SFX.capture.volume },
-      },
-    ]);
+    expect(played).toEqual([ACTION_SFX.capture]);
+    delete globalThis.__gameAudioRuntime;
   });
 
   it('does not throw when Phaser audio is unavailable', async () => {

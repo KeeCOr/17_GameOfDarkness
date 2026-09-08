@@ -276,8 +276,7 @@ npm run dist
 
 ## 오디오 레이어
 
-- **BGM**: 첫 사용자 인터랙션 이후 안전하게 시작되는 루프 배경음
-- **SFX**: 입력, 액션, 위험, 전환, 결과에 대응하는 개별 효과음
-- **볼륨 분리**: BGM과 SFX 음량을 독립적으로 조절하며 위험·결과 신호에서는 BGM을 일시적으로 낮춘다.
-- **음원 출처**: Kenney Music Loops(CC0)와 프로젝트 생성 스크립트로 결정론적으로 만든 독창적 PCM WAV 큐를 사용한다.
-- **런타임 원칙**: 핵심 오디오 레이어는 사전 생성된 음원을 사용하며 런타임 합성음에 의존하지 않는다.
+- <span style="color:#ff0000">최초 포인터/키 입력 제스처에서 BGM 하나를 잠금 해제하며, 탭이 숨겨지면 일시정지되고 사용자가 시작한 경우에만 화면이 다시 보일 때 재개됩니다.</span>
+- <span style="color:#ff0000">BGM/SFX/음소거는 각각 독립적으로 localStorage에 저장되고, 실제 Kenney CC0 BGM과 piece-select/move-preview/move-confirm/summon/capture/victory/defeat OGG가 실제 시맨틱 게임 이벤트에 따라 단일 디렉터를 통해 라우팅되며, Phaser 직접 재생이나 생성된 PCM 기본값은 사용되지 않습니다.</span>
+- <span style="color:#ff0000">danger/result 사운드는 디코딩된 전체 꼬리 구간 동안 0.55로 더킹되고 최소 1.0/0.8초가 보장되며, 최대 8개 보이스로 제한되고 누락되거나 거부된 사운드는 안전하게 무시됩니다.</span>
+- <span style="color:#ff0000">Electron은 file URL 대신 임시 127.0.0.1 HTTP 서버로 dist를 서비스하며, MIME/경로 탐색 가드와 깔끔한 종료를 포함합니다.</span>

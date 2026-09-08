@@ -1,11 +1,11 @@
 ﻿export const ACTION_SFX = Object.freeze({
-  pieceSelect: Object.freeze({ key: 'kenney-piece-select', path: 'assets/audio/kenney/piece-select.ogg', volume: 0.28 }),
-  movePreview: Object.freeze({ key: 'kenney-move-preview', path: 'assets/audio/kenney/move-preview.ogg', volume: 0.2 }),
-  moveConfirm: Object.freeze({ key: 'kenney-move-confirm', path: 'assets/audio/kenney/move-confirm.ogg', volume: 0.32 }),
-  summonConfirm: Object.freeze({ key: 'kenney-summon-confirm', path: 'assets/audio/kenney/summon-confirm.ogg', volume: 0.36 }),
-  capture: Object.freeze({ key: 'kenney-capture', path: 'assets/audio/kenney/capture.ogg', volume: 0.42 }),
-  victory: Object.freeze({ key: 'kenney-victory', path: 'assets/audio/kenney/victory.ogg', volume: 0.48 }),
-  defeat: Object.freeze({ key: 'kenney-defeat', path: 'assets/audio/kenney/defeat.ogg', volume: 0.4 }),
+  pieceSelect: Object.freeze({ key: 'kenney-piece-select', path: 'assets/audio/kenney/piece-select.ogg', src: '/assets/audio/kenney/piece-select.ogg', volume: 0.28, category: 'ui' }),
+  movePreview: Object.freeze({ key: 'kenney-move-preview', path: 'assets/audio/kenney/move-preview.ogg', src: '/assets/audio/kenney/move-preview.ogg', volume: 0.2, category: 'ui' }),
+  moveConfirm: Object.freeze({ key: 'kenney-move-confirm', path: 'assets/audio/kenney/move-confirm.ogg', src: '/assets/audio/kenney/move-confirm.ogg', volume: 0.32, category: 'action' }),
+  summonConfirm: Object.freeze({ key: 'kenney-summon-confirm', path: 'assets/audio/kenney/summon-confirm.ogg', src: '/assets/audio/kenney/summon-confirm.ogg', volume: 0.36, category: 'transition' }),
+  capture: Object.freeze({ key: 'kenney-capture', path: 'assets/audio/kenney/capture.ogg', src: '/assets/audio/kenney/capture.ogg', volume: 0.42, category: 'danger' }),
+  victory: Object.freeze({ key: 'kenney-victory', path: 'assets/audio/kenney/victory.ogg', src: '/assets/audio/kenney/victory.ogg', volume: 0.48, category: 'result' }),
+  defeat: Object.freeze({ key: 'kenney-defeat', path: 'assets/audio/kenney/defeat.ogg', src: '/assets/audio/kenney/defeat.ogg', volume: 0.4, category: 'result' }),
 });
 
 export function getActionSfxKey(action) {
@@ -29,8 +29,6 @@ export function preloadActionSfx(scene) {
 export function playActionSfx(scene, action) {
   const soundKey = getActionSfxKey(action);
   const sound = soundKey ? ACTION_SFX[soundKey] : null;
-  if (!sound || !scene?.sound?.play) return false;
-
-  scene.sound.play(sound.key, { volume: sound.volume });
-  return true;
+  if (!sound) return false;
+  return globalThis.__gameAudioRuntime?.playCue?.(sound) ?? false;
 }
