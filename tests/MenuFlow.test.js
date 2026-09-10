@@ -91,15 +91,35 @@ function makeMenuScene(options = {}) {
     destroy() {},
   };
 
+  const nineslices = [];
+  const makeNineSlice = (x, y, key, _frame, width, height) => {
+    const nineslice = {
+      x,
+      y,
+      key,
+      width,
+      height,
+      setAlpha(value) { this.alpha = value; return this; },
+      setDepth(value) { this.depth = value; return this; },
+      setTint(value) { this.tint = value; return this; },
+      clearTint() { this.tint = null; return this; },
+      destroy() {},
+    };
+    nineslices.push(nineslice);
+    return nineslice;
+  };
+
   return {
     rectangles,
     texts,
     images,
+    nineslices,
     starts,
     scene: {
       add: {
         rectangle: makeRect,
         image: makeImage,
+        nineslice: makeNineSlice,
         text: makeText,
         graphics: () => graphics,
       },
@@ -168,7 +188,7 @@ describe('menu flow', () => {
   it('moves difficulty selection copy into taller buttons', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { UI_ASSETS, UI_COPY } = await import('../src/ui/visuals.js');
-    const { scene, images, texts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    const { scene, nineslices, texts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key, UI_ASSETS.buttonFrame9Slice.key] });
     Object.setPrototypeOf(scene, MenuScene.prototype);
 
     scene._showDifficultySelect({ showBack: false });
@@ -180,26 +200,26 @@ describe('menu flow', () => {
     expect(texts.find(text => text.value === UI_COPY.menu.difficulties.EASY)?.y).toBe(330);
     expect(texts.find(text => text.value === UI_COPY.menu.difficultyHints.EASY)?.y).toBe(362);
 
-    const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
-    expect(titleButtonFrames.some(image => image.y === 326 && image.width === 322 && image.height === 92)).toBe(true);
-    expect(titleButtonFrames.some(image => image.y === 632 && image.width === 322 && image.height === 92)).toBe(true);
+    const buttonFrames = nineslices.filter(art => art.key === UI_ASSETS.buttonFrame9Slice.key);
+    expect(buttonFrames.some(art => art.y === 326 && art.width === 322 && art.height === 92)).toBe(true);
+    expect(buttonFrames.some(art => art.y === 632 && art.width === 322 && art.height === 92)).toBe(true);
   }, 10000);
 
   it('keeps the locked very hard option in the same full button format', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { UI_ASSETS, UI_COPY } = await import('../src/ui/visuals.js');
-    const { scene, images, texts, starts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    const { scene, nineslices, texts, starts } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key, UI_ASSETS.buttonFrame9Slice.key] });
     Object.setPrototypeOf(scene, MenuScene.prototype);
     scene.steamService = { isUnlocked: () => false };
 
     scene._showDifficultySelect({ showBack: false });
 
-    const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
-    const lockedFrame = titleButtonFrames.find(image => image.y === 632);
+    const buttonFrames = nineslices.filter(art => art.key === UI_ASSETS.buttonFrame9Slice.key);
+    const lockedFrame = buttonFrames.find(art => art.y === 632);
     const lockedLabel = texts.find(text => text.value === UI_COPY.menu.difficulties.VERY_HARD);
     const lockedHint = texts.find(text => text.value === UI_COPY.menu.veryHardLocked);
 
-    expect(titleButtonFrames).toHaveLength(4);
+    expect(buttonFrames).toHaveLength(4);
     expect(lockedFrame).toMatchObject({ width: 322, height: 92, alpha: 0.42, tint: 0x72798a });
     expect(lockedLabel).toMatchObject({ y: 636 });
     expect(lockedLabel.style.color).toBe('#9aa6bf');
@@ -211,14 +231,14 @@ describe('menu flow', () => {
   it('uses taller mode buttons with more touch padding', async () => {
     const { MenuScene } = await import('../src/scenes/MenuScene.js');
     const { UI_ASSETS } = await import('../src/ui/visuals.js');
-    const { scene, images } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key] });
+    const { scene, nineslices } = makeMenuScene({ textureKeys: [UI_ASSETS.titleButtonFrame.key, UI_ASSETS.buttonFrame9Slice.key] });
     Object.setPrototypeOf(scene, MenuScene.prototype);
 
     scene._showModeSelect();
 
-    const titleButtonFrames = images.filter(image => image.key === UI_ASSETS.titleButtonFrame.key);
-    expect(titleButtonFrames.some(image => image.y === 440 && image.width === 322 && image.height === 90)).toBe(true);
-    expect(titleButtonFrames.some(image => image.y === 548 && image.width === 322 && image.height === 90)).toBe(true);
+    const buttonFrames = nineslices.filter(art => art.key === UI_ASSETS.buttonFrame9Slice.key);
+    expect(buttonFrames.some(art => art.y === 440 && art.width === 322 && art.height === 90)).toBe(true);
+    expect(buttonFrames.some(art => art.y === 548 && art.width === 322 && art.height === 90)).toBe(true);
   }, 10000);
 
   it('unlocks very hard after hard mode has been cleared', async () => {

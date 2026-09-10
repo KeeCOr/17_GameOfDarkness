@@ -443,7 +443,13 @@ describe('visual theme helpers', () => {
           setAlpha() { return this; },
         }),
         graphics: () => {
-          const graphic = { setDepth() { return this; } };
+          const graphic = {
+            setDepth() { return this; },
+            fillStyle() { return this; },
+            fillRoundedRect() { return this; },
+            lineStyle() { return this; },
+            strokeRoundedRect() { return this; },
+          };
           graphics.push(graphic);
           return graphic;
         },
@@ -455,14 +461,10 @@ describe('visual theme helpers', () => {
     const panel = addPanel(scene, 0, 0, 120, 80);
     const button = addTextButton(scene, 50, 50, 160, 44, 'Start');
 
-    expect(panel.key).toBe(UI_ASSETS.frameHudPanel.key);
-    expect(button.bg.key).toBe(UI_ASSETS.buttonPrimary.key);
-    expect(images.map(image => image.key)).toEqual([
-      UI_ASSETS.frameHudPanel.key,
-      UI_ASSETS.buttonPrimary.key,
-    ]);
+    expect(button.bg).toBeNull();
+    expect(images).toEqual([]);
     expect(rectangles).toHaveLength(1);
-    expect(graphics).toHaveLength(0);
+    expect(graphics).toHaveLength(1);
   });
 
   it('applies sliced/generated UI frames to the stage and gameplay HUD', () => {
@@ -508,7 +510,6 @@ describe('visual theme helpers', () => {
     expect(multiplayerSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
     expect(multiplayerSceneSource).toContain('textOffsetY: 2');
     expect(resultSceneSource).toContain('preferTitleArt: true');
-    expect(resultSceneSource).toContain('UI_ASSETS.titleButtonFrame.key');
     expect(resultSceneSource).toContain('UI_ASSETS.resultTrophy.key');
     expect(resultSceneSource).not.toContain("'SINGLE MMR'");
     expect(resultSceneSource).not.toContain('_drawResultCrown');

@@ -36,6 +36,7 @@ describe('UI modal cleanup', () => {
     const rectangles = [];
     const images = [];
     const texts = [];
+    const graphics = [];
 
     scene.textures = { exists: () => true };
     scene.add = {
@@ -57,16 +58,22 @@ describe('UI modal cleanup', () => {
         texts.push(obj);
         return obj;
       },
-      graphics: () => makeDisplayObject({
-        fillStyle() { return this; },
-        beginPath() { return this; },
-        moveTo() { return this; },
-        lineTo() { return this; },
-        closePath() { return this; },
-        fillPath() { return this; },
-        lineStyle() { return this; },
-        strokePath() { return this; },
-      }),
+      graphics: () => {
+        const obj = makeDisplayObject({
+          fillStyle() { return this; },
+          fillRoundedRect() { return this; },
+          beginPath() { return this; },
+          moveTo() { return this; },
+          lineTo() { return this; },
+          closePath() { return this; },
+          fillPath() { return this; },
+          lineStyle() { return this; },
+          strokePath() { return this; },
+          strokeRoundedRect() { return this; },
+        });
+        graphics.push(obj);
+        return obj;
+      },
     };
     scene.tweens = { add: ({ onComplete }) => onComplete?.() };
     scene.gameScene = { resolveIdleWarning: () => {} };
@@ -75,8 +82,10 @@ describe('UI modal cleanup', () => {
 
     rectangles[1].handlers.pointerdown.forEach(callback => callback());
 
-    expect(images).toHaveLength(3);
-    expect(images.every(image => image.destroyed)).toBe(true);
+    expect(images).toEqual([]);
+    expect(graphics).toHaveLength(1);
+    expect(graphics.every(panel => panel.destroyed)).toBe(true);
+    expect(rectangles.every(rect => rect.destroyed)).toBe(true);
     expect(texts.every(text => text.destroyed)).toBe(true);
   });
 
@@ -87,6 +96,7 @@ describe('UI modal cleanup', () => {
     const images = [];
     const texts = [];
     const circles = [];
+    const nineslices = [];
 
     scene.stepIndex = 4;
     scene._overlayObjs = [];
@@ -100,6 +110,11 @@ describe('UI modal cleanup', () => {
       image: () => {
         const obj = makeDisplayObject();
         images.push(obj);
+        return obj;
+      },
+      nineslice: (x, y, key) => {
+        const obj = makeDisplayObject({ x, y, key });
+        nineslices.push(obj);
         return obj;
       },
       text: () => {
@@ -129,8 +144,9 @@ describe('UI modal cleanup', () => {
     const confirmRect = rectangles[rectangles.length - 1];
     confirmRect.handlers.pointerdown.forEach(callback => callback());
 
-    expect(images.length).toBeGreaterThanOrEqual(2);
-    expect(images.every(image => image.destroyed)).toBe(true);
+    expect(images).toEqual([]);
+    expect(nineslices.length).toBeGreaterThanOrEqual(2);
+    expect(nineslices.every(art => art.destroyed)).toBe(true);
     expect(texts.every(text => text.destroyed)).toBe(true);
     expect(circles.every(circle => circle.destroyed)).toBe(true);
   });

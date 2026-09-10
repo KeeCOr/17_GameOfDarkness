@@ -37,6 +37,8 @@ export const UI_ASSETS = Object.freeze({
   frameTopHud: Object.freeze({ key: 'ui_frame_top_hud', path: 'assets/ui/game-top-hud-frame.png', type: 'image' }),
   frameSummonCard: Object.freeze({ key: 'ui_frame_summon_card', path: 'assets/ui/game-summon-card-frame.png', type: 'image' }),
   frameMana: Object.freeze({ key: 'ui_frame_mana', path: 'assets/ui/game-mana-frame.png', type: 'image' }),
+  panelFrame9Slice: Object.freeze({ key: 'ui_panel_frame_9s', path: 'assets/ui/cs-ui-panel-frame-9s.png', type: 'image' }),
+  buttonFrame9Slice: Object.freeze({ key: 'ui_button_frame_9s', path: 'assets/ui/cs-ui-button-frame-9s.png', type: 'image' }),
 });
 
 export const UI_COPY = Object.freeze({
@@ -217,8 +219,20 @@ export function getPanelAssetKey() {
   return UI_ASSETS.frameHudPanel.key;
 }
 
+const GENERIC_LEGACY_BUTTON_KEYS = Object.freeze([
+  UI_ASSETS.gameActionButtonFrame.key,
+  UI_ASSETS.titleButtonFrame.key,
+]);
+
 function hasTexture(scene, key) {
   return Boolean(scene?.textures?.exists?.(key));
+}
+
+function canUseNineSlice(scene, key, width, height, minWidth, minHeight) {
+  return hasTexture(scene, key)
+    && typeof scene.add?.nineslice === 'function'
+    && width >= minWidth
+    && height >= minHeight;
 }
 
 export function addStageBackground(scene, title = '', options = {}) {
@@ -272,20 +286,34 @@ export function addStageBackground(scene, title = '', options = {}) {
   }
 }
 
+const NINE_SLICE_PANEL_FRAME_KEYS = Object.freeze([
+  UI_ASSETS.gameTopHudFrame.key,
+  UI_ASSETS.gameBottomHudFrame.key,
+]);
+
 export function addFramedImage(scene, x, y, width, height, key, options = {}) {
+  const alpha = options.alpha ?? 1;
+  const depth = options.depth ?? 0;
+  if (NINE_SLICE_PANEL_FRAME_KEYS.includes(key)) {
+    if (canUseNineSlice(scene, UI_ASSETS.panelFrame9Slice.key, width, height, 64, 64)) {
+      return scene.add.nineslice(x, y, UI_ASSETS.panelFrame9Slice.key, null, width, height, 32, 32, 32, 32)
+        .setAlpha(alpha)
+        .setDepth(depth);
+    }
+    return null;
+  }
   if (!hasTexture(scene, key)) return null;
   return scene.add.image(x, y, key)
     .setDisplaySize(width, height)
-    .setAlpha(options.alpha ?? 1)
-    .setDepth(options.depth ?? 0);
+    .setAlpha(alpha)
+    .setDepth(depth);
 }
 
 export function addPanel(scene, x, y, width, height, options = {}) {
   const depth = options.depth ?? 0;
   const alpha = options.alpha ?? 0.96;
-  if (hasTexture(scene, UI_ASSETS.frameHudPanel.key)) {
-    return scene.add.image(x + width / 2, y + height / 2, UI_ASSETS.frameHudPanel.key)
-      .setDisplaySize(width, height)
+  if (canUseNineSlice(scene, UI_ASSETS.panelFrame9Slice.key, width, height, 64, 64)) {
+    return scene.add.nineslice(x + width / 2, y + height / 2, UI_ASSETS.panelFrame9Slice.key, null, width, height, 32, 32, 32, 32)
       .setAlpha(alpha)
       .setDepth(depth);
   }
@@ -325,12 +353,22 @@ export function addTextButton(scene, x, y, width, height, label, options = {}) {
   const depth = options.depth ?? 0;
   const assetKey = options.assetKey || getButtonAssetKey(options);
   const textOffsetY = options.textOffsetY ?? (assetKey === UI_ASSETS.titleButtonFrame.key ? -4 : -1);
-  const bg = hasTexture(scene, assetKey)
-    ? scene.add.image(x, y, assetKey)
-      .setDisplaySize(width, height)
+  const isGenericLegacyKey = Boolean(options.assetKey) && GENERIC_LEGACY_BUTTON_KEYS.includes(options.assetKey);
+  const isDefaultOrGenericLegacy = !options.assetKey || isGenericLegacyKey;
+  const useGeneratedButton = (!options.assetKey || isGenericLegacyKey)
+    && canUseNineSlice(scene, UI_ASSETS.buttonFrame9Slice.key, width, height, 20, 20);
+  const bg = useGeneratedButton
+    ? scene.add.nineslice(x, y, UI_ASSETS.buttonFrame9Slice.key, null, width, height, 10, 10, 10, 10)
       .setAlpha(state.alpha)
       .setDepth(depth)
-    : null;
+    : isDefaultOrGenericLegacy
+      ? null
+      : hasTexture(scene, assetKey)
+        ? scene.add.image(x, y, assetKey)
+          .setDisplaySize(width, height)
+          .setAlpha(state.alpha)
+          .setDepth(depth)
+        : null;
   const rect = scene.add.rectangle(x, y, width, height, state.fill)
     .setInteractive({ useHandCursor: true })
     .setAlpha(bg ? 0.001 : state.alpha)
@@ -407,5 +445,3 @@ function applyReadableTextStyle(text, state) {
   text.setStroke?.(textIsDark ? '#fff0b8' : '#050812', textIsDark ? 1 : 4);
   text.setShadow?.(0, 1, textIsDark ? '#fff6ce' : '#000000', textIsDark ? 1 : 3, true, true);
 }
-
-

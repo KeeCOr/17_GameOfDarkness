@@ -26,7 +26,7 @@ describe('tutorial and replay flow', () => {
       image: () => ({ setDisplaySize() { return this; }, setDepth() { return this; }, setAlpha() { return this; }, setTint() { return this; } }),
       rectangle: () => ({ setDepth() { return this; }, setAlpha() { return this; }, setStrokeStyle() { return this; }, setInteractive() { return this; }, on() { return this; }, setData() { return this; }, getData() { return true; } }),
       circle: () => ({ setDepth() { return this; } }),
-      graphics: () => ({ lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; } }),
+      graphics: () => ({ setDepth() { return this; }, lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; }, fillStyle() { return this; }, fillRoundedRect() { return this; }, strokeRoundedRect() { return this; } }),
       text: (x, y, value) => {
         const text = {
           x, y, value,
@@ -68,7 +68,7 @@ describe('tutorial and replay flow', () => {
     scene.difficulty = Difficulty.EASY;
     scene.aiProfile = null;
     scene.multiplayerMode = null;
-    scene.textures = { exists: key => [UI_ASSETS.titleButtonFrame.key, UI_ASSETS.resultTrophy.key].includes(key) };
+    scene.textures = { exists: key => [UI_ASSETS.panelFrame9Slice.key, UI_ASSETS.resultTrophy.key].includes(key) };
     scene.add = {
       image: (x, y, key) => {
         const image = {
@@ -81,13 +81,23 @@ describe('tutorial and replay flow', () => {
         images.push(image);
         return image;
       },
+      nineslice: (x, y, key, frame, width, height) => {
+        const image = {
+          x, y, key, width, height,
+          setAlpha() { return this; },
+          setDepth() { return this; },
+          setTint() { return this; },
+        };
+        images.push(image);
+        return image;
+      },
       rectangle: (x, y, width, height) => {
         const rect = { x, y, width, height, setDepth() { return this; }, setAlpha() { return this; }, setStrokeStyle() { return this; }, setInteractive() { return this; }, on() { return this; }, setData() { return this; }, getData() { return true; } };
         rectangles.push(rect);
         return rect;
       },
       circle: () => ({ setDepth() { return this; } }),
-      graphics: () => ({ lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; } }),
+      graphics: () => ({ setDepth() { return this; }, lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; }, fillStyle() { return this; }, fillRoundedRect() { return this; }, strokeRoundedRect() { return this; } }),
       text: (x, y, value) => {
         const text = { x, y, value, setOrigin() { return this; }, setDepth() { return this; }, setStroke() { return this; }, setShadow() { return this; }, setColor() { return this; }, setAlpha() { return this; } };
         texts.push(text);
@@ -99,7 +109,7 @@ describe('tutorial and replay flow', () => {
     scene.create();
 
     expect(images.some(image => image.key === UI_ASSETS.resultTrophy.key && image.y === 214)).toBe(true);
-    expect(images.some(image => image.key === UI_ASSETS.titleButtonFrame.key && image.width === 388 && image.height === 316)).toBe(true);
+    expect(images.some(image => image.key === UI_ASSETS.panelFrame9Slice.key && image.width === 388 && image.height === 316)).toBe(true);
     expect(texts.map(text => text.value)).not.toContain('SINGLE MMR');
     expect(texts.find(text => text.value === '1012')?.y).toBe(286);
     expect(texts.find(text => String(text.value).includes('->'))?.y).toBe(416);
@@ -124,7 +134,7 @@ describe('tutorial and replay flow', () => {
       image: () => ({ setDisplaySize() { return this; }, setDepth() { return this; }, setAlpha() { return this; }, setTint() { return this; } }),
       rectangle: () => ({ setDepth() { return this; }, setAlpha() { return this; }, setStrokeStyle() { return this; }, setInteractive() { return this; }, on() { return this; }, setData() { return this; }, getData() { return true; } }),
       circle: () => ({ setDepth() { return this; } }),
-      graphics: () => ({ lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; } }),
+      graphics: () => ({ setDepth() { return this; }, lineStyle() { return this; }, strokeRect() { return this; }, beginPath() { return this; }, moveTo() { return this; }, lineTo() { return this; }, closePath() { return this; }, strokePath() { return this; }, fillStyle() { return this; }, fillRoundedRect() { return this; }, strokeRoundedRect() { return this; } }),
       text: (x, y, value) => {
         const text = {
           x, y, value,

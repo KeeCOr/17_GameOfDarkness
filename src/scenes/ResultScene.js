@@ -1,6 +1,7 @@
 // src/scenes/ResultScene.js
 import { COLORS, Difficulty, LAYOUT, TEXT_COLORS, Owner } from '../config.js';
 import {
+  addPanel,
   addStageBackground,
   addTextButton,
   UI_ASSETS,
@@ -31,7 +32,6 @@ export class ResultScene extends Phaser.Scene {
     const replay = addTextButton(this, cx, 590, 322, 70, UI_COPY.result.replay, {
       fontSize: '22px',
       active: true,
-      assetKey: UI_ASSETS.titleButtonFrame.key,
       depth: 6,
       textOffsetY: 2,
     });
@@ -40,7 +40,6 @@ export class ResultScene extends Phaser.Scene {
     const menu = addTextButton(this, cx, 682, 322, 70, UI_COPY.result.menu, {
       fontSize: '20px',
       danger: !playerWon,
-      assetKey: UI_ASSETS.titleButtonFrame.key,
       depth: 6,
       textOffsetY: 2,
     });
@@ -115,16 +114,7 @@ export class ResultScene extends Phaser.Scene {
     this.add.circle(cx, 252, 164, glow, playerWon ? 0.12 : 0.16).setDepth(1);
     this.add.circle(cx, 252, 104, glow, playerWon ? 0.08 : 0.1).setDepth(1);
 
-    if (this.textures?.exists?.(UI_ASSETS.titleButtonFrame.key)) {
-      this.add.image(cx, 294, UI_ASSETS.titleButtonFrame.key)
-        .setDisplaySize(388, 316)
-        .setAlpha(0.86)
-        .setDepth(2);
-    } else {
-      this.add.rectangle(cx, 294, 374, 282, COLORS.PANEL_DEEP, 0.9)
-        .setDepth(2)
-        .setStrokeStyle(3, accent, playerWon ? 0.8 : 0.92);
-    }
+    addPanel(this, cx - 194, 294 - 158, 388, 316, { depth: 2, alpha: 0.86, stroke: accent, strokeAlpha: playerWon ? 0.8 : 0.92 });
 
     this.add.rectangle(cx, 410, 278, 1, accent, playerWon ? 0.58 : 0.76)
       .setDepth(3);
