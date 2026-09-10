@@ -1,4 +1,4 @@
-﻿# ChessSummon 疫꿸퀬???v0.8.0
+﻿# ChessSummon 疫꿸퀬???v1.1.0
 
 ## ?얜챷???類ㅼ벥
 
@@ -142,7 +142,7 @@ npm run build
 npm run dist
 ```
 
-- ?꾩옱 臾몄꽌 湲곗? 踰꾩쟾: 0.8.0
+- ?꾩옱 臾몄꽌 湲곗? 踰꾩쟾: 1.1.0
 
 ---
 
@@ -175,7 +175,7 @@ npm run dist
 
 ---
 
-*疫꿸퀣??? 2026-06-29 | 甕곌쑴?? 0.6.0*
+*疫꿸퀣??? 2026-09-10 | 甕곌쑴?? 1.1.0*
 
 ---
 
@@ -280,3 +280,9 @@ npm run dist
 - <span style="color:#ff0000">BGM/SFX/음소거는 각각 독립적으로 localStorage에 저장되고, 실제 Kenney CC0 BGM과 piece-select/move-preview/move-confirm/summon/capture/victory/defeat OGG가 실제 시맨틱 게임 이벤트에 따라 단일 디렉터를 통해 라우팅되며, Phaser 직접 재생이나 생성된 PCM 기본값은 사용되지 않습니다.</span>
 - <span style="color:#ff0000">danger/result 사운드는 디코딩된 전체 꼬리 구간 동안 0.55로 더킹되고 최소 1.0/0.8초가 보장되며, 최대 8개 보이스로 제한되고 누락되거나 거부된 사운드는 안전하게 무시됩니다.</span>
 - <span style="color:#ff0000">Electron은 file URL 대신 임시 127.0.0.1 HTTP 서버로 dist를 서비스하며, MIME/경로 탐색 가드와 깔끔한 종료를 포함합니다.</span>
+
+## UI/HUD 래스터화 및 반응형 처리
+
+- HUD 프레임(상단바, 하단바, 마나 프레임)과 랭크 아이콘은 `scripts/generate_ui_frames.cjs`로 생성되는 래스터(PNG) 에셋으로 렌더링되며, 레거시 SVG 에셋은 더 이상 사용되지 않습니다.
+- 패널과 버튼은 Phaser nine-slice(`scene.add.nineslice`)로 렌더링되어 다양한 해상도에서 모서리 왜곡 없이 확장됩니다.
+- 화면 배율은 Phaser Scale Manager의 FIT 모드(`Phaser.Scale.FIT`, `CENTER_BOTH`)로 종횡비를 유지한 채 중앙 정렬됩니다.

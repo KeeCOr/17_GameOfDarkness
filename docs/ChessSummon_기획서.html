@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ChessSummon 疫꿸퀬???v0.8.0</title>
+  <title>ChessSummon 疫꿸퀬???v1.1.0</title>
   <style>
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65;max-width:980px;margin:0 auto;padding:40px 24px;color:#20242a;background:#fafafa}
     h1{font-size:34px;margin:0 0 8px} h2{font-size:24px;margin-top:34px;border-bottom:1px solid #ddd;padding-bottom:6px} h3{font-size:18px;margin-top:24px}
@@ -19,7 +19,7 @@
   </style>
 </head>
 <body>
-<h1>ChessSummon 疫꿸퀬???v0.8.0</h1>
+<h1 class="rev-1">ChessSummon 疫꿸퀬???v1.1.0</h1>
 <h2>?얜챷???類ㅼ벥</h2>
 <p><strong>筌ｋ똻???袁⑥셽??繹먮봿????ル뿭釉???筌? ?類ㅺ퐤 ?遺쎈┛癰귣???筌??????わ쭪?????곗넎 癰궰??? 筌앸맦而?怨몄뵥 ?袁る떮 ??곕굡獄쏄퉮???癒곕릭???袁⑥셽 野껊슣?????쟿??곷선揶쎛 ??덈뼄.</strong></p>
 <ul>
@@ -163,6 +163,15 @@
     <li class="rev-1">BGM/SFX/음소거는 각각 독립적으로 localStorage에 저장되고, 실제 Kenney CC0 BGM과 piece-select/move-preview/move-confirm/summon/capture/victory/defeat OGG가 실제 시맨틱 게임 이벤트에 따라 단일 디렉터를 통해 라우팅되며, Phaser 직접 재생이나 생성된 PCM 기본값은 사용되지 않습니다.</li>
     <li class="rev-1">danger/result 사운드는 디코딩된 전체 꼬리 구간 동안 0.55로 더킹되고 최소 1.0/0.8초가 보장되며, 최대 8개 보이스로 제한되고 누락되거나 거부된 사운드는 안전하게 무시됩니다.</li>
     <li class="rev-1">Electron은 file URL 대신 임시 127.0.0.1 HTTP 서버로 dist를 서비스하며, MIME/경로 탐색 가드와 깔끔한 종료를 포함합니다.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>UI/HUD 래스터화 및 반응형 처리</h2>
+  <ul>
+    <li>HUD 프레임(상단바, 하단바, 마나 프레임)과 랭크 아이콘은 <code>scripts/generate_ui_frames.cjs</code>로 생성되는 래스터(PNG) 에셋으로 렌더링되며, 레거시 SVG 에셋은 더 이상 사용되지 않습니다.</li>
+    <li>패널과 버튼은 Phaser nine-slice(<code>scene.add.nineslice</code>)로 렌더링되어 다양한 해상도에서 모서리 왜곡 없이 확장됩니다.</li>
+    <li>화면 배율은 Phaser Scale Manager의 FIT 모드(<code>Phaser.Scale.FIT</code>, <code>CENTER_BOTH</code>)로 종횡비를 유지한 채 중앙 정렬됩니다.</li>
   </ul>
 </section>
 </body>
