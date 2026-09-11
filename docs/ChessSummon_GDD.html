@@ -1,68 +1,250 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChessSummon</title>
+<title>체스 서몬 (ChessSummon) 기획서</title>
 <style>
-  body { background-color: #ffffff; color: #000000; font-family: -apple-system, "Malgun Gothic", sans-serif; margin: 2rem; line-height: 1.6; }
-  h1, h2, h3, h4, h5, h6 { color: #000000; }
-  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-  th, td { border: 1px solid #000000; padding: 0.5rem; text-align: left; }
-  figure { margin: 1rem 0; }
-  figure img { display: block; max-width: 100%; max-height: 62vh; width: auto; height: auto; object-fit: contain; margin: 0 auto; }
-  figcaption { font-size: 0.9rem; color: #000000; }
-  code { background-color: #f0f0f0; padding: 0 0.2rem; }
-  @media print {
-    body { background-color: #ffffff; color: #000000; margin: 0.5in; }
-    table, figure { page-break-inside: avoid; }
-  }
+:root{
+  --rev-1:#b91c1c;--rev-2:#c2410c;--rev-3:#a16207;--rev-4:#15803d;
+  --rev-5:#1d4ed8;--rev-6:#7e22ce;--rev-7:#be185d;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;padding:2rem;max-width:960px;margin-inline:auto;
+  font-family:'Malgun Gothic','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+  line-height:1.75;color:#1f2328;word-break:keep-all;overflow-wrap:break-word;background:#fff;
+}
+h1,h2,h3,h4,h5,h6{line-height:1.35;margin-top:2em;margin-bottom:.6em}
+h1{font-size:1.9rem;border-bottom:2px solid #e2e2e2;padding-bottom:.3em}
+h2{font-size:1.5rem}
+h3{font-size:1.2rem}
+a{color:#1d4ed8}
+img{max-width:100%;height:auto;display:block;margin:1em 0;border-radius:4px}
+.table-wrap{overflow-x:auto;margin:1em 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border:1px solid #d0d7de;padding:.5em .75em;text-align:left}
+th{background:#f6f8fa}
+pre{background:#f6f8fa;padding:1em;overflow-x:auto;border-radius:6px;border:1px solid #e2e2e2}
+code{font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:.9em}
+:not(pre)>code{background:#f0f2f4;padding:.15em .4em;border-radius:4px}
+blockquote{border-left:4px solid #d0d7de;margin:1em 0;padding:.2em 1em;color:#57606a}
+.rev-1{color:var(--rev-1);font-weight:600}
+.rev-2{color:var(--rev-2);font-weight:600}
+.rev-3{color:var(--rev-3);font-weight:600}
+.rev-4{color:var(--rev-4);font-weight:600}
+.rev-5{color:var(--rev-5);font-weight:600}
+.rev-6{color:var(--rev-6);font-weight:600}
+.rev-7{color:var(--rev-7);font-weight:600}
+@media print{
+  body{padding:0;max-width:none}
+  a{color:inherit;text-decoration:none}
+}
 </style>
 </head>
 <body>
-<figure class="gdd-image"><img src="ChessSummon_gameplay_preview.png" alt="GDD용 콘셉트 이미지이며 실제 게임 화면이 아님"><figcaption>GDD용 콘셉트 이미지이며 실제 게임 화면이 아님</figcaption></figure>
-<h1>ChessSummon</h1>
-<ul><li>문서 유형: 게임</li><li>문서 버전: 1.0</li><li>프로젝트 버전: 0.8.0</li><li>근거 신뢰도: 중간</li></ul>
-<h2>1. 문서 메타데이터와 근거 범례</h2>
-<ul><li>문서 버전 1.0, 프로젝트 버전 0.8.0(<code>package.json</code> 기준, 사실).</li><li>근거 유형: <strong>사실</strong>(파일/자산/스크립트 존재 확인) vs <strong>제안</strong>(문서 존재는 확인되나 본문 미열람 상태에서의 해석).</li><li>신뢰도 범례: 높음=package.json/파일시스템 직접 확인, 중간=파일명·디렉토리 구조 기반 추정, 낮음=본문 미확인 제안.</li></ul>
-<h2>2. 문제 정의</h2>
-<p>5x5 소형 보드에 포획-소환 메커닉을 결합한 변형 체스에서, 신규 플레이어가 소환 조건과 승패 조건을 짧은 첫 플레이 안에 학습하지 못해 이탈할 위험이 있음.<br>- 근거(사실): <code>docs/superpowers/specs/2026-05-13-tutorial-design.md</code>, <code>2026-05-13-turn-rules-layout-ux-design.md</code> 문서 파일 존재는 온보딩/규칙 이해가 실제 다뤄진 주제임을 시사(본문 미확인, 제안).</p>
-<h2>3. 한 줄 피치와 제품 포지셔닝</h2>
-<p>&quot;작은 5x5 보드 위에서 상대 말을 포획해 소환하며 싸우는 다크 판타지 1인용 전술 체스.&quot; (근거: <code>package.json</code> description &quot;A 5x5 dark tactical chess game built for single-player Steam release candidates.&quot;, 사실)</p>
-<h2>4. 주 페르소나</h2>
-<p>박서준, 32세, 백엔드 개발자. 퇴근 후 20~30분 짧은 세션으로 두뇌 자극형 전략 게임을 즐기는 캐주얼 전략 게이머.<br>- 근거(제안): <code>docs/persona_playtest_feedback.md</code> 문서 파일 존재로 페르소나 기반 플레이테스트가 수행되었음을 시사하나, 본문 미확인으로 이름/나이/직업 세부는 제안 구성임.</p>
-<h2>5. 디자인 기둥과 핵심 재미</h2>
-<ul><li>소형 보드 전술: 5x5 축소 보드로 빠른 판단 유도.</li><li>소환 메커닉: 포획한 말을 소환에 활용해 고전 체스 대비 차별화(문서명 <code>2026-05-08-chess-summoning-game-design.md</code> 존재, 사실).</li><li>다크 판타지 연출 톤: <code>capture-impact-ring/slash.png</code>, <code>promotion-beam/burst.png</code> 등 FX 자산 존재로 확인(사실).</li></ul>
-<h2>6. 핵심 루프</h2>
-<p>유저가 선택을 하면 결과가 되고, 그 결과 때문에 다시 선택을 한다.</p>
-<p>순환 문장: &quot;플레이어는 말을 이동시키고 → 상대 말을 포획하고 → 포획한 말을 소환하여 전력을 강화하고 → 다시 이동한다.&quot;<br>- 근거: 이동/포획/소환 관련 하이라이트 및 FX 자산(사실), 세부 트리거 조건은 문서 미열람으로 제안.</p>
-<h2>7. 최초 30초 플레이 흐름</h2>
-<ul><li>타이틀/브랜드 로고 노출(<code>assets/brand/chesssummon-logo.png</code> 등 확인, 사실).</li><li>보드 진입 후 첫 기물 선택 시 이동 가능 칸 하이라이트(<code>game-cell-highlight-movable.png</code>, 사실).</li><li>튜토리얼 유도 단계 존재(제안, <code>tutorial-design.md</code> 파일명 근거).</li><li>첫 이동 확정 시 move-confirm 사운드 재생(<code>move-confirm.ogg</code>, 사실).</li></ul>
-<h2>8. 게임 규칙과 승패 조건</h2>
-<p>사실: 단일 플레이어 대상 5x5 보드 체스 변형(<code>package.json</code>).<br>제안: 소환 조건, 정확한 승패 판정 로직은 <code>chess-summoning-game-design.md</code>, <code>turn-rules-layout-ux-design.md</code> 문서에 기술된 것으로 추정되나 본문 미확인으로 세부 규칙은 이번 근거로 확정할 수 없음.</p>
-<h2>9. 콘텐츠, 진행, 성장, 경제 구조</h2>
-<p>사실: 업적 시스템 존재(<code>tests/AchievementProgress.test.js</code>, <code>tests/AchievementsCatalog.test.js</code>), Steam 업적/리더보드 설계 문서 존재(<code>Steam_Achievements_설계.md</code>, <code>Steam_Leaderboards_설계.md</code>).<br>제안: 재화·경제 순환 구조에 대한 구체 근거는 확인되지 않아 별도 기재하지 않음.</p>
-<h2>10. MVP 가설과 검증 방법</h2>
-<ul><li>가설1: 소환 메커닉이 고전 체스 대비 재플레이 유도력을 높인다 — 검증: 페르소나 대상 플레이테스트 피드백 수집(<code>persona_playtest_feedback.md</code> 문서 기반, 제안).</li><li>가설2: 5x5 축소 보드가 세션 길이를 짧게 유지해 캐주얼 유저 이탈을 줄인다 — 검증: 세션 길이 계측(제안, 계측 구현 근거 없음).</li></ul>
-<h2>11. 레퍼런스별 핵심 행동 단계 수와 적용 교훈</h2>
-<p>제안(구조적 유추, 실제 비교 문서 근거 없음):<br>- 고전 체스: 기물 선택 → 이동 대상 확인 → 이동 확정 (3단계) — 교훈: 단순한 3단계 흐름이 학습 곡선을 낮춤.<br>- 유닛 합성/소환형 전략 게임: 자원(포획물) 확보 → 소환 대상 선택 → 배치 확정 (3단계) — 교훈: 소환 행동을 이동과 동일한 3단계 구조로 맞춰 추가 학습 부담을 최소화.</p>
-<h2>12. 수치 KPI와 측정 방법</h2>
-<p>제안(실측 데이터 근거 없음, 목표치):<br>- 튜토리얼 완료율 ≥ 70% — 측정: 튜토리얼 단계별 진입/완료 이벤트 로깅.<br>- 평균 세션 길이 20~30분 — 측정: 세션 시작·종료 타임스탬프 차이 집계.<br>- 첫 판 완주율(승패 판정까지 도달) ≥ 60% — 측정: 게임 종료 이벤트 발생 비율 집계.</p>
-<h2>13. UI, HUD, 컨트롤</h2>
-<p>5개 UI 상태(사실 기반, 자산 존재로 확인):<br>1) 대기(Idle) — 보드·기물 표시, 입력 대기.<br>2) 기물 선택(Selected) — 이동 가능 칸 하이라이트(<code>game-cell-highlight-movable.png</code>).<br>3) 이동 확인(Move Confirm) — <code>move-confirm.ogg</code> 재생.<br>4) 포획/소환(Capture-Summon) — <code>capture-impact-ring/slash.png</code>, <code>promotion-beam/burst.png</code>, <code>summon-confirm.ogg</code> 재생.<br>5) 승패(Victory/Defeat) — <code>victory.ogg</code>/<code>defeat.ogg</code> 재생.</p>
-<h2>14. 로딩·빈 상태·에러·100개 이상 데이터·3배 긴 텍스트 대응</h2>
-<p>근거 없음: 로딩 화면, 빈 상태, 에러 처리, 대량 데이터(100개 이상) 및 긴 텍스트 대응에 관한 파일 또는 문서가 제공된 경로 목록에서 확인되지 않음.</p>
-<h2>15. 접근성</h2>
-<p>근거 없음: 접근성 관련 설정, 문서, 자산이 제공된 경로 목록에서 확인되지 않음.</p>
-<h2>16. 시각·청각·햅틱 피드백</h2>
-<p>사실: FX 이미지(<code>capture-impact-ring/slash.png</code>, <code>promotion-beam/burst.png</code>), 오디오(<code>capture</code>, <code>defeat</code>, <code>move-confirm</code>, <code>move-preview</code>, <code>piece-select</code>, <code>summon-confirm</code>, <code>victory</code> <code>.ogg</code>) 다수 확인.<br>근거 없음: 햅틱 피드백 관련 자산/문서는 확인되지 않음.</p>
-<h2>17. 구현 상태 매트릭스</h2>
-<ul><li>이동/선택 하이라이트: 자산 확인됨 — <code>assets/highlights/game-cell-highlight-movable.png</code></li><li>오디오 피드백(선택/이동/포획/소환/승패): 자산 확인됨 — <code>assets/audio/kenney/*.ogg</code></li><li>업적 시스템: 테스트 파일 존재 — <code>tests/AchievementProgress.test.js</code>, <code>tests/AchievementsCatalog.test.js</code></li><li>AI 상대: 테스트 파일 존재 — <code>tests/AIController.test.js</code></li><li>Steam 업적/리더보드/클라우드 연동: 설계 문서만 존재, 구현 여부 미확인 — <code>Steam_Achievements_설계.md</code>, <code>Steam_Leaderboards_설계.md</code>, <code>Steam_Cloud_저장소_설계.md</code></li><li>멀티플레이어 서버: package.json 스크립트 존재(<code>online:server</code>) — <code>server/multiplayer-server.cjs</code></li></ul>
-<h2>18. 빌드·테스트 근거</h2>
-<ul><li><code>package.json</code>에 vitest 기반 <code>test</code> 스크립트 확인, <code>tests/</code> 디렉토리 내 다수 <code>.test.js</code> 파일 존재(예: <code>Board.test.js</code>, <code>ActionFeedback.test.js</code>, <code>ActionSfx.test.js</code>) — 테스트 파일 존재는 확인되나 실행 결과(통과/실패)는 관찰되지 않음.</li><li>빌드 산출물 존재 확인: <code>ChessSummon_v0.8.0.html</code>, <code>ChessSummon_v0.8.0_portable.exe</code>, <code>dist-html/</code>(index.html, assets 포함) — 산출물 파일 존재는 확인되나 빌드 실행 로그는 관찰되지 않음.</li><li>electron-builder 기반 portable 배포 설정 확인(<code>package.json</code> build 필드).</li></ul>
-<h2>19. 알려진 리스크와 실패 시나리오</h2>
-<ul><li>온보딩 리스크: 소환 규칙 이해 실패로 인한 신규 유저 이탈 가능성(<code>tutorial-design.md</code>, <code>turn-rules-layout-ux-design.md</code> 문서 존재 자체가 이 문제 인지를 시사, 제안).</li><li>Steam 연동 리스크: 업적/리더보드/클라우드 설계 문서만 존재하고 실동작 검증 근거가 없어 출시 전 미확인 상태로 남을 위험.</li><li>멀티플레이어 안정성 리스크: <code>online:server</code> 스크립트는 존재하나 이를 검증하는 테스트 근거가 확인되지 않음.</li></ul>
-<h2>20. 다음 우선순위</h2>
-<ul><li>튜토리얼/규칙 설계 문서 본문을 실제 구현과 대조 검증.</li><li>Steam 서비스 연동(업적/리더보드/클라우드) 실동작 확인 근거 확보.</li><li>로딩/빈 상태/에러/대량 데이터/긴 텍스트 대응 및 접근성 설계 문서화 착수(현재 근거 부재).</li></ul>
+<main>
+<h1>체스 서몬 (ChessSummon) 기획서</h1>
+<p><img src="./ChessSummon_gameplay_preview.png" alt="ChessSummon gameplay preview">
+버전: v1.1.0
+작성일: 2026-09-11</p>
+<h2>1. 문제 정의</h2>
+<p>정통 체스는 진입장벽이 높고 한 판에 시간이 오래 걸려, 캐주얼 유저가 짧은 세션에서 전략적 만족감을 얻기 어렵다. 5x5 축소 보드와 &quot;마나로 기물 소환&quot; 메커닉을 결합해 전략성은 유지하면서 한 판을 짧게 압축하는 것이 목표다.</p>
+<h2>2. 페르소나 및 맥락</h2>
+<ul>
+<li>이름: 김도윤 (28세, 회사원)</li>
+<li>맥락: 출퇴근 지하철에서 5~10분짜리 두뇌 게임을 찾는 캐주얼 전략 게이머. 체스 룰은 알지만 매판 15분 이상 걸리는 것에 부담을 느낀다.</li>
+<li>니즈: 짧고 굵은 전략적 한 판, 랜덤성보다 판단력이 승패를 가르는 경험.</li>
+</ul>
+<h2>3. 코어 루프</h2>
+<ol>
+<li>턴 시작 → 마나 +2(최대10) 충전</li>
+<li>소환 또는 이동 선택(비용: 폰1/나이트3/비숍3/룩5/퀸8)</li>
+<li>상대(AI/플레이어) 턴 진행(턴 제한 180초)</li>
+<li>공물/반복 규칙 체크 → 결과 판정 → 다음 턴</li>
+</ol>
+<h2>4. MVP 가설</h2>
+<ul>
+<li>H1: 5x5 보드+마나 소환은 정통 체스보다 플레이타임을 유의미하게 줄인다.</li>
+<li>H2: 룩/퀸 공물 규칙이 고비용 기물 조기 소환을 억제해 밸런스를 유지한다.</li>
+<li>H3: minimax depth3+600ms 딜레이 AI는 응답성을 해치지 않으면서 &quot;생각하는 느낌&quot;을 준다.</li>
+</ul>
+<h2>5. 참고 사례 및 교훈</h2>
+<p>참고작: 5x5 미니 체스 변형, 소환형 경제를 쓰는 오토체스류. 교훈: 소환 경제는 자원 곡선이 급격하면 초반 스노우볼이 심해지므로, 마나 캡(10)과 증가폭(+2)을 보수적으로 유지해야 한다.</p>
+<h2>6. KPI</h2>
+<ul>
+<li>평균 세션 길이(3~5분대 수렴 목표)</li>
+<li>턴당 평균 의사결정 시간</li>
+<li>튜토리얼 완료율</li>
+<li>재대국 비율</li>
+</ul>
+<h2>7. 디자인 필러</h2>
+<ul>
+<li>압축된 전략성(작은 보드, 짧은 턴)</li>
+<li>자원관리(마나 vs 즉시 이동 트레이드오프)</li>
+<li>명확한 피드백(공물/반복 규칙의 즉각 시각화)</li>
+</ul>
+<h2>8. 컴포넌트 표</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>컴포넌트</th>
+<th>역할</th>
+<th>구현 레이어</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5x5 보드</td>
+<td>좌표/규칙 판정</td>
+<td>[Core]</td>
+</tr>
+<tr>
+<td>마나 시스템</td>
+<td>자원 축적/소환 비용</td>
+<td>[Core]</td>
+</tr>
+<tr>
+<td>AI(minimax d3)</td>
+<td>상대 턴 계산</td>
+<td>[AI]</td>
+</tr>
+<tr>
+<td>튜토리얼 씬</td>
+<td>온보딩</td>
+<td>[Scene]</td>
+</tr>
+<tr>
+<td>배치 씬</td>
+<td>초기 기물 배치</td>
+<td>[Scene]</td>
+</tr>
+<tr>
+<td>게임 씬</td>
+<td>메인 플레이</td>
+<td>[Scene]</td>
+</tr>
+<tr>
+<td>UI 씬</td>
+<td>HUD/마나바/타이머</td>
+<td>[UI]</td>
+</tr>
+<tr>
+<td>결과 씬</td>
+<td>승패/리매치</td>
+<td>[Scene]</td>
+</tr>
+<tr>
+<td>멀티플레이어 로비</td>
+<td>대전 매칭</td>
+<td>[Network]</td>
+</tr>
+</tbody></table></div>
+<h2>9. 팩트/미지수</h2>
+<ul>
+<li>확정: 턴 제한 180초, 마나 +2/턴 상한10, AI depth3/딜레이600ms, 기물 비용(1/3/3/5/8), 룩·퀸 공물, 반복 시 +2, 6개 씬 구조.</li>
+<li>미지수(추정 금지): 실제 평균 세션 길이, 밸런스 승률 수치, 리텐션 데이터 — 플레이테스트 전까지 확정 불가.</li>
+</ul>
+<h2>10. 페이싱</h2>
+<p>초반(1<del>3턴) 폰/나이트 위주 소환으로 마나 축적. 중반(4</del>8턴) 비숍/룩 소환 경쟁. 후반 퀸 소환 여부가 승부처. 턴 180초 제한으로 분석 마비를 방지.</p>
+<h2>11. 재미 체인</h2>
+<p>소환 선택 → 즉각 보드 변화 → 상대 반응 예측 → 공물/반복 규칙에 의한 반전 → 다음 소환 계획. 짧은 피드백 루프 반복으로 몰입 유지.</p>
+<h2>12. 예시 시나리오</h2>
+<p>예시1: 도윤이 초반 마나를 아껴 나이트를 연속 소환, 상대 폰 라인을 기습 돌파.
+예시2: 상대가 퀸(비용8)을 조기 소환하려다 공물 규칙에 걸려 손해를 보고, 도윤이 반복 패턴을 유도해 +2 마나 이득을 챙김.</p>
+<h2>13. 피로도 관리</h2>
+<p>턴 180초 상한과 5x5 축소 보드로 한 판 총 소요시간을 제한, 장기 소모전을 방지. 반복 수 규칙이 무한 교착을 줄여 피로를 완화.</p>
+<h2>14. 경제(마나)</h2>
+<p>턴당 +2, 최대10 캡. 저비용(폰/나이트/비숍)과 고비용(룩/퀸) 사이 격차를 둬 소환 타이밍 선택이 전략의 핵심이 되게 설계.</p>
+<h2>15. 온보딩/HUD 5-state/접근성/오디오비주얼</h2>
+<ul>
+<li>온보딩: 튜토리얼 씬에서 소환→이동→공물 규칙 순서로 단계별 학습.</li>
+<li>HUD 5-state: 대기(자원 축적)/소환가능(비용 충족)/이동가능(기물 선택됨)/경고(반복·공물 임박)/결과(턴 종료) — 색상+아이콘으로 구분.</li>
+<li>접근성: 색맹 대응 팔레트, 턴 타이머 텍스트 병기, 키보드 대체 입력 고려.</li>
+<li>오디오비주얼: 소환 사운드 큐, 공물 발생 시 강조 이펙트, 마나 충전 애니메이션.</li>
+</ul>
+<h2>16. 구현 라벨</h2>
+<p>[Core]=규칙/상태머신, [AI]=minimax 로직, [Scene]=Phaser 씬 관리, [UI]=HUD/입력, [Network]=Electron 기반 로비/매칭.</p>
+<h2>17. 우선순위 Top 3</h2>
+<ol>
+<li>마나-소환 코어 루프 및 공물/반복 규칙 완성</li>
+<li>AI(minimax3, 600ms) 응답성 검증</li>
+<li>튜토리얼 씬으로 온보딩 마찰 최소화</li>
+</ol>
+<h2>구성요소</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>역할</th>
+<th>선택</th>
+<th>입력→판정→피드백</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>보드 시스템</td>
+<td>5x5 고정 크기</td>
+<td>좌표 클릭/드래그 → 이동 규칙 판정 → 이동 가능 칸 하이라이트</td>
+<td>구현됨</td>
+</tr>
+<tr>
+<td>턴 타이머</td>
+<td>턴당 180초 제한</td>
+<td>턴 진행 중 시간 경과 → 타임아웃 판정 → 카운트다운 UI 표시</td>
+<td>구현됨</td>
+</tr>
+<tr>
+<td>마나 시스템</td>
+<td>턴당 +2, 최대 10</td>
+<td>턴 시작 → 마나 누적 계산(최대치 캡) → 마나 게이지 갱신</td>
+<td>구현됨</td>
+</tr>
+<tr>
+<td>기물 소환/사용</td>
+<td>폰1 / 나이트3 / 비숍3 / 룩5 / 퀸8 코스트</td>
+<td>기물 선택 → 보유 마나 대비 코스트 판정 → 소환 가능/불가 표시</td>
+<td>구현됨</td>
+</tr>
+<tr>
+<td>AI 엔진</td>
+<td>미니맥스 depth 3</td>
+<td>AI 턴 시작 → 600ms 내 탐색 후 최선수 결정 → 수 실행</td>
+<td>구현됨</td>
+</tr>
+<tr>
+<td>공물(tribute) 규칙</td>
+<td>룩/퀸 대상</td>
+<td>특정 조건 발생 → 공물 판정 → 자원/기물 반환 처리</td>
+<td>확인 필요 (트리거 조건·구체적 효과 확인 필요)</td>
+</tr>
+<tr>
+<td>반복수 페널티</td>
+<td>동일 수 반복 시 +2</td>
+<td>반복 패턴 감지 → 페널티 판정 → 수치 증가 반영</td>
+<td>확인 필요 (증가 대상이 마나인지 별도 카운터인지 확인 필요)</td>
+</tr>
+</tbody></table></div>
+<h2>콘텐츠 제공 방식</h2>
+<p>확인 필요 (튜토리얼, 난이도 단계, 매치메이킹 등 콘텐츠 제공 방식에 대한 자료 없음)</p>
+<h2>세션 구조</h2>
+<h3>30초</h3>
+<p>확인 필요 (초반 수 배치·마나 확인 구간으로 추정되나 확정 자료 없음)</p>
+<h3>5분</h3>
+<p>확인 필요 (기물 소환과 마나 축적을 통한 초반 공방으로 추정)</p>
+<h3>30분</h3>
+<p>확인 필요 (승부 결착 또는 다판 반복 플레이 구간으로 추정)</p>
+<h3>장기</h3>
+<p>확인 필요 (리텐션·반복 플레이 유도 설계 자료 없음)</p>
+<h2>구현됨 / 계획됨 / 제안</h2>
+<ul>
+<li>구현됨: 5x5 보드, 180초 타이머, 마나 +2/최대10, 미니맥스 depth3(600ms 사고시간), 기물별 코스트(폰1/나이트3/비숍3/룩5/퀸8), 공물 규칙(룩/퀸), 반복수 +2 페널티</li>
+<li>계획됨: 확인 필요</li>
+<li>제안: 확인 필요</li>
+</ul>
+<h2>성공 KPI</h2>
+<p>확인 필요 (정의된 KPI 자료 없음)</p>
+<h2>다음 우선순위</h2>
+<p>확인 필요 (로드맵 자료 없음)</p>
+
+</main>
 </body>
 </html>
