@@ -51,12 +51,23 @@ export function formatActionFeedbackText(feedback = {}) {
   return feedback.cue ? `[${feedback.cue}] ${text}` : text;
 }
 
-function getMovePreviewFeedback({ moveCount = 0, captureCount = 0 } = {}) {
+function getMovePreviewFeedback({ moveCount = 0, captureCount = 0, safeCount, tradeCount, riskCount } = {}) {
   const moves = Math.max(0, Number(moveCount) || 0);
   const captures = Math.max(0, Number(captureCount) || 0);
 
   if (moves === 0) {
     return { text: 'No legal move | Pick another piece', tone: 'normal' };
+  }
+
+  if ([safeCount, tradeCount, riskCount].some(value => value !== undefined)) {
+    const layers = [
+      `이동${moves}`,
+      `안전${Math.max(0, Number(safeCount) || 0)}`,
+      Number(tradeCount) > 0 ? `교환${Number(tradeCount)}` : null,
+      Number(riskCount) > 0 ? `위험${Number(riskCount)}` : null,
+      captures > 0 ? `처치${captures}` : null,
+    ].filter(Boolean);
+    return { text: layers.join(' '), tone: captures > 0 && Number(riskCount) === 0 ? 'success' : 'normal', cue: captures > 0 ? 'CAP' : 'POS' };
   }
 
   if (captures > 0) {

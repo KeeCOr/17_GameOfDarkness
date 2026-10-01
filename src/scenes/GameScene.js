@@ -17,6 +17,8 @@ import { formatActionFeedbackText, getActionFeedback } from '../ui/actionFeedbac
 import { preloadActionSfx, playActionSfx } from '../audio/actionSfx.js';
 import { playCaptureEffect, playCheckAlert, playCheckmateAlert, playCheckmateRevealEffect, playPromotionEffect } from '../ui/effects.js';
 import { readSinglePlayerRating, SINGLE_PLAYER_MMR_DEFAULT } from '../game/singlePlayerRating.js';
+import { buildMoveThreatPreviews } from '../game/moveThreatPreview.js';
+import { createBattleSummary } from '../game/resultTacticalPlan.js';
 
 const State = {
   WAITING: 'WAITING',
@@ -322,13 +324,12 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  _showMovePredictionLayer(moves = []) {
-    for (const { row, col } of moves) {
+  _showMovePredictionLayer(movePreviews = []) {
+    for (const { row, col, isCapture, status } of movePreviews) {
       const { x, y } = this._getCellCenter(row, col);
-      const isCapture = Boolean(this.board.getPiece(row, col));
-      const label = this.add.text(x, y, isCapture ? 'CAPTURE' : 'MOVE', {
+      const label = this.add.text(x, y, isCapture ? `처치 · ${status}` : status, {
         fontSize: '9px',
-        color: isCapture ? '#ffb0a7' : '#b9ffe4',
+        color: status === '위험' ? '#ff9d98' : status === '교환' ? '#ffd67d' : '#b9ffe4',
         fontStyle: 'bold',
         stroke: '#09101d',
         strokeThickness: 3,
@@ -535,12 +536,19 @@ export class GameScene extends Phaser.Scene {
       this.state = State.SELECTED;
       this.selectedCell = { row: r, col: c };
       const moves = this.calc.getMoves(this.board, r, c);
+      const movePreviews = buildMoveThreatPreviews({
+        board: this.board,
+        moveCalculator: this.calc,
+        from: { row: r, col: c },
+        moves,
+        owner: this._localOwner(),
+      });
       this._clearHighlights();
       this._highlightCells([{ row: r, col: c }], COLORS.SELECTED);
       this._highlightCells(moves, COLORS.MOVE_HIGHLIGHT);
-      this._showMovePredictionLayer(moves);
+      this._showMovePredictionLayer(movePreviews);
       this._showThreatsIfInCheck();
-      this._showMovePreviewFeedback(moves);
+      this._showMovePreviewFeedback(movePreviews);
       playActionSfx(this, 'piece-select');
       if (this.tutorialMode) this.events.emit('tutorial-piece-selected');
     }
@@ -795,12 +803,18 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  _showMovePreviewFeedback(moves = []) {
-    const captureCount = moves.filter(({ row, col }) => Boolean(this.board.getPiece(row, col))).length;
+  _showMovePreviewFeedback(movePreviews = []) {
+    const captureCount = movePreviews.filter(preview => preview.isCapture).length;
+    const safeCount = movePreviews.filter(preview => preview.status === '안전').length;
+    const tradeCount = movePreviews.filter(preview => preview.status === '교환').length;
+    const riskCount = movePreviews.filter(preview => preview.status === '위험').length;
     const feedback = getActionFeedback({
       type: 'move-preview',
-      moveCount: moves.length,
+      moveCount: movePreviews.length,
       captureCount,
+      safeCount,
+      tradeCount,
+      riskCount,
     });
     const color = feedback.tone === 'success' ? '#7dffb8' : '#ffffff';
     playActionSfx(this, 'move-preview');
@@ -1064,6 +1078,7 @@ export class GameScene extends Phaser.Scene {
         aiProfile: this.aiProfile,
         resultReason,
         multiplayerMode: this.multiplayerMode,
+        battleSummary: createBattleSummary(this.board),
       });
     });
   }
@@ -1169,6 +1184,4 @@ export class GameScene extends Phaser.Scene {
     this._clearSceneTimers();
   }
 }
-
-
 

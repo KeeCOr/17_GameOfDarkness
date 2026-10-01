@@ -1,5 +1,30 @@
 # ChessSummon 업데이트 내역서
 
+## 2026-09-23 v0.8.2 결과→다음 전투 피드백
+- 격차: 결과 화면은 MMR 변화만 강조해 패배·승리 원인을 다음 소환 또는 편성 판단으로 연결하지 못했다.
+- 변경: 종료 시 남은 마나, 소환 횟수, 양측 잔존 전력을 `battleSummary`로 전달하고 결과 화면에 `다음 전투` 행동 한 가지를 표시한다.
+- 판단 규칙: 시간패는 첫 소환 고정, 주력 소환 없음은 기사·주교 우선, 전력 열세는 병사 거점 보존, 승리는 가장 많이 사용한 주력 소환 유지로 요약한다.
+- UI: 기존 다크 네이비·금색 프레임, 트로피, MMR 계층과 버튼을 유지하고 결과 프레임의 세로 공간만 확장했다. 새 이미지 자산은 없다.
+- 소스 계보: 현재 복원 소스는 v0.8.2이며 Drive에는 `17_ChessSummon_v1.1.0_portable.exe`만 있다. 실행파일을 현재 소스보다 최신인 소스 계보로 간주하거나 덮어쓰지 않았다.
+- 변경 파일: `src/game/resultTacticalPlan.js`, `src/scenes/GameScene.js`, `src/scenes/ResultScene.js`, 관련 테스트, package 버전, GDD·기획서·업데이트 내역 MD/HTML.
+- 검증: 집중 3개 파일/44개 테스트, 전체 38개 파일/225개 테스트, `npm run build` 통과. Impeccable detect 0건.
+- 미실행: `npm run dist`, 루트 실행파일 교체, Drive 배포, 통합 현황 수정.
+- 미검증: 실제 전투 완주 후 결과 화면, 450×800 줄바꿈·겹침, 저장 복귀, Steam 클라이언트.
+- 알려진 경고: Vite 약 1.59MB JavaScript 청크가 500kB를 초과한다.
+
+## 2026-09-22 v0.8.1 이동 위험도 보드 미리보기
+- 격차: 기존 이동 후보는 이동/처치 여부만 보여 목적지의 전술 위험을 선택 전에 비교하기 어려웠다.
+- 예시 화면: `docs/design-references/2026-09-22-move-threat-board-preview.png`.
+- 선택 이유: 새 시스템을 늘리지 않고 기존 핵심 루프의 판단 품질을 바로 높이는 작은 개선이다.
+- 레이아웃: 기존 5×5 보드의 이동 하이라이트 레이어와 기존 HUD 피드백 스트립을 유지했다.
+- 컴포넌트: `buildMoveThreatPreviews`, `GameScene._showMovePredictionLayer`, `GameScene._showMovePreviewFeedback`, 기존 action feedback 배너로 분해했다.
+- 데이터/상호작용: 보드 복제본, MoveCalculator, 선택 좌표, 합법 이동, 소유자, 공격자·방어자 수, 포획 여부를 사용한다. 아군 말을 선택하면 목적지별 `안전`·`교환`·`위험`과 압축 요약이 표시되며 기존 취소 동작은 유지된다.
+- 상태: 기본 상태는 모든 합법 이동 태그 표시, 빈 상태는 기존 `이동 가능한 칸 없음` 피드백을 사용한다. 계산은 로컬 동기 처리라 별도 로딩·네트워크 오류 상태가 없다. 긴 문구는 기존 26자 제한 안의 압축형이며 450×800 좁은 화면은 미검증이다.
+- 변경 파일: `src/game/moveThreatPreview.js`, `src/scenes/GameScene.js`, `src/ui/actionFeedback.js`, 관련 테스트, `package.json`, `package-lock.json`, 문서와 예시 이미지.
+- 검증: 집중 테스트 23개 통과, 전체 37개 파일/220개 테스트 통과, `npm run build` 통과, UI 정적 검사 0건, `npm run dist` 통과. `ChessSummon_v0.8.1_portable.exe`를 release와 프로젝트 루트에 배치했다.
+- 알려진 문제: 실제 플레이 화면·450×800·저장 복귀·Steam 클라이언트 수동 QA는 미검증이다. Vite가 약 1.59MB 청크 경고를 표시한다.
+- 다음 후보: 같은 보드 미리보기에 소환 기여도와 소환 전후 왕 위협 변화를 통합한다.
+
 ## 2026-07-01 v0.6.1 Checkmate Final Vision Reveal
 - 체크메이트를 결정한 마지막 수 직후 전체 보드 시야를 밝히도록 개선했다.
 - 결과 화면 전환 전에 기존 fog 오브젝트를 제거하고 모든 칸/말을 다시 렌더링한다.

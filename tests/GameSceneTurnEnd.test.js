@@ -394,6 +394,8 @@ describe('GameScene manual turn ending', () => {
           difficulty: Difficulty.HARD,
           aiProfile: { id: 'bot-hard', label: 'Hard Bot' },
           resultReason: null,
+          multiplayerMode: undefined,
+          battleSummary: null,
         },
       },
     ]);
@@ -436,7 +438,7 @@ describe('GameScene manual turn ending', () => {
     scheduled[0].callback();
 
     expect(starts).toEqual([
-      { key: 'Result', data: { winner: Owner.AI, difficulty: Difficulty.EASY, aiProfile: null, resultReason: null, multiplayerMode: undefined } },
+      { key: 'Result', data: { winner: Owner.AI, difficulty: Difficulty.EASY, aiProfile: null, resultReason: null, multiplayerMode: undefined, battleSummary: null } },
     ]);
   });
 

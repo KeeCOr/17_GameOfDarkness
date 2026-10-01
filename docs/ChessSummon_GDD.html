@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ChessSummon GDD v2.1</title><style>body{max-width:980px;margin:auto;padding:28px;background:#f5f2ea;color:#1d2233;font:15px/1.65 "Malgun Gothic",sans-serif}h1{border-bottom:4px solid #b7893d;padding-bottom:10px}h2{margin-top:30px;border-left:5px solid #b7893d;padding-left:10px;color:#182440}table{width:100%;border-collapse:collapse;background:#fff}th,td{border:1px solid #bbb;padding:8px;text-align:left;vertical-align:top}th{background:#1a2745;color:#fff}.meta,.note{padding:14px;border-radius:6px}.meta{background:#17213b;color:#fff}.note{background:#fff8df;border-left:4px solid #d4a64a}code{background:#e8e4da;padding:1px 4px}</style></head><body>
+<h1>ChessSummon / Chess of Dark GDD</h1><div class="meta">문서 2.1 · 프로젝트 0.8.2 · 2026-09-23 동기화</div>
+<h2>한 줄 정의</h2><p>5×5 보드에서 마나로 말을 소환하고 이동·포획·체크 압박을 조합하는 짧고 밀도 높은 다크 판타지 전술 게임.</p>
+<h2>핵심 루프</h2><p>모드/난이도 → 초기 배치 → 마나 획득 → 이동/포획 → 선택적 소환 → 턴 종료 → 왕 제거/체크메이트 → 결과·MMR·전술 복기 → 다음 소환/편성 판단 → 재대전.</p>
+<h2>현재 규칙</h2><table><tr><th>항목</th><th>규칙</th></tr><tr><td>보드/시계</td><td>5×5, 양측 180초</td></tr><tr><td>마나</td><td>턴 +2, 최대 10</td></tr><tr><td>소환</td><td>왕 주변 빈 칸, 같은 종류 재소환 비용 +2</td></tr><tr><td>승리</td><td>상대 왕 제거 또는 체크메이트</td></tr><tr><td>진행</td><td>싱글 MMR, 4단계 AI, 서버 권위 PvP, Steam 어댑터</td></tr></table>
+<h2>전술 정보</h2><p>합법 목적지마다 안전·교환·위험과 처치 여부를 보여준다. 결과 화면은 남은 마나, 소환 횟수, 양측 잔존 전력으로 첫 소환·병사 거점 보존·주력 소환 유지 중 한 가지 다음 행동을 제시한다.</p>
+<h2>화면 흐름</h2><p>Boot → Menu → Placement/Lobby → Game+UI → Result. Result는 MMR 변화와 다음 전투 계획을 함께 보여준다. Tutorial은 Game 위에 단계별로 표시된다.</p>
+<h2>구현 구조</h2><table><tr><th>영역</th><th>구성</th></tr><tr><td>전투 예측</td><td>보드 복제, MoveCalculator, 이동 위험 계산</td></tr><tr><td>결과 요약</td><td>battleSummary, resultTacticalPlan, ResultScene</td></tr><tr><td>상태</td><td>시간패, 주력 소환 없음, 전력 열세, 승리한 주력 전개</td></tr><tr><td>시각 방향</td><td>기존 다크 네이비·금색 프레임과 이미지 자산 유지</td></tr></table>
+<h2>배포와 검증</h2><p class="note">2026-09-23: 집중 3개 파일/44개, 전체 38개 파일/225개 테스트와 <code>npm run build</code> 통과. Impeccable 정적 검사 0건. v0.8.2 dist·실행파일 배치·Drive 배포는 실행하지 않았다. 실제 플레이, 450×800, 저장 복귀, Steam 클라이언트는 미검증이다.</p>
+<h2>소스 계보와 리스크</h2><ul><li>현재 복원 소스는 v0.8.2이고 Drive에는 소스가 아닌 <code>17_ChessSummon_v1.1.0_portable.exe</code>만 있다. 실행파일을 현재 소스의 상위 계보로 단정하거나 덮어쓰지 않는다.</li><li>약 1.59MB JavaScript 청크 경고.</li><li>Steam App ID·상점 자산·오버레이 외부 QA 필요.</li><li>다음: 행동 전 소환 기여도와 왕 위협 변화 통합, 이후 450×800 실화면 QA.</li></ul>
+</body></html>

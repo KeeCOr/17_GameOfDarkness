@@ -99,10 +99,11 @@ describe('tutorial and replay flow', () => {
     scene.create();
 
     expect(images.some(image => image.key === UI_ASSETS.resultTrophy.key && image.y === 214)).toBe(true);
-    expect(images.some(image => image.key === UI_ASSETS.titleButtonFrame.key && image.width === 388 && image.height === 316)).toBe(true);
+    expect(images.some(image => image.key === UI_ASSETS.titleButtonFrame.key && image.width === 388 && image.height === 430)).toBe(true);
     expect(texts.map(text => text.value)).not.toContain('SINGLE MMR');
     expect(texts.find(text => text.value === '1012')?.y).toBe(286);
     expect(texts.find(text => String(text.value).includes('->'))?.y).toBe(416);
+    expect(texts.map(text => text.value)).toContain('다음 전투');
   });
 
   it('lowers the replay and main menu labels inside result buttons', async () => {

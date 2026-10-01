@@ -28,6 +28,12 @@ describe('action feedback copy', () => {
     });
   });
 
+  it('summarizes destination safety and capture counts for board selection', () => {
+    expect(getActionFeedback({
+      type: 'move-preview', moveCount: 4, safeCount: 2, tradeCount: 0, riskCount: 1, captureCount: 1,
+    })).toEqual({ cue: 'CAP', text: '이동4 안전2 위험1 처치1', tone: 'normal' });
+  });
+
   it('warns clearly when a selected piece has no legal move', () => {
     expect(getActionFeedback({
       type: 'move-preview',

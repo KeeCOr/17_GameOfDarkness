@@ -8,6 +8,7 @@ import {
 } from '../ui/visuals.js';
 import { updateSinglePlayerRating } from '../game/singlePlayerRating.js';
 import { createDefaultPawnPlacements, requiresManualPlacement } from './PlacementScene.js';
+import { getNextBattlePlan } from '../game/resultTacticalPlan.js';
 
 export class ResultScene extends Phaser.Scene {
   constructor() { super('Result'); }
@@ -18,6 +19,7 @@ export class ResultScene extends Phaser.Scene {
     this.difficulty = data.difficulty || Difficulty.EASY;
     this.aiProfile = data.aiProfile || null;
     this.multiplayerMode = data.multiplayerMode || null;
+    this.battleSummary = data.battleSummary || null;
     this.replaying = false;
   }
 
@@ -27,6 +29,7 @@ export class ResultScene extends Phaser.Scene {
     addStageBackground(this, '', { preferTitleArt: true });
     this._drawResultPresentation(playerWon);
     this._showSinglePlayerRatingChange(playerWon);
+    this._showNextBattlePlan(playerWon);
 
     const replay = addTextButton(this, cx, 590, 322, 70, UI_COPY.result.replay, {
       fontSize: '22px',
@@ -105,6 +108,39 @@ export class ResultScene extends Phaser.Scene {
     }
   }
 
+  _showNextBattlePlan(playerWon) {
+    const cx = LAYOUT.GAME_WIDTH / 2;
+    const plan = getNextBattlePlan({
+      playerWon,
+      resultReason: this.resultReason,
+      battleSummary: this.battleSummary,
+    });
+    const accent = plan.tone === 'success' ? TEXT_COLORS.SUCCESS : plan.tone === 'summon' ? '#6fffe0' : '#ffd080';
+
+    this.add.rectangle(cx, 446, 304, 1, COLORS.GOLD, 0.42).setDepth(5);
+    this.add.text(cx, 466, '다음 전투', {
+      fontSize: '13px',
+      color: TEXT_COLORS.MUTED,
+      fontStyle: 'bold',
+      align: 'center',
+    }).setOrigin(0.5).setDepth(5);
+    const headline = this.add.text(cx, 489, plan.headline, {
+      fontSize: '17px',
+      color: accent,
+      fontStyle: 'bold',
+      align: 'center',
+      wordWrap: { width: 332, useAdvancedWrap: true },
+    }).setOrigin(0.5).setDepth(5);
+    headline.setStroke?.('#050812', 4);
+    this.add.text(cx, 519, plan.detail, {
+      fontSize: '12px',
+      color: '#d9e2f0',
+      align: 'center',
+      lineSpacing: 2,
+      wordWrap: { width: 330, useAdvancedWrap: true },
+    }).setOrigin(0.5).setDepth(5);
+  }
+
   _drawResultPresentation(playerWon) {
     const cx = LAYOUT.GAME_WIDTH / 2;
     const accent = playerWon ? COLORS.GOLD : COLORS.CRIMSON;
@@ -117,11 +153,11 @@ export class ResultScene extends Phaser.Scene {
 
     if (this.textures?.exists?.(UI_ASSETS.titleButtonFrame.key)) {
       this.add.image(cx, 294, UI_ASSETS.titleButtonFrame.key)
-        .setDisplaySize(388, 316)
+        .setDisplaySize(388, 430)
         .setAlpha(0.86)
         .setDepth(2);
     } else {
-      this.add.rectangle(cx, 294, 374, 282, COLORS.PANEL_DEEP, 0.9)
+      this.add.rectangle(cx, 294, 374, 430, COLORS.PANEL_DEEP, 0.9)
         .setDepth(2)
         .setStrokeStyle(3, accent, playerWon ? 0.8 : 0.92);
     }
