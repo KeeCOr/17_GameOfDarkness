@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+*.local
+
+release/
+.claude/
+*.exe
+ChessSummon_v*.html

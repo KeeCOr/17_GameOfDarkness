@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ChessSummon 기획서 v0.8.2</title><style>body{max-width:960px;margin:auto;padding:28px;background:#f5f2ea;color:#1d2233;font:15px/1.65 "Malgun Gothic",sans-serif}h1{border-bottom:4px solid #b7893d;padding-bottom:10px}h2{margin-top:30px;border-left:5px solid #b7893d;padding-left:10px;color:#182440}table{width:100%;border-collapse:collapse;background:#fff}th,td{border:1px solid #bbb;padding:8px;text-align:left;vertical-align:top}th{background:#1a2745;color:#fff}.meta,.note{padding:14px;border-radius:6px}.meta{background:#17213b;color:#fff}.note{background:#fff8df;border-left:4px solid #d4a64a}code{background:#e8e4da;padding:1px 4px}</style></head><body>
+<h1>ChessSummon 기획서 v0.8.2</h1><div class="meta">최종 업데이트 2026-09-23 · PC Windows / 단일 HTML / Steam 출시 후보</div>
+<h2>제품 정의</h2><p>5×5 보드에서 마나로 체스 말을 소환하고 이동·포획·체크 압박을 조합하는 10~30분 다크 판타지 전술 게임이다.</p>
+<h2>핵심 문제와 루프</h2><p>행동 전에 결과와 위험이 한 화면에서 읽혀야 한다. 모드 선택 → 배치 → 마나 획득 → 이동/포획 → 선택적 소환 → 턴 종료 → 승패·MMR·전술 복기 → 다음 소환/편성 판단 → 재대전을 반복한다.</p>
+<h2>결과→다음 전투</h2><p>결과 화면은 남은 마나, 소환 횟수, 양측 잔존 전력을 읽어 다음 판에 시험할 행동 하나를 제시한다. 주력 말이 없으면 기사·주교 첫 소환, 전력 열세면 병사 거점 보존, 승리하면 주력 소환 유지로 연결한다. 새 이미지 없이 기존 결과 프레임과 텍스트 계층을 확장했다.</p>
+<h2>컴포넌트와 상태</h2><table><tr><th>구분</th><th>설계</th></tr><tr><td>데이터</td><td>남은 마나, 소환 횟수, 양측 잔존 말</td></tr><tr><td>컴포넌트</td><td>createBattleSummary, getNextBattlePlan, ResultScene</td></tr><tr><td>상태</td><td>시간패, 주력 소환 없음, 전력 열세, 승리한 전개</td></tr><tr><td>좁은 화면</td><td>450×800 실화면 미검증</td></tr></table>
+<h2>검증</h2><p class="note">집중 3개 파일/44개, 전체 38개 파일/225개 테스트와 build 통과. Impeccable 정적 검사 0건. v0.8.2 dist·실행파일 배치·Drive 배포는 미실행. 실제 플레이·450×800·저장 복귀·Steam 클라이언트는 미검증.</p>
+<h2>소스 계보와 다음 개선</h2><p>복원 소스 v0.8.2와 Drive 실행파일 v1.1.0은 별도 계보다. 실행파일만으로 소스를 복원하지 않는다. 다음 단계는 행동 전 소환 기여도·왕 위협 변화 통합과 450×800 실화면 검증이다.</p>
+</body></html>

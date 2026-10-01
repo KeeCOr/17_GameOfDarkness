@@ -1,0 +1,63 @@
+{
+  "name": "chess-summon",
+  "version": "0.8.2",
+  "description": "A 5x5 dark tactical chess game built for single-player Steam release candidates.",
+  "author": "Jinwoo Oh",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "electron": "electron .",
+    "online:server": "node server/multiplayer-server.cjs",
+    "dist": "vite build && electron-builder --win --x64",
+    "build:html": "cross-env BUILD_MODE=singlefile VITE_RELEASE_CHANNEL=html vite build",
+    "build:steam": "cross-env VITE_RELEASE_CHANNEL=steam vite build",
+    "dist:steam": "cross-env VITE_RELEASE_CHANNEL=steam npm run dist",
+    "verify:steam-release": "node scripts/verify_steam_release.mjs --smoke"
+  },
+  "build": {
+    "appId": "com.chesssummon.game",
+    "productName": "Chess of Dark",
+    "copyright": "Copyright © 2026 Jinwoo Oh",
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon.ico",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "ChessSummon_v${version}_portable.exe"
+    },
+    "files": [
+      "electron/**/*",
+      "dist/**/*",
+      "server/**/*"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "compression": "store"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^24.0.0",
+    "jimp": "^0.22.12",
+    "phaser": "^3.87.0",
+    "vite": "^5.4.0",
+    "vite-plugin-singlefile": "^2.3.3",
+    "vitest": "^2.0.0"
+  }
+}
