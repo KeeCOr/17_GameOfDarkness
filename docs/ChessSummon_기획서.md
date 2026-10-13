@@ -286,3 +286,40 @@ npm run dist
 - HUD 프레임(상단바, 하단바, 마나 프레임)과 랭크 아이콘은 `scripts/generate_ui_frames.cjs`로 생성되는 래스터(PNG) 에셋으로 렌더링되며, 레거시 SVG 에셋은 더 이상 사용되지 않습니다.
 - 패널과 버튼은 Phaser nine-slice(`scene.add.nineslice`)로 렌더링되어 다양한 해상도에서 모서리 왜곡 없이 확장됩니다.
 - 화면 배율은 Phaser Scale Manager의 FIT 모드(`Phaser.Scale.FIT`, `CENTER_BOTH`)로 종횡비를 유지한 채 중앙 정렬됩니다.
+
+
+## 2026-10-14 현황 점검 및 개발
+
+v1.1.0 master 복제본의 .github/workflows/ci.yml에서 테스트 단계의 continue-on-error: true를 제거했다. GitHub에 반영하면 npm test 실패가 CI 전체 실패로 이어진다. 로컬 테스트 225개와 Vite 웹 빌드 통과. v0.8.2 복원 브랜치와 자동 병합하지 않았으며 원격 푸시·GitHub Actions 실제 실행·Steam 실클라이언트 및 포터블 릴리스는 수행하지 않았다. 기존 Steam App ID 480은 실제 출시 전 확인이 필요하다.
+
+
+## 현재 구현 · 검증 · 제한 (2026-10-14)
+
+### 구현된 기능
+
+- **CI continue-on-error 제거**: 테스트 실패 시 CI 파이프라인이 실패하도록 변경 (master v1.1.0 기준)
+- **테스트·빌드**: 테스트 225개 + Vite 빌드 로컬 통과
+- **GitHub 반영 후 동작**: 원격 반영 이후 테스트 실패 시 CI가 실제로 실패하는 구조
+
+### 검증 범위
+
+- 테스트 225개 로컬 통과
+- Vite 빌드 로컬 통과
+
+### 미검증 범위
+
+- 실제 GitHub Actions 실행 결과
+- Steam 실클라이언트 동작
+- AppID 480 (Spacewar 임시 ID) — 출시 전 실제 AppID 확인 필요
+
+### 계보 구분
+
+- 이번 변경(master v1.1.0)은 복원본 v0.8.2와 별도 계보
+
+```json
+{
+  "date": "2026-10-14",
+  "vitest": 225,
+  "build": "Vite production build passed"
+}
+```

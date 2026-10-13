@@ -1,0 +1,26 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><body><section>
+  <h1>수정 이력</h1>
+  <h2>2026-10-14</h2>
+  <h3>변경 이유</h3>
+  <p>CI에서 테스트 실패가 무시되는 <code>continue-on-error</code> 설정이 품질 보증을 약화시켜 제거.</p>
+  <h3>수정 내용</h3>
+  <ul>
+    <li>CI 워크플로우에서 <code>continue-on-error: true</code> 제거</li>
+    <li>이후 테스트 실패 시 CI 빌드가 실패하도록 변경</li>
+  </ul>
+  <h3>검증</h3>
+  <ul>
+    <li>테스트 225개 로컬 통과</li>
+    <li>Vite 빌드 로컬 통과</li>
+  </ul>
+  <h3>미검증</h3>
+  <ul>
+    <li>실제 GitHub Actions 실행</li>
+    <li>Steam 실클라이언트 동작</li>
+    <li>AppID 480 출시 여부</li>
+  </ul>
+  <h3>특이사항</h3>
+  <p>master v1.1.0 기준; 복원본 v0.8.2와 별도 계보</p>
+  <h3>커밋</h3>
+  <p>검증 후 GitHub 검토 브랜치에 반영하며 커밋 식별자는 Git 이력과 별도 동기화 기록을 참조한다.</p>
+</section></body></html>
