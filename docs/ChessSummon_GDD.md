@@ -127,3 +127,53 @@
 ## 다음 우선순위
 
 확인 필요 (로드맵 자료 없음)
+
+
+## 현재 구현 · 검증 · 제한 (2026-10-14)
+
+### 구현된 기능
+
+- **CI continue-on-error 제거**: 테스트 실패 시 CI 파이프라인이 실패하도록 변경 (master v1.1.0 기준)
+- **테스트·빌드**: 테스트 225개 + Vite 빌드 로컬 통과
+- **GitHub 반영 후 동작**: 원격 반영 이후 테스트 실패 시 CI가 실제로 실패하는 구조
+
+### 검증 범위
+
+- 테스트 225개 로컬 통과
+- Vite 빌드 로컬 통과
+
+### 미검증 범위
+
+- 실제 GitHub Actions 실행 결과
+- Steam 실클라이언트 동작
+- AppID 480 (Spacewar 임시 ID) — 출시 전 실제 AppID 확인 필요
+
+### 계보 구분
+
+- 이번 변경(master v1.1.0)은 복원본 v0.8.2와 별도 계보
+
+```json
+{
+  "date": "2026-10-14",
+  "vitest": 225,
+  "build": "Vite production build passed"
+}
+```
+
+
+## 리소스 목록
+
+이 프로젝트의 미디어·참조·스펙 연결 현황은 아래 두 파일에 기록됩니다.
+
+- 사람이 읽는 요약: [`./RESOURCE_INVENTORY.md`](./RESOURCE_INVENTORY.md)
+- 도구가 읽는 원본: [`./RESOURCE_INVENTORY.json`](./RESOURCE_INVENTORY.json)
+
+**판독 안내**
+
+`media` 항목은 현재 보유한 파일입니다. `zeroByte: true`는 내용이 없는 빈 파일, `lfsPointer: true`는 LFS 포인터만 존재하고 실제 본체가 없는 파일을 의미합니다.
+
+`references` 항목의 `kind`가 `unresolved-candidate` 또는 `basename-candidate`인 경우 누락이 확정된 것이 아니라 경로 일치 여부를 검토해야 할 후보입니다.
+
+`specDocs.missingLines`는 기획 문서상 필요하다고 기록된 항목의 근거이며, 현행 구현에서 반드시 누락된 에셋을 뜻하지 않습니다. 절차적으로 생성되는 그래픽은 비트맵 파일이 없어도 구현을 충족할 수 있습니다.
+
+엔진 실행, 품질, 라이선스 검증은 이 목록에 포함되지 않습니다.

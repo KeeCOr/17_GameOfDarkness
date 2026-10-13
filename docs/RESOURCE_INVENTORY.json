@@ -1,0 +1,2424 @@
+{
+  "name": "ChessOfDark",
+  "project": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full",
+  "source": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full",
+  "realPath": "C:\\Users\\bada\\Documents\\Codex\\2026-10-13\\17\\work\\17-master-full",
+  "kind": "publish",
+  "scanErrors": null,
+  "media": [
+    {
+      "path": "build/icon.ico",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/build/icon.ico",
+      "size": 216882,
+      "category": "image",
+      "ext": "ico",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "codex-images/king_w_chromakey_removed.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/codex-images/king_w_chromakey_removed.png",
+      "size": 367663,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "codex-images/pawn_d_chroma_removed.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/codex-images/pawn_d_chroma_removed.png",
+      "size": 485687,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/capture.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/capture.ogg",
+      "size": 10921,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/defeat.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/defeat.ogg",
+      "size": 13944,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/move-confirm.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/move-confirm.ogg",
+      "size": 6288,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/move-preview.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/move-preview.ogg",
+      "size": 4514,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/piece-select.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/piece-select.ogg",
+      "size": 6909,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/summon-confirm.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/summon-confirm.ogg",
+      "size": 6342,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/audio/kenney/victory.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/audio/kenney/victory.ogg",
+      "size": 11424,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/board/game-board-cell-dark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/board/game-board-cell-dark.png",
+      "size": 11842,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/board/game-board-cell-light.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/board/game-board-cell-light.png",
+      "size": 16021,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/board/game-board-fog-cell.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/board/game-board-fog-cell.png",
+      "size": 11014,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/brand/chesssummon-logo.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/brand/chesssummon-logo.png",
+      "size": 2317926,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/brand/chesssummon-mark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/brand/chesssummon-mark.png",
+      "size": 26593,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/brand/title-logo-ornament.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/brand/title-logo-ornament.png",
+      "size": 1277102,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/fx/capture-impact-ring.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/fx/capture-impact-ring.png",
+      "size": 15203,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/fx/capture-impact-slash.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/fx/capture-impact-slash.png",
+      "size": 14861,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/fx/promotion-beam.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/fx/promotion-beam.png",
+      "size": 27541,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/fx/promotion-burst.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/fx/promotion-burst.png",
+      "size": 17959,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/highlights/game-cell-highlight-movable.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/highlights/game-cell-highlight-movable.png",
+      "size": 8650,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/highlights/game-cell-highlight-move.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/highlights/game-cell-highlight-move.png",
+      "size": 7085,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/highlights/game-cell-highlight-selected.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/highlights/game-cell-highlight-selected.png",
+      "size": 9784,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/highlights/game-cell-highlight-summon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/highlights/game-cell-highlight-summon.png",
+      "size": 10680,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/highlights/game-cell-highlight-threat.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/highlights/game-cell-highlight-threat.png",
+      "size": 10848,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-action-button-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-action-button-frame.png",
+      "size": 8228,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-board-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-board-frame.png",
+      "size": 376585,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-bottom-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-bottom-hud-frame.png",
+      "size": 105350,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-clock-chip-enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-clock-chip-enemy.png",
+      "size": 11630,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-clock-chip-player.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-clock-chip-player.png",
+      "size": 11266,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-mana-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-mana-frame.png",
+      "size": 9575,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/hud/game-top-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/hud/game-top-hud-frame.png",
+      "size": 103281,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/bishop_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/bishop_d.png",
+      "size": 26003,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/bishop_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/bishop_w.png",
+      "size": 3620,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/king_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/king_d.png",
+      "size": 23691,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/king_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/king_w.png",
+      "size": 3644,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/knight_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/knight_d.png",
+      "size": 35681,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/knight_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/knight_w.png",
+      "size": 5686,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/pawn_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/pawn_d.png",
+      "size": 3871,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/pawn_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/pawn_w.png",
+      "size": 3742,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/queen_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/queen_d.png",
+      "size": 26445,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/queen_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/queen_w.png",
+      "size": 4196,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/rook_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/rook_d.png",
+      "size": 5481,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/rook_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/rook_w.png",
+      "size": 5377,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/bishop_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/bishop_d.png",
+      "size": 25617,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/bishop_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/bishop_w.png",
+      "size": 27474,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/king_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/king_d.png",
+      "size": 23637,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/king_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/king_w.png",
+      "size": 24341,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/knight_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/knight_d.png",
+      "size": 33053,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/knight_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/knight_w.png",
+      "size": 34765,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/pawn_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/pawn_d.png",
+      "size": 28496,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/pawn_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/pawn_w.png",
+      "size": 31099,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/queen_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/queen_d.png",
+      "size": 25929,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/queen_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/queen_w.png",
+      "size": 26496,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/rook_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/rook_d.png",
+      "size": 29658,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/pieces/source/rook_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/pieces/source/rook_w.png",
+      "size": 32790,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/rank/mmr-bronze.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/rank/mmr-bronze.png",
+      "size": 21513,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/rank/mmr-diamond.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/rank/mmr-diamond.png",
+      "size": 21117,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/rank/mmr-gold.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/rank/mmr-gold.png",
+      "size": 21175,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/rank/mmr-master.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/rank/mmr-master.png",
+      "size": 21341,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/rank/mmr-platinum.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/rank/mmr-platinum.png",
+      "size": 21409,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/rank/mmr-silver.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/rank/mmr-silver.png",
+      "size": 21159,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ranks/mmr-bronze.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ranks/mmr-bronze.png",
+      "size": 8661,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ranks/mmr-diamond.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ranks/mmr-diamond.png",
+      "size": 7774,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ranks/mmr-gold.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ranks/mmr-gold.png",
+      "size": 8294,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ranks/mmr-master.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ranks/mmr-master.png",
+      "size": 8432,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ranks/mmr-platinum.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ranks/mmr-platinum.png",
+      "size": 8294,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ranks/mmr-silver.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ranks/mmr-silver.png",
+      "size": 7469,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/summon/game-mana-crystal.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/summon/game-mana-crystal.png",
+      "size": 1643,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/summon/game-summon-card-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/summon/game-summon-card-frame.png",
+      "size": 34402,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/summon/game-summon-tile-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/summon/game-summon-tile-frame.png",
+      "size": 11218,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/battle-entry-plate.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/battle-entry-plate.png",
+      "size": 131073,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/chesssummon-mark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/chesssummon-mark.png",
+      "size": 26449,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-action-button-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-action-button-frame.png",
+      "size": 51580,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-background.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-background.png",
+      "size": 633621,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-board-cell-dark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-board-cell-dark.png",
+      "size": 18704,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-board-cell-light.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-board-cell-light.png",
+      "size": 18833,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-board-fog-cell.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-board-fog-cell.png",
+      "size": 13381,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-board-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-board-frame.png",
+      "size": 50887,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-bottom-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-bottom-hud-frame.png",
+      "size": 250558,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-cell-highlight-movable.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-cell-highlight-movable.png",
+      "size": 12608,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-cell-highlight-move.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-cell-highlight-move.png",
+      "size": 12770,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-cell-highlight-selected.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-cell-highlight-selected.png",
+      "size": 13105,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-cell-highlight-summon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-cell-highlight-summon.png",
+      "size": 12782,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-cell-highlight-threat.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-cell-highlight-threat.png",
+      "size": 12745,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-clock-chip-enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-clock-chip-enemy.png",
+      "size": 21224,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-clock-chip-player.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-clock-chip-player.png",
+      "size": 21154,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-mana-crystal.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-mana-crystal.png",
+      "size": 8788,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-mana-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-mana-frame.png",
+      "size": 38121,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-piece-shadow.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-piece-shadow.png",
+      "size": 6117,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-summon-card-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-summon-card-frame.png",
+      "size": 123858,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-summon-tile-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-summon-tile-frame.png",
+      "size": 71268,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/game-top-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/game-top-hud-frame.png",
+      "size": 66335,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/result-trophy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/result-trophy.png",
+      "size": 24012,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/title-background.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/title-background.png",
+      "size": 2641101,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/title-button-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/title-button-frame.png",
+      "size": 1455677,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/assets/ui/title-logo-ornament.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/assets/ui/title-logo-ornament.png",
+      "size": 36491,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "dist-html/icon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/dist-html/icon.png",
+      "size": 2876965,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "docs/app_icon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/app_icon.png",
+      "size": 2876965,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "docs/archive/ChessSummon_gameplay_preview_v1.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/archive/ChessSummon_gameplay_preview_v1.png",
+      "size": 1394276,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "docs/archive/ChessSummon_gameplay_preview_v20260701_before_regen.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/archive/ChessSummon_gameplay_preview_v20260701_before_regen.png",
+      "size": 2797522,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/assets/chesssummon-ingame-entry-mockup-v0.1.53.png",
+      "size": 2652357,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "docs/ChessSummon_01_플레이예시.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/ChessSummon_01_플레이예시.png",
+      "size": 2528136,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "docs/ChessSummon_gameplay_preview.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/ChessSummon_gameplay_preview.png",
+      "size": 2178044,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "electron/build/icon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/electron/build/icon.png",
+      "size": 2876965,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "icon.ico",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/icon.ico",
+      "size": 3092,
+      "category": "image",
+      "ext": "ico",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/capture.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/capture.ogg",
+      "size": 10921,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/defeat.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/defeat.ogg",
+      "size": 13944,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/move-confirm.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/move-confirm.ogg",
+      "size": 6288,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/move-preview.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/move-preview.ogg",
+      "size": 4514,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/piece-select.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/piece-select.ogg",
+      "size": 6909,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/summon-confirm.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/summon-confirm.ogg",
+      "size": 6342,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/kenney/victory.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/kenney/victory.ogg",
+      "size": 11424,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/audio/original/bgm-loop.ogg",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/audio/original/bgm-loop.ogg",
+      "size": 169891,
+      "category": "audio",
+      "ext": "ogg",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/board/game-board-cell-dark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/board/game-board-cell-dark.png",
+      "size": 11842,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/board/game-board-cell-light.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/board/game-board-cell-light.png",
+      "size": 16021,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/board/game-board-fog-cell.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/board/game-board-fog-cell.png",
+      "size": 11014,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/brand/chesssummon-logo.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/brand/chesssummon-logo.png",
+      "size": 2317926,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/brand/chesssummon-mark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/brand/chesssummon-mark.png",
+      "size": 26593,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/brand/title-logo-ornament.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/brand/title-logo-ornament.png",
+      "size": 1277102,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/fx/capture-impact-ring.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/fx/capture-impact-ring.png",
+      "size": 15203,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/fx/capture-impact-slash.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/fx/capture-impact-slash.png",
+      "size": 14861,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/fx/promotion-beam.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/fx/promotion-beam.png",
+      "size": 27541,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/fx/promotion-burst.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/fx/promotion-burst.png",
+      "size": 17959,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/highlights/game-cell-highlight-movable.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/highlights/game-cell-highlight-movable.png",
+      "size": 8650,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/highlights/game-cell-highlight-move.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/highlights/game-cell-highlight-move.png",
+      "size": 7085,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/highlights/game-cell-highlight-selected.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/highlights/game-cell-highlight-selected.png",
+      "size": 9784,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/highlights/game-cell-highlight-summon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/highlights/game-cell-highlight-summon.png",
+      "size": 10680,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/highlights/game-cell-highlight-threat.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/highlights/game-cell-highlight-threat.png",
+      "size": 10848,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-action-button-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-action-button-frame.png",
+      "size": 8228,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-board-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-board-frame.png",
+      "size": 376585,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-bottom-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-bottom-hud-frame.png",
+      "size": 105350,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-clock-chip-enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-clock-chip-enemy.png",
+      "size": 11630,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-clock-chip-player.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-clock-chip-player.png",
+      "size": 11266,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-mana-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-mana-frame.png",
+      "size": 9575,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/hud/game-top-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/hud/game-top-hud-frame.png",
+      "size": 103281,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/bishop_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/bishop_d.png",
+      "size": 26003,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/bishop_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/bishop_w.png",
+      "size": 3620,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/king_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/king_d.png",
+      "size": 23691,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/king_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/king_w.png",
+      "size": 3644,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/knight_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/knight_d.png",
+      "size": 35681,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/knight_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/knight_w.png",
+      "size": 5686,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/pawn_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/pawn_d.png",
+      "size": 3871,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/pawn_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/pawn_w.png",
+      "size": 3742,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/queen_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/queen_d.png",
+      "size": 26445,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/queen_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/queen_w.png",
+      "size": 4196,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/rook_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/rook_d.png",
+      "size": 5481,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/rook_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/rook_w.png",
+      "size": 5377,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/bishop_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/bishop_d.png",
+      "size": 25617,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/bishop_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/bishop_w.png",
+      "size": 27474,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/king_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/king_d.png",
+      "size": 23637,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/king_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/king_w.png",
+      "size": 24341,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/knight_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/knight_d.png",
+      "size": 33053,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/knight_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/knight_w.png",
+      "size": 34765,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/pawn_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/pawn_d.png",
+      "size": 28496,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/pawn_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/pawn_w.png",
+      "size": 31099,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/queen_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/queen_d.png",
+      "size": 25929,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/queen_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/queen_w.png",
+      "size": 26496,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/rook_d.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/rook_d.png",
+      "size": 29658,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/pieces/source/rook_w.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/pieces/source/rook_w.png",
+      "size": 32790,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/rank/mmr-bronze.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/rank/mmr-bronze.png",
+      "size": 21513,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/rank/mmr-diamond.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/rank/mmr-diamond.png",
+      "size": 21117,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/rank/mmr-gold.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/rank/mmr-gold.png",
+      "size": 21175,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/rank/mmr-master.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/rank/mmr-master.png",
+      "size": 21341,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/rank/mmr-platinum.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/rank/mmr-platinum.png",
+      "size": 21409,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/rank/mmr-silver.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/rank/mmr-silver.png",
+      "size": 21159,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ranks/mmr-bronze.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ranks/mmr-bronze.png",
+      "size": 8661,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ranks/mmr-diamond.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ranks/mmr-diamond.png",
+      "size": 7774,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ranks/mmr-gold.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ranks/mmr-gold.png",
+      "size": 8294,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ranks/mmr-master.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ranks/mmr-master.png",
+      "size": 8432,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ranks/mmr-platinum.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ranks/mmr-platinum.png",
+      "size": 8294,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ranks/mmr-silver.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ranks/mmr-silver.png",
+      "size": 7469,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/summon/game-mana-crystal.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/summon/game-mana-crystal.png",
+      "size": 1643,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/summon/game-summon-card-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/summon/game-summon-card-frame.png",
+      "size": 34402,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/summon/game-summon-tile-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/summon/game-summon-tile-frame.png",
+      "size": 11218,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/battle-entry-plate.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/battle-entry-plate.png",
+      "size": 131073,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/chesssummon-mark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/chesssummon-mark.png",
+      "size": 26449,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/cs-ui-button-frame-9s.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/cs-ui-button-frame-9s.png",
+      "size": 59141,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/cs-ui-panel-frame-9s.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/cs-ui-panel-frame-9s.png",
+      "size": 329198,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-action-button-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-action-button-frame.png",
+      "size": 51580,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-background.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-background.png",
+      "size": 633621,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-board-cell-dark.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-cell-dark.png",
+      "size": 18704,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-board-cell-light.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-cell-light.png",
+      "size": 18833,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-board-fog-cell.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-fog-cell.png",
+      "size": 13381,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-board-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-frame.png",
+      "size": 50887,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-bottom-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-bottom-hud-frame.png",
+      "size": 250558,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-cell-highlight-movable.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-movable.png",
+      "size": 12608,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-cell-highlight-move.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-move.png",
+      "size": 12770,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-cell-highlight-selected.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-selected.png",
+      "size": 13105,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-cell-highlight-summon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-summon.png",
+      "size": 12782,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-cell-highlight-threat.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-threat.png",
+      "size": 12745,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-clock-chip-enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-clock-chip-enemy.png",
+      "size": 21224,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-clock-chip-player.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-clock-chip-player.png",
+      "size": 21154,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-mana-crystal.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-mana-crystal.png",
+      "size": 8788,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-mana-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-mana-frame.png",
+      "size": 38121,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-piece-shadow.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-piece-shadow.png",
+      "size": 6117,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-summon-card-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-summon-card-frame.png",
+      "size": 123858,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-summon-tile-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-summon-tile-frame.png",
+      "size": 71268,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/game-top-hud-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-top-hud-frame.png",
+      "size": 66335,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/result-trophy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/result-trophy.png",
+      "size": 24012,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/title-background.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/title-background.png",
+      "size": 2641101,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/title-button-frame.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/title-button-frame.png",
+      "size": 1455677,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/assets/ui/title-logo-ornament.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/title-logo-ornament.png",
+      "size": 36491,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "public/icon.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/icon.png",
+      "size": 2876965,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/bishop_ally.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/bishop_ally.png",
+      "size": 77150,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/bishop_enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/bishop_enemy.png",
+      "size": 69988,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/king_ally.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/king_ally.png",
+      "size": 69463,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/king_enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/king_enemy.png",
+      "size": 66278,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/knight_ally.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/knight_ally.png",
+      "size": 101499,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/knight_enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/knight_enemy.png",
+      "size": 96084,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/pawn_ally.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/pawn_ally.png",
+      "size": 78771,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/pawn_enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/pawn_enemy.png",
+      "size": 71040,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/queen_ally.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/queen_ally.png",
+      "size": 76420,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/queen_enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/queen_enemy.png",
+      "size": 71138,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/rook_ally.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/rook_ally.png",
+      "size": 77111,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    },
+    {
+      "path": "src/Character/rook_enemy.png",
+      "absPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/src/Character/rook_enemy.png",
+      "size": 71503,
+      "category": "image",
+      "ext": "png",
+      "zeroByte": false,
+      "lfsPointer": false,
+      "isAlias": false
+    }
+  ],
+  "mediaCount": 216,
+  "aliasCount": 0,
+  "zeroByteCount": 0,
+  "lfsPointerCount": 0,
+  "references": [
+    {
+      "file": "docs/ChessSummon_GDD.html",
+      "line": 48,
+      "value": "./ChessSummon_gameplay_preview.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/docs/ChessSummon_gameplay_preview.png",
+      "context": "document"
+    },
+    {
+      "file": "docs/_deprecated_planning/ChessSummon_기획서_deprecated.html",
+      "line": 189,
+      "value": "archive/ChessSummon_gameplay_preview_v1.png",
+      "kind": "basename-candidate",
+      "resolved": false,
+      "note": "Basename match only — NOT resolved; requires runtime binding review",
+      "context": "historical-document"
+    },
+    {
+      "file": "docs/_deprecated_planning/ChessSummon_기획서_deprecated.html",
+      "line": 190,
+      "value": "ChessSummon_01_플레이예시.png",
+      "kind": "basename-candidate",
+      "resolved": false,
+      "note": "Basename match only — NOT resolved; requires runtime binding review",
+      "context": "historical-document"
+    },
+    {
+      "file": "docs/_deprecated_planning/ChessSummon_기획서_deprecated.html",
+      "line": 191,
+      "value": "assets/chesssummon-ingame-entry-mockup-v0.1.53.png",
+      "kind": "basename-candidate",
+      "resolved": false,
+      "note": "Basename match only — NOT resolved; requires runtime binding review",
+      "context": "historical-document"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 272,
+      "value": "../public/assets/brand/chesssummon-logo.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/brand/chesssummon-logo.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 273,
+      "value": "../public/assets/ui/title-background.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/title-background.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 274,
+      "value": "../public/assets/ui/title-button-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/title-button-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 275,
+      "value": "../public/assets/ui/result-trophy.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/result-trophy.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 276,
+      "value": "../public/assets/brand/title-logo-ornament.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/brand/title-logo-ornament.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 277,
+      "value": "../public/assets/ui/game-background.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-background.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 278,
+      "value": "../public/assets/ui/game-top-hud-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-top-hud-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 279,
+      "value": "../public/assets/ui/game-bottom-hud-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-bottom-hud-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 280,
+      "value": "../public/assets/ui/game-board-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 281,
+      "value": "../public/assets/ui/game-summon-card-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-summon-card-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 282,
+      "value": "../public/assets/ui/game-summon-tile-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-summon-tile-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 283,
+      "value": "../public/assets/ui/game-mana-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-mana-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 284,
+      "value": "../public/assets/ui/game-action-button-frame.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-action-button-frame.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 285,
+      "value": "../public/assets/ui/game-board-cell-light.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-cell-light.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 286,
+      "value": "../public/assets/ui/game-board-cell-dark.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-cell-dark.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 287,
+      "value": "../public/assets/ui/game-board-fog-cell.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-board-fog-cell.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 288,
+      "value": "../public/assets/ui/game-cell-highlight-move.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-move.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 289,
+      "value": "../public/assets/ui/game-cell-highlight-threat.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-threat.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 290,
+      "value": "../public/assets/ui/game-cell-highlight-summon.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-cell-highlight-summon.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 291,
+      "value": "../public/assets/ui/game-mana-crystal.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-mana-crystal.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 292,
+      "value": "../public/assets/ui/game-clock-chip-player.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-clock-chip-player.png",
+      "context": "test-or-tool-fixture"
+    },
+    {
+      "file": "tests/VisualTheme.test.js",
+      "line": 293,
+      "value": "../public/assets/ui/game-clock-chip-enemy.png",
+      "kind": "resolved",
+      "resolved": true,
+      "resolvedPath": "C:/Users/bada/Documents/Codex/2026-10-13/17/work/17-master-full/public/assets/ui/game-clock-chip-enemy.png",
+      "context": "test-or-tool-fixture"
+    }
+  ],
+  "specDocs": [
+    {
+      "path": "docs/ChessSummon_UI_리소스_목록.md",
+      "missingLines": []
+    },
+    {
+      "path": "docs/sfx-vfx-candidates-20260808.md",
+      "missingLines": []
+    }
+  ],
+  "historical": null,
+  "repo": "17_GameOfDarkness",
+  "gdd": "ChessSummon_GDD",
+  "branch": "codex/development-20261014"
+}
